@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="BookmarkModel" representedClassName="BookmarkModel" syncable="YES" codeGenerationType="class">
+        <attribute name="bookmarkedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <relationship name="fileItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FileItem"/>
     </entity>
-    <elements>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
-    </elements>
+    <entity name="FileItem" representedClassName="FileItem" syncable="YES" codeGenerationType="class">
+        <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="directoryPath" optional="YES" attributeType="String"/>
+        <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fileType" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isBookmarked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isRecentlyAccessed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lastAccessedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="modifiedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="path" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailData" optional="YES" attributeType="Binary"/>
+        <relationship name="bookmarks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BookmarkModel"/>
+    </entity>
 </model>

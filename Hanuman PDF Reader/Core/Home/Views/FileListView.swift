@@ -1,0 +1,140 @@
+//
+//  FileListView.swift
+//  Hanuman PDF Reader
+//
+//  Created by Neeshu Kumar on 05/06/25.
+//
+
+enum FilterType: String, CaseIterable {
+    case lastViewed = "Last Viewed"
+    case lastModified = "Last Modified"
+    case name = "Name"
+    case fileSize = "File Size"
+    case fromNewtoOld = "Newest to Oldest"
+    case fromOldtoNew = "Oldest to Newest"
+}
+
+
+import SwiftUI
+
+// MARK: - File List View
+struct FileListView: View {
+    @EnvironmentObject var viewModel: MainViewModel
+    @State var filterName : FilterType = .name
+    @State var showSortSheet : Bool = false
+    @State var isBookmarked : Bool = false
+    
+    var body: some View {
+        VStack{
+            if viewModel.fileItems.isEmpty {
+                EmptyStateView(
+                    title: "No Files Found",
+                    subtitle: "Add some documents to get started"
+                )
+            } else {
+                if !isBookmarked{
+                    HStack{
+                    Text("Sort by \(filterName.rawValue)")
+                        .font(.caption)
+                        .bold()
+                    Image(systemName: "arrowtriangle.down.fill")
+                        .resizable()
+                        .frame(width: 8,height: 8)
+                    Spacer()
+                }
+                    .onTapGesture {
+                        showSortSheet = true
+                    }
+                    .padding()
+            }
+                List {
+                    ForEach(
+                        isBookmarked ? viewModel.bookmarkedItems : viewModel.fileItems ,
+                        id: \.objectID
+                    ) { file in
+                        FileRowView(file: file)
+                            .onTapGesture {
+                                viewModel.markAsRecentlyAccessed(file)
+                            }
+                            .cornerRadius(10)
+
+                    }
+                }
+                .listStyle(PlainListStyle())
+            }
+        }
+        .sheet(isPresented: $showSortSheet) {
+            SortOptionsSheet(
+                isPresented: $showSortSheet,
+                selectedSortOption : $filterName, localSelectedSortOption: filterName
+            )
+        }
+        .onChange(of: filterName) { newValue in
+            viewModel.filterAndSortFiles(fileType: filterName)
+        }
+    }
+}
+
+
+
+
+// MARK: - File List View
+struct FileListViewForSearch: View {
+    @EnvironmentObject var viewModel: MainViewModel
+    @State var filterName : FilterType = .name
+    @State var showSortSheet : Bool = false
+    @State var isBookmarked : Bool = false
+    @State var fileItems : [FileItem] = []
+    
+    var body: some View {
+        VStack{
+            if viewModel.fileItems.isEmpty {
+                EmptyStateView(
+                    title: "No Files Found",
+                    subtitle: "Add some documents to get started"
+                )
+            } else {
+                if !isBookmarked{
+                    HStack{
+                    Text("Sort by \(filterName.rawValue)")
+                        .font(.caption)
+                        .bold()
+                    Image(systemName: "arrowtriangle.down.fill")
+                        .resizable()
+                        .frame(width: 8,height: 8)
+                    Spacer()
+                }
+                    .onTapGesture {
+                        showSortSheet = true
+                    }
+                    .padding()
+            }
+                List {
+                    ForEach(
+                        fileItems ,
+                        id: \.objectID
+                    ) { file in
+                        FileRowView(file: file)
+                            .onTapGesture {
+                                viewModel.markAsRecentlyAccessed(file)
+                            }
+                            .cornerRadius(10)
+
+                    }
+                }
+                .listStyle(PlainListStyle())
+            }
+        }
+        .sheet(isPresented: $showSortSheet) {
+            SortOptionsSheet(
+                isPresented: $showSortSheet,
+                selectedSortOption : $filterName, localSelectedSortOption: filterName
+            )
+        }
+        .onChange(of: filterName) { newValue in
+            viewModel.filterAndSortFiles(fileType: filterName)
+        }
+    }
+}
+
+
