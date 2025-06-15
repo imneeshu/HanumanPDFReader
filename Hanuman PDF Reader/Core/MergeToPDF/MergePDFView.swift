@@ -9,6 +9,24 @@ import SwiftUI
 import PDFKit
 import UniformTypeIdentifiers
 
+// MARK: - PDF Merge Error
+enum PDFMergeError: LocalizedError {
+    case noFilesToMerge
+    case invalidFile
+    case writeFailed
+    
+    var errorDescription: String? {
+        switch self {
+        case .noFilesToMerge:
+            return "No files selected for merging"
+        case .invalidFile:
+            return "One or more files are invalid or corrupted"
+        case .writeFailed:
+            return "Failed to write merged PDF file"
+        }
+    }
+}
+
 struct MergePDFView: View {
     @State private var selectedPDFs: [URL] = []
     @State private var showingDocumentPicker = false
@@ -20,31 +38,25 @@ struct MergePDFView: View {
     @State private var isLoading = false
     @State private var errorMessage: String?
     @State private var showingError = false
+    @Binding var selectedFileItems: [FileItem]
+    @Binding var  listFlow : ListFlow
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                // Header
-                Text("Select Two PDF Files to Merge")
-                    .font(.headline)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                
                 // PDF Selection Cards
                 VStack(spacing: 15) {
-                    PDFSelectionCard(
-                        title: "First PDF",
-                        pdfURL: selectedPDFs.count > 0 ? selectedPDFs[0] : nil,
-                        onTap: { selectPDF(index: 0) }
-                    )
-                    
-                    PDFSelectionCard(
-                        title: "Second PDF",
-                        pdfURL: selectedPDFs.count > 1 ? selectedPDFs[1] : nil,
-                        onTap: { selectPDF(index: 1) }
-                    )
-                }
-                .padding(.horizontal)
+                    List {
+                        ForEach(selectedFileItems, id: \.objectID) { file in
+                            FileRowViewForSelection(
+                                file: file,
+                                isSelected: false,
+                                onSelectionToggle: {
+                                    //                                    toggleSelection(for: file)
+                                    //                                    viewModel.markAsRecentlyAccessed(file)
+                                }, listFlow: $listFlow
+                            )
+                            .cornerRadius(10)
+                        }
+                    }
                 
                 Spacer()
                 
@@ -124,7 +136,6 @@ struct MergePDFView: View {
             } message: {
                 Text(errorMessage ?? "An error occurred")
             }
-        }
     }
     
     private func selectPDF(index: Int) {
@@ -478,52 +489,36 @@ struct FinalScreenView: View {
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showingShareSheet) {
                 ShareSheet(items: [pdfURL])
+                EmptyView()
             }
             .sheet(isPresented: $showingPDFViewer) {
-                PDFViewer(pdfURL: pdfURL)
+//                PDFViewer(pdfURL: pdfURL)
+                EmptyView()
             }
         }
     }
 }
 
-struct PDFViewer: View {
-    let pdfURL: URL
-    @Environment(\.presentationMode) var presentationMode
-    
-    var body: some View {
-        NavigationView {
-            PDFKitView(pdfURL: pdfURL)
-                .navigationTitle(pdfURL.lastPathComponent)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Done") {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                }
-        }
-    }
-}
+//struct PDFViewer: View {
+//    let pdfURL: URL
+//    @Environment(\.presentationMode) var presentationMode
+//    
+//    var body: some View {
+//        NavigationView {
+//            PDFKitView(pdfURL: pdfURL)
+//                .navigationTitle(pdfURL.lastPathComponent)
+//                .navigationBarTitleDisplayMode(.inline)
+//                .toolbar {
+//                    ToolbarItem(placement: .navigationBarTrailing) {
+//                        Button("Done") {
+//                            presentationMode.wrappedValue.dismiss()
+//                        }
+//                    }
+//                }
+//        }
+//    }
+//}
 
-struct PDFKitView: UIViewRepresentable {
-    let pdfURL: URL
-    
-    func makeUIView(context: Context) -> PDFView {
-        let pdfView = PDFView()
-        pdfView.autoScales = true
-        pdfView.displayMode = .singlePageContinuous
-        pdfView.displayDirection = .vertical
-        
-        if let document = PDFDocument(url: pdfURL) {
-            pdfView.document = document
-        }
-        
-        return pdfView
-    }
-    
-    func updateUIView(_ uiView: PDFView, context: Context) {}
-}
 
 // PDF Merger Utility Class
 class PDFMerger {

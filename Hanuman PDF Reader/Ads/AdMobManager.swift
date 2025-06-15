@@ -26,25 +26,27 @@ class AdMobManager: NSObject, ObservableObject {
     }
 }
 
-// MARK: - Banner Ad View
+// MARK: - Banner Ad View (Adaptive)
 struct BannerAdView: UIViewRepresentable {
     let adUnitID: String
-    let adSize: AdSize
-    
-    init(adUnitID: String, size: AdSize = AdSizeBanner) {
-        self.adUnitID = adUnitID
-        self.adSize = size
-    }
-    
+    let width: CGFloat
+
     func makeUIView(context: Context) -> BannerView {
-        let bannerView = BannerView(adSize: adSize)
+        let bannerView = BannerView()
         bannerView.adUnitID = adUnitID
         bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
+        bannerView.adSize = currentOrientationAnchoredAdaptiveBanner(width: width)
         bannerView.load(Request())
         return bannerView
     }
-    
-    func updateUIView(_ uiView: BannerView, context: Context) {}
+
+    func updateUIView(_ uiView: BannerView, context: Context) {
+        let adaptiveSize = currentOrientationAnchoredAdaptiveBanner(width: width)
+        if uiView.adSize.size.width != width {
+            uiView.adSize = adaptiveSize
+            uiView.load(Request())
+        }
+    }
 }
 
 // MARK: - Interstitial Ad Manager
@@ -254,18 +256,24 @@ class NativeAdManager: NSObject, ObservableObject, NativeAdLoaderDelegate {
 
 // MARK: - SwiftUI Integration Views
 
+// MARK: - SwiftUI AdBanner wrapper using GeometryReader for Adaptive Banner
 struct AdBanner: View {
     let adUnitID: String
-    let size: AdSize
-    
-    init(_ adUnitID: String, size: AdSize = AdSizeBanner) {
+    init(_ adUnitID: String) {
         self.adUnitID = adUnitID
-        self.size = size
     }
-    
     var body: some View {
-        BannerAdView(adUnitID: adUnitID, size: size)
-            .frame(width: size.size.width, height: size.size.height)
+        GeometryReader { geometry in
+            HStack {
+                Spacer(minLength: 0)
+                BannerAdView(
+                    adUnitID: adUnitID,
+                    width: UIScreen.main.bounds.width
+                )
+                Spacer(minLength: 0)
+            }
+        }
+        .frame(height: 50) // Let BannerAdView determine actual height
     }
 }
 
@@ -384,3 +392,4 @@ struct RewardedAdButton: View {
 //        }
 //    }
 //}
+

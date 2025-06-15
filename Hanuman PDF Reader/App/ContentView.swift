@@ -7,6 +7,31 @@
 
 import SwiftUI
 
+//// Enhanced gradient colors
+let backgroundGradient = LinearGradient(
+    gradient: Gradient(colors: [
+        Color.black,
+        Color(red: 0.18, green: 0.0, blue: 0.21), // Dark purple
+        Color(red: 0.6, green: 0.4, blue: 0.9),   // Original purple
+        Color(red: 0.8, green: 0.3, blue: 0.8)    // Original purple-pink
+    ]),
+    startPoint: .topLeading,
+    endPoint: .bottomTrailing
+)
+
+
+let navy = Color(red: 0.043, green: 0.114, blue: 0.318)
+
+//// White to light blue gradient (90deg horizontal)
+//let backgroundGradient = LinearGradient(
+//    gradient: Gradient(stops: [
+//        .init(color: Color(red: 1.0, green: 1.0, blue: 1.0), location: 0.0),        // rgba(255, 255, 255, 1) at 0%
+//        .init(color: Color(red: 0.549, green: 0.804, blue: 0.922), location: 0.53)  // rgba(140, 205, 235, 1) at 53%
+//    ]),
+//    startPoint: .bottom,
+//    endPoint: .top
+//)
+
 struct ContentView: View {
     @StateObject private var mainViewModel = MainViewModel()
     @StateObject private var settingsViewModel = SettingsViewModel()
@@ -25,23 +50,22 @@ struct ContentView: View {
     @State private var showingSettings = false // Added for settings sidebar
     @State var showOCRButton: Bool = true
     @State var isSearchPresented: Bool = false
+    @State var showImageView = false
+    @State var selectedItems : [PhotoItem] = []
+    @State var showImagePreview : Bool = false
     let tabTitles = ["Home", "Bookmarks", "Tools"]
-    
-    // Enhanced gradient colors
-    let backgroundGradient = LinearGradient(
-        gradient: Gradient(colors: [
-            Color.black,
-            Color(red: 0.18, green: 0.0, blue: 0.21), // Dark purple
-            Color(red: 0.6, green: 0.4, blue: 0.9),   // Original purple
-            Color(red: 0.8, green: 0.3, blue: 0.8)    // Original purple-pink
-        ]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
     
     var body: some View {
         NavigationView{
         ZStack(alignment: .topLeading) {
+            
+            NavigationLink(
+                destination: ImageToPDFView(selectedItems: $selectedItems),
+                isActive: $showImagePreview,
+                label: {
+                    EmptyView() // No label shown
+                }
+            )
             
             // Hidden NavigationLink triggered by state
             NavigationLink(
@@ -53,6 +77,13 @@ struct ContentView: View {
                 label: {
                     EmptyView() // No label shown
                 }
+            )
+            
+            NavigationLink(
+                destination: SearchView(isPresented: $isSearchPresented)
+                    .navigationBarTitleDisplayMode(.inline),
+                isActive: $isSearchPresented,
+                label: { EmptyView() }
             )
             
             // MARK: - Enhanced Gradient Background
@@ -106,22 +137,6 @@ struct ContentView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 10)
-                
-                HStack(alignment: .center){
-                    // MARK: - Animated Hello Label
-                    Text("Manage & Edit Your PDFs")
-                        .font(.system(size: 24, weight: .light, design: .serif))
-                        .italic()
-                        .foregroundColor(.white)
-                        .padding(.top, 10)
-                        .opacity(animateHello ? 1 : 0.8)
-                        .scaleEffect(animateHello ? 1.02 : 0.98)
-                        .shadow(color: .black.opacity(0.3), radius: 5, x: 2, y: 2)
-                        .animation(.easeOut(duration: 1.5).repeatForever(autoreverses: true), value: animateHello)
-                        .onAppear { animateHello = true }
-                }
-                .padding(.bottom, 10)
-                
                 // MARK: - Action Buttons (Hide for Tools and Bookmarks)
                 if selectedTab == 0 {
                     HStack(spacing: 16) {
@@ -144,7 +159,7 @@ struct ContentView: View {
                                                 endPoint: .bottomTrailing
                                             )
                                         )
-                                        .frame(width: 160, height: 166) // Tall to match right column
+                                        .frame(width: 180, height: 188) // Tall to match right column
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 20)
                                                 .stroke(Color.white.opacity(0.3), lineWidth: 1)
@@ -198,7 +213,9 @@ struct ContentView: View {
                         // Right Column - Two Buttons Vertically
                         VStack(spacing: 16) {
                             // Video/Image to PDF Button
-                            Button(action: {}) {
+                            Button(action: {
+                                showImageView = true
+                            }) {
                                 VStack(spacing: 12) {
                                     ZStack {
                                         // Gradient background with subtle shadow
@@ -213,7 +230,7 @@ struct ContentView: View {
                                                     endPoint: .bottomTrailing
                                                 )
                                             )
-                                            .frame(width: 160, height: 75)
+                                            .frame(width: 170, height: 85)
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 20)
                                                     .stroke(Color.white.opacity(0.3), lineWidth: 1)
@@ -275,7 +292,7 @@ struct ContentView: View {
                                                     endPoint: .bottomTrailing
                                                 )
                                             )
-                                            .frame(width: 160, height: 75)
+                                            .frame(width: 170, height: 85)
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 20)
                                                     .stroke(Color.white.opacity(0.3), lineWidth: 1)
@@ -351,128 +368,59 @@ struct ContentView: View {
                         }
                     }
                     .padding()
-                    .background(.white)
-                    .clipShape(
-                        RoundedCorner(radius: 30, corners: [.topLeft, .topRight])
+                    .background(
+                        Color.white
+                            .frame(height: heightForTab(selectedTab))
+                            .clipShape(RoundedCorner(radius: 30, corners: [.topLeft, .topRight]))
+                            .animation(.spring(response: 0.5, dampingFraction: 0.8), value: selectedTab)
+                            .transition(.move(edge: .bottom))
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .ignoresSafeArea()
                     
                 }
             }
-            VStack{
-                Spacer()
-                // MARK: - Enhanced Custom Tab Bar (Reduced Height)
-                HStack(spacing: 0) {
-                    ForEach(0..<tabTitles.count, id: \.self) { index in
-                        Button(action: {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                previousTab = selectedTab
-                                selectedTab = index
-                                contentOffset = 0
-                            }
-                        }) {
-                            VStack(spacing: 2) {
-                                ZStack {
-                                    // Background circle for selected tab
-                                    Circle()
-                                        .fill(
-                                            LinearGradient(
-                                                gradient: Gradient(colors: [
-                                                    Color.black,
-                                                    Color(red: 0.18, green: 0.0, blue: 0.21), // Dark purple
-                                                    Color(red: 0.6, green: 0.4, blue: 0.9),   // Original purple
-                                                    Color(red: 0.8, green: 0.3, blue: 0.8)    // Original purple-pink
-                                                ]),
-                                                startPoint: .topLeading,
-                                                endPoint: .bottomTrailing
-                                            )
-                                        )
-                                        .frame(width: 32, height: 32)
-                                        .scaleEffect(selectedTab == index ? 1.0 : 0.0)
-                                        .animation(.spring(response: 0.4, dampingFraction: 0.6), value: selectedTab)
-                                    
-                                    Image(systemName: tabIcon(for: index))
-                                        .font(.system(size: 16, weight: .bold))
-                                        .foregroundColor(selectedTab == index ? .white : Color.white.opacity(0.8))
-                                        .scaleEffect(selectedTab == index ? 1.1 : 1.0)
-                                        .rotationEffect(.degrees(selectedTab == index ? 0 : -5))
-                                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: selectedTab)
-                                }
-                                
-                                Text(tabTitles[index])
-                                    .font(.caption2)
-                                    .fontWeight(selectedTab == index ? .bold : .medium)
-                                    .foregroundColor(selectedTab == index ? .white : Color.white.opacity(0.7))
-                                    .scaleEffect(selectedTab == index ? 1.05 : 1.0)
-                                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: selectedTab)
-                            }
-                            .padding(.vertical, 8)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(selectedTab == index ? Color.white.opacity(0.15) : Color.clear)
-                                    .animation(.easeInOut(duration: 0.3), value: selectedTab)
-                            )
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                }
-                
-                .frame(height: 60)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(
-                            LinearGradient(
-                                gradient: Gradient(colors: [
-                                    Color.black,
-                                    Color(red: 0.18, green: 0.0, blue: 0.21), // Dark purple
-                                    Color(red: 0.6, green: 0.4, blue: 0.9),   // Original purple
-                                    Color(red: 0.8, green: 0.3, blue: 0.8)    // Original purple-pink
-                                ]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
-                )
-                .padding(.horizontal, 16)
-                .padding(.bottom, -5)
-                .offset(y: tabBarOffset)
-                .animation(.spring(response: 0.5, dampingFraction: 0.8), value: tabBarOffset)
-                
-                AdBanner("ca-app-pub-3940256099942544/2934735716")
-                    .padding(.bottom, 12)
-            }
-            .ignoresSafeArea()
-            
-            // MARK: - Settings Sidebar
-               if showingSettings {
-                   HStack(spacing: 0) {
-                       // Settings View - Half screen width
-                       SettingsView()
-                            .frame(width: UIScreen.main.bounds.width / 1.3)
-                            .background(Color.clear)
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                            .shadow(color: .black.opacity(0.3), radius: 10, x: 5, y: 0)
-                            .animation(.easeOut(duration: 1.5))
-                       
-                       
-                       // Transparent overlay to close settings when tapped
-                       Color.black.opacity(0.3)
-                           .onTapGesture {
-                               withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                   showingSettings = false
-                               }
-                           }
-                   }
-                   .background(.clear)
-                   .ignoresSafeArea()
-               }
         }
+        .fullScreenCover(isPresented: $showImageView) {
+            PhotoGalleryView { selectedItems in
+                // Handle selected photos
+                self.selectedItems = selectedItems
+            }
+        }
+        .onChange(of: selectedItems, perform: { newValue in
+            showImagePreview = true
+        })
+        .navigationBarTitleDisplayMode(.large)
+            
+        .overlay(
+            ZStack(alignment: .leading) {
+                if showingSettings {
+                    // Dim background overlay
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                showingSettings = false
+                            }
+                        }
+                }
+                // Sidebar (always present for animation)
+                SettingsView()
+                    .frame(width: UIScreen.main.bounds.width / 1.3, height: UIScreen.main.bounds.height)
+                    .background(Color.clear)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .shadow(color: .black.opacity(0.3), radius: 10, x: 5, y: 0)
+                    .offset(x: showingSettings ? 0 : -UIScreen.main.bounds.width)
+                    .opacity(showingSettings ? 1 : 0)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: showingSettings)
+                    .ignoresSafeArea()
+            }
+            .animation(.easeInOut(duration: 0.2), value: showingSettings)
+        )
         .overlay(
             Group {
-                if showOCRButton {
+                if showOCRButton && !showingSettings{
                     // Floating Action Button
                     VStack {
                         Spacer()
@@ -507,7 +455,7 @@ struct ContentView: View {
                                 }
                             }
                             .padding(.trailing, 20)
-                            .padding(.bottom, 110)
+                            .padding(.bottom, 130)
                         }
                     }
                 } else {
@@ -516,8 +464,99 @@ struct ContentView: View {
                 }
             }
         )
-
-
+        .overlay(alignment: .bottom) {
+            Group{
+                if !showingSettings{
+                    AdBanner("ca-app-pub-3940256099942544/2934735716")
+                        .frame(maxWidth: .infinity, maxHeight: 50)
+                        .background(Color.clear)
+                        .ignoresSafeArea()
+                }
+            }
+        }
+        .overlay(alignment: .bottom) {
+            Group{
+                if !showingSettings{
+                    VStack(spacing: 0) {
+                        // The tab bar code
+                        HStack(spacing: 0) {
+                            ForEach(0..<tabTitles.count, id: \.self) { index in
+                                Button(action: {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                        previousTab = selectedTab
+                                        selectedTab = index
+                                        contentOffset = 0
+                                    }
+                                }) {
+                                    VStack(spacing: 2) {
+                                        ZStack {
+                                            Circle()
+                                                .fill(
+                                                    LinearGradient(
+                                                        gradient: Gradient(colors: [
+                                                            Color.black,
+                                                            Color(red: 0.18, green: 0.0, blue: 0.21),
+                                                            Color(red: 0.6, green: 0.4, blue: 0.9),
+                                                            Color(red: 0.8, green: 0.3, blue: 0.8)
+                                                        ]),
+                                                        startPoint: .topLeading,
+                                                        endPoint: .bottomTrailing
+                                                    )
+                                                )
+                                                .frame(width: 32, height: 32)
+                                                .scaleEffect(selectedTab == index ? 1.0 : 0.0)
+                                                .animation(.spring(response: 0.4, dampingFraction: 0.6), value: selectedTab)
+                                            Image(systemName: tabIcon(for: index))
+                                                .font(.system(size: 16, weight: .bold))
+                                                .foregroundColor(selectedTab == index ? .white : Color.white.opacity(0.8))
+                                                .scaleEffect(selectedTab == index ? 1.1 : 1.0)
+                                                .rotationEffect(.degrees(selectedTab == index ? 0 : -5))
+                                                .animation(.spring(response: 0.4, dampingFraction: 0.7), value: selectedTab)
+                                        }
+                                        Text(tabTitles[index])
+                                            .font(.caption2)
+                                            .fontWeight(selectedTab == index ? .bold : .medium)
+                                            .foregroundColor(selectedTab == index ? .white : Color.white.opacity(0.7))
+                                            .scaleEffect(selectedTab == index ? 1.05 : 1.0)
+                                            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: selectedTab)
+                                    }
+                                    .padding(.vertical, 8)
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(selectedTab == index ? Color.white.opacity(0.15) : Color.clear)
+                                            .animation(.easeInOut(duration: 0.3), value: selectedTab)
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
+                        }
+                        .frame(height: 60)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [
+                                            Color.black,
+                                            Color(red: 0.18, green: 0.0, blue: 0.21),
+                                            Color(red: 0.6, green: 0.4, blue: 0.9),
+                                            Color(red: 0.8, green: 0.3, blue: 0.8)
+                                        ]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                        )
+                        .padding(.horizontal, 16)
+                        .offset(y: tabBarOffset)
+                        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: tabBarOffset)
+                        .padding(.bottom, 60) // 50(ad)+10(space)
+                    }
+                    .ignoresSafeArea(.all, edges: .horizontal)
+                }
+            }
+        }
     }
         .onChange(of: capturedImages, perform: { value in
             if !value.isEmpty{
@@ -525,10 +564,6 @@ struct ContentView: View {
                 showingScanView = false
             }
         })
-        .fullScreenCover(isPresented: $isSearchPresented) {
-            SearchView(isPresented: $isSearchPresented)
-        }
-        
         .fileImporter(
             isPresented: $showingImportView,
             allowedContentTypes: [.folder],
@@ -537,10 +572,6 @@ struct ContentView: View {
             switch result {
             case .success(let urls):
                 mainViewModel.saveInCoreData(fileURLs: urls)
-                if let url = urls.first {
-                    //                    selectedDirectory = url
-                    
-                }
             case .failure(let error):
                 print("Directory selection failed: \(error)")
             }
@@ -566,6 +597,15 @@ struct ContentView: View {
         default: return "circle"
         }
     }
+    
+    func heightForTab(_ tab: Int) -> CGFloat {
+        switch tab {
+        case 0: return 600 // Example height for Home tab
+        case 1: return 400 // Example height for Bookmark tab
+        case 2: return 450 // Example height for Tools tab
+        default: return 600
+        }
+    }
 }
 
 // MARK: - Corner Radius Extension
@@ -588,3 +628,4 @@ struct RoundedCorner: Shape {
         return Path(path.cgPath)
     }
 }
+

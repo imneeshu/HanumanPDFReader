@@ -4,7 +4,6 @@
 //
 //  Created by Neeshu Kumar on 05/06/25.
 //
-
 //
 //  ImageToPDFView.swift
 //  Hanuman PDF Reader
@@ -19,96 +18,96 @@ import UniformTypeIdentifiers
 
 struct ImageToPDFView: View {
     @State private var selectedImages: [UIImage] = []
-    @State private var selectedItems: [PhotosPickerItem] = []
+    @Binding  var selectedItems: [PhotoItem]
     @State private var showingImagePicker = false
     @State private var showingRenameSheet = false
     @State private var showingSaveShareView = false
     @State private var showingPDFViewer = false
-    @State private var pdfFileName = "Images_\(Date().formatted(.dateTime.year().month().day().hour().minute()))"
+    @State private var pdfFileName: String = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy_MM_dd_HH_mm"
+        return "Images_\(formatter.string(from: Date()))"
+    }()
     @State private var createdPDFURL: URL?
     @State private var isProcessing = false
+    @State private var draggedItem: UIImage?
+    @State private var isReorderMode = false // New state for reorder mode
     
     var body: some View {
-        NavigationView {
             VStack {
                 if selectedImages.isEmpty {
-                    // Empty state
-                    VStack(spacing: 20) {
-                        Image(systemName: "photo.on.rectangle.angled")
-                            .font(.system(size: 80))
-                            .foregroundColor(.gray)
-                        
-                        Text("No Images Selected")
-                            .font(.title2)
-                            .fontWeight(.medium)
-                        
-                        Text("Select images from your gallery to convert them into a PDF")
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                        
-                        Button(action: {
-                            showingImagePicker = true
-                        }) {
-                            HStack {
-                                Image(systemName: "photo.badge.plus")
-                                Text("Select Images")
-                            }
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                        }
-                    }
+                    addPageCell
+                        .padding()
                 } else {
                     // Images preview
                     VStack {
-                        // Header with count and add button
+                        // Header with count and reorder button
                         HStack {
+                            // Pan/Reorder button with gradient styling
+                            Button(action: {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    isReorderMode.toggle()
+                                }
+                            }) {
+                                Image(systemName: isReorderMode ? "checkmark.circle.fill" : "arrow.up.arrow.down.circle")
+                                    .font(.system(size: 32, weight: .medium))
+                                    .overlay(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                .black,
+                                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+                                                Color(red: 0.6, green: 0.4, blue: 0.9),
+                                                Color(red: 0.8, green: 0.3, blue: 0.8)
+                                            ]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                        .mask(
+                                            Image(systemName: isReorderMode ? "checkmark.circle.fill" : "arrow.up.arrow.down.circle")
+                                                .font(.system(size: 32, weight: .medium))
+                                        )
+                                    )
+                                    .background(
+                                        Circle()
+                                            .fill(Color.white)
+                                            .frame(width: 44, height: 44)
+                                            .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
+                                    )
+                            }
+                            .scaleEffect(isReorderMode ? 1.1 : 1.0)
+                            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isReorderMode)
+                            
+                            Spacer().frame(width: 16)
+                            
                             Text("\(selectedImages.count) Image\(selectedImages.count == 1 ? "" : "s") Selected")
                                 .font(.headline)
                             
                             Spacer()
                             
-                            Button(action: {
-                                showingImagePicker = true
-                            }) {
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.title2)
-                                    .foregroundColor(.blue)
+                            if isReorderMode {
+                                Text("Tap to reorder")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 4)
+                                    .background(Color.gray.opacity(0.1))
+                                    .cornerRadius(12)
                             }
                         }
                         .padding(.horizontal)
                         
-                        // Images grid
+                        // Images grid with Add Page cell
                         ScrollView {
-                            LazyVGrid(columns: [
-                                GridItem(.flexible()),
-                                GridItem(.flexible())
-                            ], spacing: 10) {
+                            LazyVGrid(columns: gridColumns, spacing: 0) {
+                                
                                 ForEach(Array(selectedImages.enumerated()), id: \.offset) { index, image in
-                                    ZStack(alignment: .topTrailing) {
-                                        Image(uiImage: image)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(height: 200)
-                                            .clipped()
-                                            .cornerRadius(10)
-                                        
-                                        // Remove button
-                                        Button(action: {
-                                            selectedImages.remove(at: index)
-                                        }) {
-                                            Image(systemName: "xmark.circle.fill")
-                                                .font(.title3)
-                                                .foregroundColor(.red)
-                                                .background(Color.white)
-                                                .clipShape(Circle())
-                                        }
-                                        .padding(5)
-                                    }
+                                    imageCell(image: image, index: index)
+                                        .padding()
+                                }
+                                
+                                if !isReorderMode {
+                                    addPageCell
+                                        .padding()
                                 }
                             }
                             .padding(.horizontal)
@@ -116,81 +115,325 @@ struct ImageToPDFView: View {
                         
                         Spacer()
                         
-                        // Convert button
-                        Button(action: {
-                            showingRenameSheet = true
-                        }) {
-                            HStack {
-                                if isProcessing {
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                        .scaleEffect(0.8)
-                                } else {
-                                    Image(systemName: "doc.fill")
+                        // Convert button (hidden in reorder mode)
+                        if !isReorderMode {
+                            Button(action: {
+                                showingRenameSheet = true
+                            }) {
+                                HStack {
+                                    if isProcessing {
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                            .scaleEffect(0.8)
+                                    } else {
+                                        Image(systemName: "doc.fill")
+                                    }
+                                    Text(isProcessing ? "Converting..." : "Convert to PDF")
                                 }
-                                Text(isProcessing ? "Converting..." : "Convert to PDF")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(convertButtonBackground)
+                                .cornerRadius(10)
                             }
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(isProcessing ? Color.gray : Color.green)
-                            .cornerRadius(10)
+                            .disabled(isProcessing)
+                            .padding(.horizontal)
                         }
-                        .disabled(isProcessing)
-                        .padding(.horizontal)
                     }
                 }
             }
             .navigationTitle("Image to PDF")
-            .navigationBarTitleDisplayMode(.large)
-            .photosPicker(
-                isPresented: $showingImagePicker,
-                selection: $selectedItems,
-                maxSelectionCount: 20,
-                matching: .images
-            )
+            .navigationBarTitleDisplayMode(.inline)
             .onChange(of: selectedItems) { items in
                 Task {
                     await loadImages(from: items)
                 }
             }
+            .onAppear{
+                Task {
+                    await loadImages(from: selectedItems)
+                }
+            }
+        
             .sheet(isPresented: $showingRenameSheet) {
-                RenameFileSheet(
-                    fileName: $pdfFileName,
-                    onSave: {
+                RenameSheet(
+                    pdfName: $pdfFileName,
+                    onCancel: { showingRenameSheet = false },
+                    onDone: {
                         Task {
                             await convertToPDF()
                         }
                     }
                 )
+                .presentationDetents([.fraction(0.30)])
             }
+        
             .sheet(isPresented: $showingSaveShareView) {
-                if let pdfURL = createdPDFURL {
-                    SaveShareView(
-                        pdfURL: pdfURL, 
-                        fileName: pdfFileName,
-                        onViewPDF: {
-                            showingSaveShareView = false
-                            showingPDFViewer = true
-                        }
-                    )
-                }
+                SaveShareSheetContent(
+                    pdfURL: createdPDFURL!,
+                    fileName: pdfFileName,
+                    onViewPDF: {
+                        showingSaveShareView = false
+                        showingPDFViewer = true
+                    }
+                )
             }
+        
             .fullScreenCover(isPresented: $showingPDFViewer) {
                 if let pdfURL = createdPDFURL {
-                    PDFViewerView(pdfURL: pdfURL, fileName: pdfFileName)
+//                    PDFViewerView(pdfURL: pdfURL, fileName: pdfFileName)
                 }
+            }
+    }
+    
+    
+    // Grid configuration
+    private let gridColumns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+    // Add Page Cell
+    private var addPageCell: some View {
+        Button(action: {
+            showingImagePicker = true
+        }) {
+            VStack(spacing: 10) {
+                Image(systemName: "plus.circle.fill")
+                    .font(.system(size: 40))
+                    .overlay(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                .black,
+                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+                                Color(red: 0.6, green: 0.4, blue: 0.9),
+                                Color(red: 0.8, green: 0.3, blue: 0.8)
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .mask(
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 40))
+                        )
+                    )
+                
+                Text("Add Page")
+                    .font(.headline)
+                    .overlay(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                .black,
+                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+                                Color(red: 0.6, green: 0.4, blue: 0.9),
+                                Color(red: 0.8, green: 0.3, blue: 0.8)
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .mask(
+                            Text("Add Page")
+                                .font(.headline)
+                        )
+                    )
+            }
+            .frame(height: 200)
+            .frame(maxWidth: .infinity)
+            .background(addPageBackground)
+            .cornerRadius(10)
+        }
+    }
+    
+    // Add Page Background
+    private var addPageBackground: some View {
+        ZStack {
+            Color.purple.opacity(0.05)
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(
+                    Color.purple,
+                    style: StrokeStyle(lineWidth: 2, dash: [8, 4])
+                )
+        }
+    }
+    
+    // Image Cell
+    private func imageCell(image: UIImage, index: Int) -> some View {
+        ZStack(alignment: .topTrailing) {
+            imageView(image: image)
+            
+            // Show remove button only when not in reorder mode
+            if !isReorderMode {
+                removeButton(index: index)
+            }
+            
+            // Show reorder indicator when in reorder mode
+            if isReorderMode {
+                VStack {
+                    HStack {
+                        Image(systemName: "line.3.horizontal")
+                            .font(.system(size: 22, weight: .medium))
+                            .overlay(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        .black,
+                                        Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+                                        Color(red: 0.6, green: 0.4, blue: 0.9),
+                                        Color(red: 0.8, green: 0.3, blue: 0.8)
+                                    ]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                                .mask(
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 22, weight: .medium))
+                                )
+                            )
+                            .padding(10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.white.opacity(0.9))
+                                    .shadow(color: .black.opacity(0.2), radius: 3, x: 0, y: 1)
+                            )
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .padding(8)
+            }
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(
+                    LinearGradient(
+                        gradient: Gradient(colors: isReorderMode ? [
+                            Color(red: 0.6, green: 0.4, blue: 0.9),
+                            Color(red: 0.8, green: 0.3, blue: 0.8)
+                        ] : [Color.gray, Color.clear]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: isReorderMode ? 3 : 0
+                )
+        )
+        .scaleEffect(isReorderMode && selectedImageForReorder == image ? 0.95 : 1.0)
+        .onDrag {
+            draggedItem = image
+            return NSItemProvider(object: String(index) as NSString)
+        }
+        .onDrop(of: [UTType.text], delegate: DropViewDelegate(
+            destinationItem: image,
+            images: $selectedImages,
+            draggedItem: $draggedItem
+        ))
+        .onTapGesture {
+            // Handle tap for reordering in reorder mode
+            if isReorderMode {
+                handleImageTapForReorder(image: image, index: index)
+            }
+        }
+        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isReorderMode)
+        .animation(.spring(response: 0.2, dampingFraction: 0.7), value: selectedImageForReorder)
+    }
+    
+    // Image View
+    private func imageView(image: UIImage) -> some View {
+        Image(uiImage: image)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(height: 200)
+            .clipped()
+            .cornerRadius(12) // Slightly smaller radius for inner image
+            .opacity(draggedItem == image ? 0.5 : 1.0) // Fixed: This will reset properly
+            .scaleEffect(draggedItem == image ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.2), value: draggedItem)
+            .padding(4) // Add padding inside the outer border
+    }
+    
+    // Remove Button
+    private func removeButton(index: Int) -> some View {
+        Button(action: {
+            removeImage(at: index)
+        }) {
+            Image(systemName: "xmark.circle.fill")
+                .font(.system(size: 24))
+                .foregroundColor(.white)
+                .background(removeButtonBackground)
+                .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
+        }
+        .padding(8)
+    }
+    
+    // Remove image function
+    private func removeImage(at index: Int) {
+        withAnimation(.easeOut(duration: 0.3)) {
+            selectedImages.remove(at: index)
+        }
+    }
+    
+    // Handle image tap for reordering
+    @State private var selectedImageForReorder: UIImage?
+    @State private var selectedIndexForReorder: Int?
+    
+    private func handleImageTapForReorder(image: UIImage, index: Int) {
+        if let selectedImage = selectedImageForReorder,
+           let selectedIndex = selectedIndexForReorder,
+           selectedImage != image {
+            
+            // Perform the reorder
+            withAnimation(.easeInOut(duration: 0.3)) {
+                let draggedImage = selectedImages[selectedIndex]
+                selectedImages.remove(at: selectedIndex)
+                selectedImages.insert(draggedImage, at: index)
+            }
+            
+            // Reset selection
+            selectedImageForReorder = nil
+            selectedIndexForReorder = nil
+        } else {
+            // Select this image for reordering
+            selectedImageForReorder = image
+            selectedIndexForReorder = index
+        }
+    }
+    
+    // Remove Button Background
+    private var removeButtonBackground: some View {
+        Circle()
+            .fill(Color.red)
+            .frame(width: 28, height: 28)
+    }
+    
+    // Computed property for button background
+    private var convertButtonBackground: some View {
+        Group {
+            if isProcessing {
+                Color.gray
+            } else {
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color.black,
+                        Color(red: 0.18, green: 0.0, blue: 0.21),
+                        Color(red: 0.6, green: 0.4, blue: 0.9),
+                        Color(red: 0.8, green: 0.3, blue: 0.8)
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
             }
         }
     }
     
-    private func loadImages(from items: [PhotosPickerItem]) async {
+    private func loadImages(from items: [PhotoItem]) async {
         var newImages: [UIImage] = []
         
         for item in items {
-            if let data = try? await item.loadTransferable(type: Data.self),
-               let image = UIImage(data: data) {
+            if let image = item.image {
                 newImages.append(image)
             }
         }
@@ -229,182 +472,6 @@ struct ImageToPDFView: View {
     }
 }
 
-struct RenameFileSheet: View {
-    @Binding var fileName: String
-    let onSave: () -> Void
-    @Environment(\.presentationMode) private var presentationMode
-    
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Text("Name your PDF file")
-                    .font(.title2)
-                    .fontWeight(.medium)
-                    .padding(.top)
-                
-                TextField("Enter file name", text: $fileName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.horizontal)
-                
-                Spacer()
-            }
-            .navigationTitle("Save PDF")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                leading: Button("Cancel") {
-                    presentationMode.wrappedValue.dismiss()
-                },
-                trailing: Button("Create PDF") {
-                    onSave()
-                }
-                .fontWeight(.semibold)
-                .disabled(fileName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            )
-        }
-    }
-}
-
-struct SaveShareView: View {
-    let pdfURL: URL
-    let fileName: String
-    let onViewPDF: () -> Void
-    @Environment(\.presentationMode) private var presentationMode
-    @State private var showingShareSheet = false
-    
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 30) {
-                // Success icon
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 80))
-                    .foregroundColor(.green)
-                
-                Text("PDF Created Successfully!")
-                    .font(.title2)
-                    .fontWeight(.medium)
-                
-                Text("Your PDF '\(fileName).pdf' has been saved to your device")
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-                
-                VStack(spacing: 15) {
-                    // View PDF button
-                    Button(action: onViewPDF) {
-                        HStack {
-                            Image(systemName: "doc.text.magnifyingglass")
-                            Text("View PDF")
-                        }
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                    }
-                    
-                    // Share button
-                    Button(action: {
-                        showingShareSheet = true
-                    }) {
-                        HStack {
-                            Image(systemName: "square.and.arrow.up")
-                            Text("Share PDF")
-                        }
-                        .font(.headline)
-                        .foregroundColor(.blue)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(10)
-                    }
-                }
-                .padding(.horizontal)
-                
-                Spacer()
-            }
-            .navigationTitle("PDF Saved")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                trailing: Button("Done") {
-                    presentationMode.wrappedValue.dismiss()
-                }
-            )
-        }
-        .sheet(isPresented: $showingShareSheet) {
-            ShareSheet(items: [pdfURL])
-        }
-    }
-}
-
-// MARK: - PDF Viewer
-struct PDFViewerView: View {
-    let pdfURL: URL
-    let fileName: String
-    @Environment(\.presentationMode) private var presentationMode
-    @State private var showingShareSheet = false
-    
-    var body: some View {
-        NavigationView {
-            PDFKitRepresentedView(url: pdfURL)
-                .navigationTitle(fileName)
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(
-                    leading: Button("Done") {
-                        presentationMode.wrappedValue.dismiss()
-                    },
-                    trailing: Button(action: {
-                        showingShareSheet = true
-                    }) {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                )
-        }
-        .sheet(isPresented: $showingShareSheet) {
-            ShareSheet(items: [pdfURL])
-        }
-    }
-}
-
-struct PDFKitRepresentedView: UIViewRepresentable {
-    let url: URL
-    
-    func makeUIView(context: Context) -> PDFView {
-        let pdfView = PDFView()
-        
-        // Configure PDF view
-        pdfView.autoScales = true
-        pdfView.displayMode = .singlePageContinuous
-        pdfView.displayDirection = .vertical
-        
-        // Enable user interactions
-        pdfView.usePageViewController(true, withViewOptions: nil)
-        
-        // Load PDF document
-        if let document = PDFDocument(url: url) {
-            pdfView.document = document
-        }
-        
-        return pdfView
-    }
-    
-    func updateUIView(_ uiView: PDFView, context: Context) {
-        // Update if needed
-    }
-}
-
-//struct ShareSheet: UIViewControllerRepresentable {
-//    let items: [Any]
-//    
-//    func makeUIViewController(context: Context) -> UIActivityViewController {
-//        let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
-//        return activityViewController
-//    }
-//    
-//    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-//}
-
 // iOS 15 compatible date formatting extension
 extension Date {
     func formatted(_ format: DateFormatStyle) -> String {
@@ -423,8 +490,4 @@ struct DateFormatStyle {
     func minute() -> DateFormatStyle { return self }
     
     static let dateTime = DateFormatStyle()
-}
-
-#Preview {
-    ImageToPDFView()
 }

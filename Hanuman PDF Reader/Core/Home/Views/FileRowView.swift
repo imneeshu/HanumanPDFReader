@@ -241,12 +241,6 @@ struct FileRowView: View {
         }
     }
 
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        return formatter.string(from: date)
-    }
-
     // MARK: - Context Menu
 
     @ViewBuilder
@@ -336,3 +330,4 @@ struct FileRowView: View {
         }
     }
 }
+

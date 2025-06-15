@@ -119,30 +119,6 @@ struct ScanToPDFView: View {
                 showShareSheet = true
             }
         })
-//        .alert("Rename PDF", isPresented: $showRenamePopup, actions: {
-//            TextField("PDF Name", text: $pdfName)
-//            
-//            Button("Save to Files") {
-//                createPDF()
-//                if let url = pdfURL {
-//                    showShareSheet = true
-//                }
-//            }
-//            Button("Save to Photos") {
-//                createPDF()
-//                if let url = pdfURL,
-//                   let data = try? Data(contentsOf: url),
-//                   let pdfImage = PDFConverter.convertToImage(pdfData: data) {
-//                    UIImageWriteToSavedPhotosAlbum(pdfImage, nil, nil, nil)
-//                }
-//            }
-//            Button("Share") {
-//                createPDF()
-//                showShareSheet = true
-//            }
-//        }, message: {
-//            Text("Enter a name for your PDF")
-//        })
         .sheet(isPresented: $showShareSheet) {
             if let url = pdfURL {
                 ShareSheet(items: [url])

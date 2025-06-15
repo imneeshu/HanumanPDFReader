@@ -10,7 +10,7 @@ import Photos
 import PhotosUI
 
 // MARK: - Photo Model
-struct PhotoItem: Identifiable, Sendable {
+struct PhotoItem: Identifiable, Sendable, Equatable {
     let id = UUID()
     let asset: PHAsset
     let image: UIImage?
@@ -267,10 +267,14 @@ actor ImageLoader {
         }
     }
 }
-
 // MARK: - Main Content View
 struct PhotoGalleryView: View {
     @StateObject private var photoManager = PhotoManager()
+    @State private var selectedItems: [PhotoItem] = []
+    @Environment(\.dismiss) private var dismiss
+    
+    // Callback to pass selected items back
+    let onPhotosSelected: ([PhotoItem]) -> Void
     
     let columns = [
         GridItem(.flexible()),
@@ -278,7 +282,12 @@ struct PhotoGalleryView: View {
         GridItem(.flexible())
     ]
     
+    init(onPhotosSelected: @escaping ([PhotoItem]) -> Void) {
+        self.onPhotosSelected = onPhotosSelected
+    }
+    
     var body: some View {
+        NavigationView {
             VStack {
                 if photoManager.hasPermission {
                     // Album Selector
@@ -289,7 +298,24 @@ struct PhotoGalleryView: View {
                 } else {
                     permissionView
                 }
-    
+            }
+            .navigationTitle("Select Photos")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        onPhotosSelected(selectedItems)
+                        dismiss()
+                    }
+                    .disabled(selectedItems.isEmpty)
+                }
+            }
         }
     }
     
@@ -300,6 +326,8 @@ struct PhotoGalleryView: View {
                 ForEach(photoManager.albums) { album in
                     Button(action: {
                         photoManager.selectAlbum(album)
+                        // Clear selection when changing albums
+                        selectedItems.removeAll()
                     }) {
                         HStack {
                             Text(album.title)
@@ -340,7 +368,11 @@ struct PhotoGalleryView: View {
             } else {
                 LazyVGrid(columns: columns, spacing: 2) {
                     ForEach(photoManager.photos) { photo in
-                        PhotoCell(photo: photo)
+                        SelectablePhotoCell(
+                            photo: photo,
+                            isSelected: selectedItems.contains { $0.id == photo.id },
+                            onToggleSelection: { toggleSelection(for: photo) }
+                        )
                     }
                 }
                 .padding(.horizontal, 2)
@@ -372,17 +404,24 @@ struct PhotoGalleryView: View {
         }
         .padding()
     }
+    
+    private func toggleSelection(for photo: PhotoItem) {
+        if let index = selectedItems.firstIndex(where: { $0.id == photo.id }) {
+            selectedItems.remove(at: index)
+        } else {
+            selectedItems.append(photo)
+        }
+    }
 }
 
-// MARK: - Photo Cell
-struct PhotoCell: View {
+// MARK: - Selectable Photo Cell
+struct SelectablePhotoCell: View {
     let photo: PhotoItem
-    @State private var showingFullScreen = false
+    let isSelected: Bool
+    let onToggleSelection: () -> Void
     
     var body: some View {
-        Button(action: {
-            showingFullScreen = true
-        }) {
+        ZStack {
             Group {
                 if let image = photo.image {
                     Image(uiImage: image)
@@ -399,56 +438,50 @@ struct PhotoCell: View {
             }
             .frame(width: (UIScreen.main.bounds.width - 6) / 3, height: (UIScreen.main.bounds.width - 6) / 3)
             .clipped()
+            .overlay(
+                // Selection overlay - stays within clipped bounds
+                Rectangle()
+                    .fill(Color.purple.opacity(isSelected ? 0.3 : 0))
+                    .overlay(
+                        // Selection indicator
+                        VStack {
+                            HStack {
+                                Spacer()
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.white)
+                                        .frame(width: 24, height: 24)
+                                    
+                                    if isSelected {
+                                        Circle()
+                                            .fill(Color.purple)
+                                            .frame(width: 20, height: 20)
+                                        
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.white)
+                                            .font(.system(size: 12, weight: .bold))
+                                    } else {
+                                        Circle()
+                                            .stroke(Color.gray, lineWidth: 2)
+                                            .frame(width: 20, height: 20)
+                                    }
+                                }
+                                .padding(8)
+                            }
+                            Spacer()
+                        }
+                    )
+            )
+            .overlay(
+                // Border when selected - inside the clipped area
+                Rectangle()
+                    .strokeBorder(Color.purple, lineWidth: isSelected ? 3 : 0)
+            )
         }
-        .sheet(isPresented: $showingFullScreen) {
-            FullScreenPhotoView(photo: photo)
+        .contentShape(Rectangle()) // Ensures tap area is limited to the cell bounds
+        .onTapGesture {
+            onToggleSelection()
         }
     }
 }
 
-// MARK: - Full Screen Photo View
-struct FullScreenPhotoView: View {
-    let photo: PhotoItem
-    @Environment(\.dismiss) private var dismiss
-    @State private var fullSizeImage: UIImage?
-    @State private var isLoading = true
-    
-    private let imageLoader = ImageLoader()
-    
-    var body: some View {
-        NavigationView {
-            ZStack {
-                Color.black.ignoresSafeArea()
-                
-                if let image = fullSizeImage ?? photo.image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .ignoresSafeArea()
-                } else if isLoading {
-                    ProgressView()
-                        .tint(.white)
-                        .scaleEffect(1.5)
-                }
-            }
-            .navigationTitle("Photos")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                    .foregroundColor(.white)
-                }
-            }
-        }
-        .task {
-            await loadFullSizeImage()
-        }
-    }
-    
-    private func loadFullSizeImage() async {
-        fullSizeImage = await imageLoader.loadFullSizeImage(for: photo.asset)
-        isLoading = false
-    }
-}

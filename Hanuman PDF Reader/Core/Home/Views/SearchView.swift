@@ -10,8 +10,8 @@ import SwiftUI
 struct SearchView: View {
     @Binding var isPresented: Bool
     @State private var searchText = ""
-    @FocusState private var isSearchFocused: Bool
     @EnvironmentObject var viewModel : MainViewModel
+    @FocusState private var isSearchFieldFocused: Bool
 
     // Dummy data for demo
     let allItems = ["Apple", "Banana", "Orange", "Grapes", "Watermelon"]
@@ -29,39 +29,39 @@ struct SearchView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                TextField("Search...", text: $searchText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                    .focused($isSearchFocused)
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            isSearchFocused = true
+            List {
+                ForEach(
+                    searchedItems ,
+                    id: \.objectID
+                ) { file in
+                    FileRowView(file: file)
+                        .onTapGesture {
+                            viewModel.markAsRecentlyAccessed(file)
                         }
-                    }
-
-                List {
-                    ForEach(
-                        searchedItems ,
-                        id: \.objectID
-                    ) { file in
-                        FileRowView(file: file)
-                            .onTapGesture {
-                                viewModel.markAsRecentlyAccessed(file)
-                            }
-                            .cornerRadius(10)
-
-                    }
+                        .cornerRadius(10)
                 }
-                .listStyle(PlainListStyle())
             }
-            .navigationBarTitle("Search", displayMode: .inline)
+            .listStyle(PlainListStyle())
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        isPresented = false
+                ToolbarItem(placement: .principal) {
+                    HStack {
+                        Image(systemName: "magnifyingglass").foregroundColor(.gray)
+                        TextField("Search files...", text: $searchText)
+                            .focused($isSearchFieldFocused)
+                            .textFieldStyle(PlainTextFieldStyle())
                     }
+                    .padding(8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(isSearchFieldFocused ? Color.purple : Color.gray.opacity(0.2), lineWidth: isSearchFieldFocused ? 2 : 1)
+                            .animation(.easeInOut(duration: 0.2), value: isSearchFieldFocused)
+                    )
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal)
                 }
+            }
+            .onAppear {
+                isSearchFieldFocused = true
             }
         }
     }
