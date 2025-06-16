@@ -47,20 +47,24 @@ struct FileListView: View {
                     }
                     .padding()
             }
-                List {
-                    ForEach(
-                        isBookmarked ? viewModel.bookmarkedItems : viewModel.fileItems ,
-                        id: \.objectID
-                    ) { file in
-                        FileRowView(file: file)
-                            .onTapGesture {
-                                viewModel.markAsRecentlyAccessed(file)
-                            }
-                            .cornerRadius(10)
-
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(
+                            isBookmarked ? viewModel.bookmarkedItems : viewModel.fileItems ,
+                            id: \.objectID
+                        ) { file in
+                            FileRowView(file: file)
+                                .onTapGesture {
+                                    viewModel.markAsRecentlyAccessed(file)
+                                }
+                                .cornerRadius(10)
+                        }
                     }
+                    .padding(.vertical, 8)
                 }
-                .listStyle(PlainListStyle())
+                .background(Color.clear)
+                
+                
             }
         }
         .sheet(isPresented: $showSortSheet) {
@@ -96,33 +100,35 @@ struct FileListViewForSearch: View {
             } else {
                 if !isBookmarked{
                     HStack{
-                    Text("Sort by \(filterName.rawValue)")
-                        .font(.caption)
-                        .bold()
-                    Image(systemName: "arrowtriangle.down.fill")
-                        .resizable()
-                        .frame(width: 8,height: 8)
-                    Spacer()
-                }
+                        Text("Sort by \(filterName.rawValue)")
+                            .font(.caption)
+                            .bold()
+                        Image(systemName: "arrowtriangle.down.fill")
+                            .resizable()
+                            .frame(width: 8,height: 8)
+                        Spacer()
+                    }
                     .onTapGesture {
                         showSortSheet = true
                     }
                     .padding()
-            }
-                List {
-                    ForEach(
-                        fileItems ,
-                        id: \.objectID
-                    ) { file in
-                        FileRowView(file: file)
-                            .onTapGesture {
-                                viewModel.markAsRecentlyAccessed(file)
-                            }
-                            .cornerRadius(10)
-
-                    }
                 }
-                .listStyle(PlainListStyle())
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(
+                            fileItems,
+                            id: \.objectID
+                        ) { file in
+                            FileRowView(file: file)
+                                .onTapGesture {
+                                    viewModel.markAsRecentlyAccessed(file)
+                                }
+                                .cornerRadius(10)
+                        }
+                    }
+                    .padding(.vertical, 8)
+                }
+                .background(Color.clear)
             }
         }
         .sheet(isPresented: $showSortSheet) {

@@ -17,16 +17,17 @@ struct EmptyStateView: View {
                 .font(.system(size: 64))
                 .foregroundColor(.gray)
                 .overlay(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            .black,
-                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                            Color(red: 0.6, green: 0.4, blue: 0.9),
-                            Color(red: 0.8, green: 0.3, blue: 0.8)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    navy
+//                    LinearGradient(
+//                        gradient: Gradient(colors: [
+//                            .black,
+//                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                            Color(red: 0.6, green: 0.4, blue: 0.9),
+//                            Color(red: 0.8, green: 0.3, blue: 0.8)
+//                        ]),
+//                        startPoint: .topLeading,
+//                        endPoint: .bottomTrailing
+//                    )
                     .mask(
                         Image(systemName: "doc.text")
                             .font(.system(size: 64))
@@ -38,16 +39,17 @@ struct EmptyStateView: View {
                 .font(.title2)
                 .fontWeight(.medium)
                 .overlay(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            .black,
-                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                            Color(red: 0.6, green: 0.4, blue: 0.9),
-                            Color(red: 0.8, green: 0.3, blue: 0.8)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    navy
+//                    LinearGradient(
+//                        gradient: Gradient(colors: [
+//                            .black,
+//                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                            Color(red: 0.6, green: 0.4, blue: 0.9),
+//                            Color(red: 0.8, green: 0.3, blue: 0.8)
+//                        ]),
+//                        startPoint: .topLeading,
+//                        endPoint: .bottomTrailing
+//                    )
                     .mask(
                         Text(title)
                             .font(.title2)
@@ -60,16 +62,17 @@ struct EmptyStateView: View {
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
                 .overlay(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            .black,
-                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                            Color(red: 0.6, green: 0.4, blue: 0.9),
-                            Color(red: 0.8, green: 0.3, blue: 0.8)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    navy
+//                    LinearGradient(
+//                        gradient: Gradient(colors: [
+//                            .black,
+//                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                            Color(red: 0.6, green: 0.4, blue: 0.9),
+//                            Color(red: 0.8, green: 0.3, blue: 0.8)
+//                        ]),
+//                        startPoint: .topLeading,
+//                        endPoint: .bottomTrailing
+//                    )
                     .mask(
                         Text(subtitle)
                             .font(.body)

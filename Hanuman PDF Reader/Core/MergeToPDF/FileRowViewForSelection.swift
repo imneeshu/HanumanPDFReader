@@ -36,16 +36,17 @@ struct FileRowViewForSelection: View {
             fileTypeIcon
                 .frame(width: 40, height: 40)
                 .overlay(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            .black,
-                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                            Color(red: 0.6, green: 0.4, blue: 0.9),
-                            Color(red: 0.8, green: 0.3, blue: 0.8)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+//                    LinearGradient(
+//                        gradient: Gradient(colors: [
+//                            .black,
+//                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                            Color(red: 0.6, green: 0.4, blue: 0.9),
+//                            Color(red: 0.8, green: 0.3, blue: 0.8)
+//                        ]),
+//                        startPoint: .topLeading,
+//                        endPoint: .bottomTrailing
+//                    )
+                    navy
                     .mask(fileTypeIcon) // mask the gradient to the icon shape
                 )
                 .background(fileTypeColor.opacity(0.1))
@@ -97,21 +98,22 @@ struct FileRowViewForSelection: View {
             .background(
                 RoundedRectangle(cornerRadius: 4)
                     .fill(isSelected ?
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .black,
-                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                Color(red: 0.6, green: 0.4, blue: 0.9),
-                                Color(red: 0.8, green: 0.3, blue: 0.8)
-                            ]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ) :
-                        LinearGradient(
-                            gradient: Gradient(colors: [Color.clear]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+//                        LinearGradient(
+//                            gradient: Gradient(colors: [
+//                                .black,
+//                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                                Color(red: 0.6, green: 0.4, blue: 0.9),
+//                                Color(red: 0.8, green: 0.3, blue: 0.8)
+//                            ]),
+//                            startPoint: .topLeading,
+//                            endPoint: .bottomTrailing
+//                        )
+                          navy : Color.clear
+//                        LinearGradient(
+//                            gradient: Gradient(colors: [Color.clear]),
+//                            startPoint: .topLeading,
+//                            endPoint: .bottomTrailing
+//                        )
                     )
             )
             .overlay(
@@ -131,7 +133,7 @@ struct FileRowViewForSelection: View {
 
     private var fileTypeColor: Color {
         switch file.fileTypeEnum {
-        case .pdf: return .purple
+        case .pdf: return navy
         case .word: return .blue
         case .excel: return .green
         case .powerpoint: return .orange

@@ -84,16 +84,17 @@ struct SortOptionsSheet: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
                         .background(
-                            LinearGradient(
-                                gradient: Gradient(colors: [
-                                    Color.black,
-                                    Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                    Color(red: 0.6, green: 0.4, blue: 0.9),   // purple
-                                    Color(red: 0.8, green: 0.3, blue: 0.8)    // pink-purple
-                                ]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
+                            navy
+//                            LinearGradient(
+//                                gradient: Gradient(colors: [
+//                                    Color.black,
+//                                    Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                                    Color(red: 0.6, green: 0.4, blue: 0.9),   // purple
+//                                    Color(red: 0.8, green: 0.3, blue: 0.8)    // pink-purple
+//                                ]),
+//                                startPoint: .topLeading,
+//                                endPoint: .bottomTrailing
+//                            )
                         )
                         .cornerRadius(12)
                 }
@@ -125,19 +126,20 @@ struct SortOptionRow: View {
                     .font(.system(size: 18))
                     .foregroundColor(.primary)
                     .overlay(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .black,
-                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                Color(red: 0.6, green: 0.4, blue: 0.9),
-                                Color(red: 0.8, green: 0.3, blue: 0.8)
-                            ]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                        navy
+//                        LinearGradient(
+//                            gradient: Gradient(colors: [
+//                                .black,
+//                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                                Color(red: 0.6, green: 0.4, blue: 0.9),
+//                                Color(red: 0.8, green: 0.3, blue: 0.8)
+//                            ]),
+//                            startPoint: .topLeading,
+//                            endPoint: .bottomTrailing
+//                        )
                         .mask(Image(systemName: option.icon)) // mask the gradient to the icon shape
                     )
-                    .background(.purple.opacity(0.1))
+                    .background(navy.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 
                 Text(option.title.rawValue)

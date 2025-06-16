@@ -19,7 +19,7 @@ struct Hanuman_PDF_ReaderApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .accentColor(Color(red: 0.4, green: 0.0, blue: 0.6))
+                .accentColor(navy)
         }
     }
 }

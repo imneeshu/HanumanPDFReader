@@ -22,16 +22,17 @@ struct ToolCardView: View {
                     .foregroundColor(.white)
                     .frame(width: 50, height: 50)
                     .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                Color.black,
-                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                Color(red: 0.6, green: 0.4, blue: 0.9),   // purple
-                                Color(red: 0.8, green: 0.3, blue: 0.8)    // pink-purple
-                            ]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                        navy
+//                        LinearGradient(
+//                            gradient: Gradient(colors: [
+//                                Color.black,
+//                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                                Color(red: 0.6, green: 0.4, blue: 0.9),   // purple
+//                                Color(red: 0.8, green: 0.3, blue: 0.8)    // pink-purple
+//                            ]),
+//                            startPoint: .topLeading,
+//                            endPoint: .bottomTrailing
+//                        )
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 

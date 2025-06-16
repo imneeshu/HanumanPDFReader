@@ -51,16 +51,17 @@ struct SaveShareView: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(
-                        LinearGradient(
-                           gradient: Gradient(colors: [
-                               .black,
-                               Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                               Color(red: 0.6, green: 0.4, blue: 0.9),
-                               Color(red: 0.8, green: 0.3, blue: 0.8)
-                           ]),
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing
-                        )
+//                        LinearGradient(
+//                           gradient: Gradient(colors: [
+//                               .black,
+//                               Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                               Color(red: 0.6, green: 0.4, blue: 0.9),
+//                               Color(red: 0.8, green: 0.3, blue: 0.8)
+//                           ]),
+//                           startPoint: .topLeading,
+//                           endPoint: .bottomTrailing
+//                        )
+                        navy
                     )
                     .cornerRadius(10)
                 }

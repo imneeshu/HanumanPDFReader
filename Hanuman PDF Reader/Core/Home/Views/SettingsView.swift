@@ -25,21 +25,21 @@ struct SettingsView: View {
                 Section("Appearance") {
                     HStack {
                         Image(systemName: "moon.fill")
-                            .foregroundColor(.purple)
+                            .foregroundColor(navy)
                         Text("Dark Mode")
                         Spacer()
                         Toggle("", isOn: $settingsViewModel.isDarkMode)
-                            .tint(.purple)
+                            .tint(navy)
                     }
                     .transition(.move(edge: .leading))
                     
                     HStack {
                         Image(systemName: "sun.max.fill")
-                            .foregroundColor(.purple)
+                            .foregroundColor(navy)
                         Text("Keep Screen On")
                         Spacer()
                         Toggle("", isOn: $settingsViewModel.keepScreenOn)
-                            .tint(.purple)
+                            .tint(navy)
                     }
                     .transition(.move(edge: .leading))
                 }
@@ -48,14 +48,14 @@ struct SettingsView: View {
                 Section("Language") {
                     HStack {
                         Image(systemName: "globe")
-                            .foregroundColor(.purple)
+                            .foregroundColor(navy)
                         Text("Language")
                         Spacer()
                         Text(getLanguageDisplayName(settingsViewModel.selectedLanguage))
                             .foregroundColor(.secondary)
                             .transition(.slide)
                         Image(systemName: "chevron.right")
-                            .foregroundColor(.purple)
+                            .foregroundColor(navy)
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
@@ -70,7 +70,7 @@ struct SettingsView: View {
                 Section("Notifications") {
                     HStack {
                         Image(systemName: "bell.fill")
-                            .foregroundColor(.purple)
+                            .foregroundColor(navy)
                         Text("Enable Notifications")
                         Spacer()
                         Toggle("", isOn: $settingsViewModel.notificationsEnabled)
@@ -82,7 +82,7 @@ struct SettingsView: View {
                 Section("About") {
                     SettingsRowView(
                         icon: "star.fill",
-                        iconColor: .purple,
+                        iconColor: navy,
                         title: "Rate App",
                         action: {
                             // Open App Store rating
@@ -93,7 +93,7 @@ struct SettingsView: View {
                     
                     SettingsRowView(
                         icon: "square.and.arrow.up",
-                        iconColor: .purple,
+                        iconColor: navy,
                         title: "Share App",
                         action: {
                             // Share app
@@ -104,7 +104,7 @@ struct SettingsView: View {
                     
                     SettingsRowView(
                         icon: "hand.raised.fill",
-                        iconColor: .purple,
+                        iconColor: navy,
                         title: "Privacy Policy",
                         action: {
                             // Open privacy policy
@@ -115,7 +115,7 @@ struct SettingsView: View {
                     
                     SettingsRowView(
                         icon: "doc.text.fill",
-                        iconColor: .purple,
+                        iconColor: navy,
                         title: "Terms of Use",
                         action: {
                             // Open terms of use

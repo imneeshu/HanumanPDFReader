@@ -26,16 +26,17 @@ struct ReorderableFileRow: View {
             fileTypeIcon
                 .frame(width: 44, height: 44)
                 .overlay(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            .black,
-                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                            Color(red: 0.6, green: 0.4, blue: 0.9),
-                            Color(red: 0.8, green: 0.3, blue: 0.8)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+//                    LinearGradient(
+//                        gradient: Gradient(colors: [
+//                            .black,
+//                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                            Color(red: 0.6, green: 0.4, blue: 0.9),
+//                            Color(red: 0.8, green: 0.3, blue: 0.8)
+//                        ]),
+//                        startPoint: .topLeading,
+//                        endPoint: .bottomTrailing
+//                    )
+                    navy
                     .mask(fileTypeIcon)
                 )
                 .background(fileTypeColor.opacity(0.1))
@@ -84,7 +85,7 @@ struct ReorderableFileRow: View {
     
     private var fileTypeColor: Color {
         switch file.fileTypeEnum {
-        case .pdf: return .purple
+        case .pdf: return navy
         case .word: return .blue
         case .excel: return .green
         case .powerpoint: return .orange

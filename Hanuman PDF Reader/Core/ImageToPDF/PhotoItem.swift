@@ -441,7 +441,7 @@ struct SelectablePhotoCell: View {
             .overlay(
                 // Selection overlay - stays within clipped bounds
                 Rectangle()
-                    .fill(Color.purple.opacity(isSelected ? 0.3 : 0))
+                    .fill(navy.opacity(isSelected ? 0.3 : 0))
                     .overlay(
                         // Selection indicator
                         VStack {
@@ -454,7 +454,7 @@ struct SelectablePhotoCell: View {
                                     
                                     if isSelected {
                                         Circle()
-                                            .fill(Color.purple)
+                                            .fill(navy)
                                             .frame(width: 20, height: 20)
                                         
                                         Image(systemName: "checkmark")
@@ -475,7 +475,7 @@ struct SelectablePhotoCell: View {
             .overlay(
                 // Border when selected - inside the clipped area
                 Rectangle()
-                    .strokeBorder(Color.purple, lineWidth: isSelected ? 3 : 0)
+                    .strokeBorder(navy, lineWidth: isSelected ? 3 : 0)
             )
         }
         .contentShape(Rectangle()) // Ensures tap area is limited to the cell bounds

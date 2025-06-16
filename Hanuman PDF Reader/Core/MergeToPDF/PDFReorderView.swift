@@ -41,6 +41,10 @@ struct PDFReorderView: View {
     
     var body: some View {
         VStack {
+            AdBanner("ca-app-pub-3940256099942544/2934735716")
+                .frame(maxWidth: .infinity, maxHeight: 50)
+                .background(Color.clear)
+            
             // Header
             HStack {
                 Button("Cancel") {
@@ -175,16 +179,7 @@ struct PDFReorderView: View {
             .frame(maxWidth: .infinity)
             .frame(height: 56)
             .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        .black,
-                        Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                        Color(red: 0.6, green: 0.4, blue: 0.9),
-                        Color(red: 0.8, green: 0.3, blue: 0.8)
-                    ]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+                navy
             )
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)

@@ -24,6 +24,10 @@ struct SplitPDFView: View {
 
     var body: some View {
         VStack(spacing: 10) {
+            AdBanner("ca-app-pub-3940256099942544/2934735716")
+                .frame(maxWidth: .infinity, maxHeight: 50)
+                .background(Color.clear)
+            
             if pdfDocument?.pageCount ?? 0 > 0 {
                 ScrollView {
                     LazyVGrid(columns: [
@@ -43,6 +47,7 @@ struct SplitPDFView: View {
                         }
                     }
                 }
+                .padding(.top , 20)
                 
                 Button(action: {
                     newFileName = "Split_\(selectedPDF?.deletingPathExtension().lastPathComponent ?? "Document")"
@@ -57,7 +62,7 @@ struct SplitPDFView: View {
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(selectedPages.isEmpty ? AnyView(Color.gray) : AnyView(backgroundGradient))
+                    .background(selectedPages.isEmpty ? AnyView(Color.gray) : AnyView(navy))
                     .cornerRadius(10)
                 }
                 .disabled(selectedPages.isEmpty)
@@ -96,27 +101,6 @@ struct SplitPDFView: View {
             )
             .presentationDetents([.fraction(0.30)])
         }
-        
-//        .sheet(isPresented: $showSplitPreviewSheet) {
-//            if let doc = splitPDFPreviewDocument {
-//                PDFPreviewView(document: doc, fileName: $newFileName, onSave: { finalName in
-//                    saveSplitPDF(fileName: finalName)
-//                    showSplitPreviewSheet = false
-//                }, onCancel: {
-//                    showSplitPreviewSheet = false
-//                })
-//            }
-//        }
-        
-//        .alert("Split PDF", isPresented: $showingRenameAlert) {
-//            TextField("File name", text: $newFileName)
-//            Button("Cancel", role: .cancel) { }
-//            Button("OK") {
-//                prepareSplitPreview(for: newFileName)
-//            }
-//        } message: {
-//            Text("Enter a name for your split PDF file")
-//        }
     }
 
     private func togglePageSelection(_ pageIndex: Int) {

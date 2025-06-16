@@ -21,6 +21,13 @@ struct FileRowView: View {
     var body: some View {
         VStack{
             contentRow
+                .background(
+                    RoundedRectangle(cornerRadius: 15) // Circular corner radius
+                        .fill(Color(.systemBackground)) // Keep cell background solid
+                        .shadow(color: .black.opacity(0.1), radius: 3, x: 0, y: 2)
+                )
+                .padding(.horizontal, 8) // Reduced side padding for wider cells
+                .padding(.vertical, 8) // Vertical spacing between cells
                 .alert("Rename File", isPresented: $showingRenameAlert) {
                     TextField("New name", text: $newFileName)
                     Button("Cancel", role: .cancel) { }
@@ -80,6 +87,7 @@ struct FileRowView: View {
                     }
                 }
         }
+        .background(Color.clear) // Clear background for the entire VStack container
     }
 
     // MARK: - File Row Content
@@ -88,20 +96,21 @@ struct FileRowView: View {
             fileTypeIcon
                 .frame(width: 40, height: 40)
                 .overlay(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            .black,
-                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                            Color(red: 0.6, green: 0.4, blue: 0.9),
-                            Color(red: 0.8, green: 0.3, blue: 0.8)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+//                    LinearGradient(
+//                        gradient: Gradient(colors: [
+//                            .black,
+//                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                            Color(red: 0.6, green: 0.4, blue: 0.9),
+//                            Color(red: 0.8, green: 0.3, blue: 0.8)
+//                        ]),
+//                        startPoint: .topLeading,
+//                        endPoint: .bottomTrailing
+//                    )
+                    navy
                     .mask(fileTypeIcon) // mask the gradient to the icon shape
                 )
                 .background(fileTypeColor.opacity(0.1))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .clipShape(RoundedRectangle(cornerRadius: 12)) // Slightly rounded icon background
 
 
             VStack(alignment: .leading, spacing: 4) {
@@ -137,16 +146,17 @@ struct FileRowView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
                     .overlay(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .black,
-                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                Color(red: 0.6, green: 0.4, blue: 0.9),
-                                Color(red: 0.8, green: 0.3, blue: 0.8)
-                            ]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                        navy
+//                        LinearGradient(
+//                            gradient: Gradient(colors: [
+//                                .black,
+//                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                                Color(red: 0.6, green: 0.4, blue: 0.9),
+//                                Color(red: 0.8, green: 0.3, blue: 0.8)
+//                            ]),
+//                            startPoint: .topLeading,
+//                            endPoint: .bottomTrailing
+//                        )
                         .mask(
                             Image(systemName: file.isBookmarked ? "bookmark.fill" : "bookmark")
                                 .resizable()
@@ -166,7 +176,8 @@ struct FileRowView: View {
                 self.showingPreview = true
             }
         })
-        .padding(.vertical, 8)
+        .padding(.horizontal, 24) // Increased inner padding for wider cell content
+        .padding(.vertical, 18) // Increased inner vertical padding
         .contentShape(Rectangle()) // Makes entire row tappable
         .contextMenu { contextMenuItems }
         .onTapGesture {
@@ -284,7 +295,7 @@ struct FileRowView: View {
 
     private var fileTypeColor: Color {
         switch file.fileTypeEnum {
-        case .pdf: return .purple
+        case .pdf: return navy
         case .word: return .blue
         case .excel: return .green
         case .powerpoint: return .orange
@@ -330,4 +341,3 @@ struct FileRowView: View {
         }
     }
 }
-

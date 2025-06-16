@@ -46,6 +46,10 @@ struct FileListViewForSelection: View {
             
             
             VStack {
+                AdBanner("ca-app-pub-3940256099942544/2934735716")
+                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .background(Color.clear)
+                
                 if viewModel.fileItems.filter({ $0.fileTypeEnum == .pdf }).isEmpty {
                     EmptyStateView(
                         title: "No Files Found",
@@ -71,6 +75,7 @@ struct FileListViewForSelection: View {
                             .cornerRadius(10)
                         }
                     }
+                    .padding(.top, 20)
                     .listStyle(PlainListStyle())
                 }
                 
@@ -90,16 +95,7 @@ struct FileListViewForSelection: View {
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)
                             .background(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        .black,
-                                        Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                        Color(red: 0.6, green: 0.4, blue: 0.9),
-                                        Color(red: 0.8, green: 0.3, blue: 0.8)
-                                    ]),
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
+                                navy
                             )
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
@@ -151,16 +147,7 @@ struct FileListViewForSelection: View {
                 .foregroundColor(.white)
                 .frame(width: 56, height: 56)
                 .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            .black,
-                            Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                            Color(red: 0.6, green: 0.4, blue: 0.9),
-                            Color(red: 0.8, green: 0.3, blue: 0.8)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    navy
                 )
                 .clipShape(Circle())
                 .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 4)

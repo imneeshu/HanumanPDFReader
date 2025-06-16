@@ -47,18 +47,14 @@ struct PDFPageView: View {
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(
-                        LinearGradient(
-                            gradient: Gradient(colors: isSelected ? [Color.purple, Color(red: 0.8, green: 0.3, blue: 0.8)] : [Color.clear, Color.clear]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
+                        navy,
                         lineWidth: isSelected ? 3 : 0
                     )
             )
             .overlay(
                 // Purple overlay when selected
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.purple.opacity(isSelected ? 0.11 : 0))
+                    .fill(navy.opacity(isSelected ? 0.11 : 0))
             )
             .scaleEffect(isSelected ? 1.04 : 1.0)
             .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)

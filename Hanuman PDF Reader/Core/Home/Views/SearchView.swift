@@ -29,19 +29,22 @@ struct SearchView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(
-                    searchedItems ,
-                    id: \.objectID
-                ) { file in
-                    FileRowView(file: file)
-                        .onTapGesture {
-                            viewModel.markAsRecentlyAccessed(file)
-                        }
-                        .cornerRadius(10)
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(
+                        searchedItems,
+                        id: \.objectID
+                    ) { file in
+                        FileRowView(file: file)
+                            .onTapGesture {
+                                viewModel.markAsRecentlyAccessed(file)
+                            }
+                            .cornerRadius(10)
+                    }
                 }
+                .padding(.vertical, 8)
             }
-            .listStyle(PlainListStyle())
+            .background(Color.clear)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     HStack {
@@ -53,7 +56,7 @@ struct SearchView: View {
                     .padding(8)
                     .background(
                         RoundedRectangle(cornerRadius: 14)
-                            .stroke(isSearchFieldFocused ? Color.purple : Color.gray.opacity(0.2), lineWidth: isSearchFieldFocused ? 2 : 1)
+                            .stroke(isSearchFieldFocused ? navy : Color.gray.opacity(0.2), lineWidth: isSearchFieldFocused ? 2 : 1)
                             .animation(.easeInOut(duration: 0.2), value: isSearchFieldFocused)
                     )
                     .frame(maxWidth: .infinity)

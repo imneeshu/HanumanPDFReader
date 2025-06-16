@@ -44,16 +44,17 @@ struct ScanToPDFView: View {
                                 Image(systemName: "plus")
                                     .font(.system(size: 40, weight: .bold))
                                     .overlay(
-                                        LinearGradient(
-                                            gradient: Gradient(colors: [
-                                                .black,
-                                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                                Color(red: 0.6, green: 0.4, blue: 0.9),
-                                                Color(red: 0.8, green: 0.3, blue: 0.8)
-                                            ]),
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
+//                                        LinearGradient(
+//                                            gradient: Gradient(colors: [
+//                                                .black,
+//                                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                                                Color(red: 0.6, green: 0.4, blue: 0.9),
+//                                                Color(red: 0.8, green: 0.3, blue: 0.8)
+//                                            ]),
+//                                            startPoint: .topLeading,
+//                                            endPoint: .bottomTrailing
+//                                        )
+                                        navy
                                         .mask(
                                             Image(systemName: "plus")
                                                 .font(.system(size: 40, weight: .bold))
@@ -78,14 +79,15 @@ struct ScanToPDFView: View {
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(
-                            LinearGradient(
-                                gradient: Gradient(colors: [
-                                    Color(red: 0.6, green: 0.4, blue: 0.9),
-                                    Color(red: 0.8, green: 0.3, blue: 0.8)
-                                ]),
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
+//                            LinearGradient(
+//                                gradient: Gradient(colors: [
+//                                    Color(red: 0.6, green: 0.4, blue: 0.9),
+//                                    Color(red: 0.8, green: 0.3, blue: 0.8)
+//                                ]),
+//                                startPoint: .leading,
+//                                endPoint: .trailing
+//                            )
+                            navy
                         )
                         .cornerRadius(12)
                 }
@@ -121,7 +123,13 @@ struct ScanToPDFView: View {
         })
         .sheet(isPresented: $showShareSheet) {
             if let url = pdfURL {
-                ShareSheet(items: [url])
+                SaveShareSheetContent(
+                    pdfURL: url,
+                    fileName: "newFileName",
+                    onViewPDF: {
+                        // Add any additional navigation logic here if needed
+                    }
+                )
             }
         }
     }
@@ -171,14 +179,15 @@ struct RenameSheet: View {
                 // Gradient border
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                Color(red: 0.6, green: 0.4, blue: 0.9),
-                                Color(red: 0.8, green: 0.3, blue: 0.8)
-                            ]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        ),
+//                        LinearGradient(
+//                            gradient: Gradient(colors: [
+//                                Color(red: 0.6, green: 0.4, blue: 0.9),
+//                                Color(red: 0.8, green: 0.3, blue: 0.8)
+//                            ]),
+//                            startPoint: .leading,
+//                            endPoint: .trailing
+//                        )
+                        navy,
                         lineWidth: 2
                     )
                     .background(Color.white)
@@ -220,14 +229,15 @@ struct RenameSheet: View {
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(
-                            LinearGradient(
-                                gradient: Gradient(colors: [
-                                    Color(red: 0.6, green: 0.4, blue: 0.9),
-                                    Color(red: 0.8, green: 0.3, blue: 0.8)
-                                ]),
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
+//                            LinearGradient(
+//                                gradient: Gradient(colors: [
+//                                    Color(red: 0.6, green: 0.4, blue: 0.9),
+//                                    Color(red: 0.8, green: 0.3, blue: 0.8)
+//                                ]),
+//                                startPoint: .leading,
+//                                endPoint: .trailing
+//                            )
+                            navy
                         )
                         .cornerRadius(12)
                 }

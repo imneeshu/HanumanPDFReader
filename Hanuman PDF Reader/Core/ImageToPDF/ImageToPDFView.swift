@@ -35,6 +35,9 @@ struct ImageToPDFView: View {
     
     var body: some View {
             VStack {
+                AdBanner("ca-app-pub-3940256099942544/2934735716")
+                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .background(Color.clear)
                 if selectedImages.isEmpty {
                     addPageCell
                         .padding()
@@ -52,16 +55,7 @@ struct ImageToPDFView: View {
                                 Image(systemName: isReorderMode ? "checkmark.circle.fill" : "arrow.up.arrow.down.circle")
                                     .font(.system(size: 32, weight: .medium))
                                     .overlay(
-                                        LinearGradient(
-                                            gradient: Gradient(colors: [
-                                                .black,
-                                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                                Color(red: 0.6, green: 0.4, blue: 0.9),
-                                                Color(red: 0.8, green: 0.3, blue: 0.8)
-                                            ]),
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
+                                        navy
                                         .mask(
                                             Image(systemName: isReorderMode ? "checkmark.circle.fill" : "arrow.up.arrow.down.circle")
                                                 .font(.system(size: 32, weight: .medium))
@@ -141,6 +135,7 @@ struct ImageToPDFView: View {
                             .padding(.horizontal)
                         }
                     }
+                    .padding(.top, 20)
                 }
             }
             .navigationTitle("Image to PDF")
@@ -203,16 +198,7 @@ struct ImageToPDFView: View {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 40))
                     .overlay(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .black,
-                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                Color(red: 0.6, green: 0.4, blue: 0.9),
-                                Color(red: 0.8, green: 0.3, blue: 0.8)
-                            ]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                        navy
                         .mask(
                             Image(systemName: "plus.circle.fill")
                                 .font(.system(size: 40))
@@ -222,16 +208,7 @@ struct ImageToPDFView: View {
                 Text("Add Page")
                     .font(.headline)
                     .overlay(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .black,
-                                Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                Color(red: 0.6, green: 0.4, blue: 0.9),
-                                Color(red: 0.8, green: 0.3, blue: 0.8)
-                            ]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                        navy
                         .mask(
                             Text("Add Page")
                                 .font(.headline)
@@ -248,10 +225,10 @@ struct ImageToPDFView: View {
     // Add Page Background
     private var addPageBackground: some View {
         ZStack {
-            Color.purple.opacity(0.05)
+            navy.opacity(0.05)
             RoundedRectangle(cornerRadius: 10)
                 .stroke(
-                    Color.purple,
+                    navy,
                     style: StrokeStyle(lineWidth: 2, dash: [8, 4])
                 )
         }
@@ -274,16 +251,17 @@ struct ImageToPDFView: View {
                         Image(systemName: "line.3.horizontal")
                             .font(.system(size: 22, weight: .medium))
                             .overlay(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        .black,
-                                        Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-                                        Color(red: 0.6, green: 0.4, blue: 0.9),
-                                        Color(red: 0.8, green: 0.3, blue: 0.8)
-                                    ]),
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
+//                                LinearGradient(
+//                                    gradient: Gradient(colors: [
+//                                        .black,
+//                                        Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
+//                                        Color(red: 0.6, green: 0.4, blue: 0.9),
+//                                        Color(red: 0.8, green: 0.3, blue: 0.8)
+//                                    ]),
+//                                    startPoint: .topLeading,
+//                                    endPoint: .bottomTrailing
+//                                )
+                                navy
                                 .mask(
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 22, weight: .medium))
@@ -310,14 +288,15 @@ struct ImageToPDFView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(
-                    LinearGradient(
-                        gradient: Gradient(colors: isReorderMode ? [
-                            Color(red: 0.6, green: 0.4, blue: 0.9),
-                            Color(red: 0.8, green: 0.3, blue: 0.8)
-                        ] : [Color.gray, Color.clear]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
+//                    LinearGradient(
+//                        gradient: Gradient(colors: isReorderMode ? [
+//                            Color(red: 0.6, green: 0.4, blue: 0.9),
+//                            Color(red: 0.8, green: 0.3, blue: 0.8)
+//                        ] : [Color.gray, Color.clear]),
+//                        startPoint: .topLeading,
+//                        endPoint: .bottomTrailing
+//                    )
+                    navy,
                     lineWidth: isReorderMode ? 3 : 0
                 )
         )
@@ -415,16 +394,17 @@ struct ImageToPDFView: View {
             if isProcessing {
                 Color.gray
             } else {
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color.black,
-                        Color(red: 0.18, green: 0.0, blue: 0.21),
-                        Color(red: 0.6, green: 0.4, blue: 0.9),
-                        Color(red: 0.8, green: 0.3, blue: 0.8)
-                    ]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+//                LinearGradient(
+//                    gradient: Gradient(colors: [
+//                        Color.black,
+//                        Color(red: 0.18, green: 0.0, blue: 0.21),
+//                        Color(red: 0.6, green: 0.4, blue: 0.9),
+//                        Color(red: 0.8, green: 0.3, blue: 0.8)
+//                    ]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+                navy
             }
         }
     }
