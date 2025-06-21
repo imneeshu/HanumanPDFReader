@@ -386,16 +386,16 @@ struct PhotoGalleryView: View {
                 .font(.system(size: 60))
                 .foregroundColor(.gray)
             
-            Text("Photo Access Required")
+            Text("Photo_Access_Required")
                 .font(.title2)
                 .fontWeight(.semibold)
             
-            Text("Please allow access to your photos to view and manage your photo library.")
+            Text("Please_allow_access_to_your_photos_to_view_and_manage_your_photo_library.")
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
                 .padding(.horizontal)
             
-            Button("Open Settings") {
+            Button("Open_Settings") {
                 if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(settingsUrl)
                 }

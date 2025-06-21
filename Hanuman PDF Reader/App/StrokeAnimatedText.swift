@@ -180,7 +180,7 @@ struct EnhancedSplashScreenView: View {
     @State private var showSubtitle = false
     @State private var pulseEffect = false
     
-    let gradient = backgroundGradient
+    let gradient = backgroundGradients
     let navy = Color(red: 0.047, green: 0.235, blue: 0.471)
     
     var body: some View {

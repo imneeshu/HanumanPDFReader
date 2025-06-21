@@ -79,7 +79,7 @@ struct ImageToPDFView: View {
                             Spacer()
                             
                             if isReorderMode {
-                                Text("Tap to reorder")
+                                Text("Tap_to_reorder")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                     .padding(.horizontal, 12)
@@ -205,12 +205,12 @@ struct ImageToPDFView: View {
                         )
                     )
                 
-                Text("Add Page")
+                Text("Add_Page")
                     .font(.headline)
                     .overlay(
                         navy
                         .mask(
-                            Text("Add Page")
+                            Text("Add_Page")
                                 .font(.headline)
                         )
                     )

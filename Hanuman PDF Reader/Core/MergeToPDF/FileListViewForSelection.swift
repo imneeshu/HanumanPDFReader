@@ -89,7 +89,7 @@ struct FileListViewForSelection: View {
                         }
                         showReorderView = true
                     }) {
-                        Text("Continue")
+                        Text("Continue_")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)

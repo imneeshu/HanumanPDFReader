@@ -17,6 +17,7 @@ struct ToolsView: View {
     @State var selectedItems: [PhotoItem] = []
     @State var showImageView: Bool = false
     @State var showImagePreview : Bool = false
+    @State var showEditView: Bool = true
     
     var body: some View {
         ScrollView {
@@ -42,7 +43,7 @@ struct ToolsView: View {
             )
             
             HStack{
-                Text("Tools")
+                Text("Tools_")
                     .font(.title)
                     .bold()
                     .padding()
@@ -79,11 +80,11 @@ struct ToolsView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Scan to PDF")
+                        Text("Scan_to_PDF")
                             .font(.headline)
                             .foregroundColor(.primary)
                         
-                        Text("Capture documents with camera")
+                        Text("Scan_Sub")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -124,11 +125,11 @@ struct ToolsView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Image to PDF")
+                        Text("Image_to_PDF")
                             .font(.headline)
                             .foregroundColor(.primary)
                         
-                        Text("Convert images to PDF")
+                        Text("Image_Sub")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -159,8 +160,8 @@ struct ToolsView: View {
 //                )
                 
                 ToolCardView(
-                    title: "Merge PDF",
-                    subtitle: "Combine multiple PDFs",
+                    title: NSLocalizedString("Merge_PDF", comment: ""),
+                    subtitle: NSLocalizedString("Merge_Sub", comment: ""),
                     icon: "doc.on.doc.fill",
                     color: navy,
                     destination: AnyView(
@@ -169,20 +170,21 @@ struct ToolsView: View {
                 )
                 
                 ToolCardView(
-                    title: "Split PDF",
-                    subtitle: "Extract pages from PDF",
+                    title: NSLocalizedString("Split_PDF", comment: ""),
+                    subtitle: NSLocalizedString("Split_Sub", comment: ""),
                     icon: "scissors",
                     color: navy,
                     destination: AnyView(PDFListView(listFlow: .split))
                 )
                 
                 ToolCardView(
-                    title: "Edit PDF",
-                    subtitle: "Annotate and edit PDFs",
+                    title:  NSLocalizedString("Edit_PDF", comment: ""),
+                    subtitle: NSLocalizedString("Edit_Sub", comment: ""),
                     icon: "pencil.circle.fill",
                     color: navy,
-                    destination: AnyView(EditPDFView())
+                    destination: AnyView(HomeView(showEditView: $showEditView))
                 )
+                
             }
             .padding()
         }

@@ -26,7 +26,7 @@ struct SettingsView: View {
                     HStack {
                         Image(systemName: "moon.fill")
                             .foregroundColor(navy)
-                        Text("Dark Mode")
+                        Text("Dark_Mode")
                         Spacer()
                         Toggle("", isOn: $settingsViewModel.isDarkMode)
                             .tint(navy)
@@ -36,7 +36,7 @@ struct SettingsView: View {
                     HStack {
                         Image(systemName: "sun.max.fill")
                             .foregroundColor(navy)
-                        Text("Keep Screen On")
+                        Text("Keep_Screen_On")
                         Spacer()
                         Toggle("", isOn: $settingsViewModel.keepScreenOn)
                             .tint(navy)
@@ -45,11 +45,11 @@ struct SettingsView: View {
                 }
                 .transition(.move(edge: .leading))
                 
-                Section("Language") {
+                Section("Language_") {
                     HStack {
                         Image(systemName: "globe")
                             .foregroundColor(navy)
-                        Text("Language")
+                        Text("Language_")
                         Spacer()
                         Text(getLanguageDisplayName(settingsViewModel.selectedLanguage))
                             .foregroundColor(.secondary)
@@ -67,11 +67,11 @@ struct SettingsView: View {
                 }
                 .transition(.move(edge: .leading))
                 
-                Section("Notifications") {
+                Section("Notifications_") {
                     HStack {
                         Image(systemName: "bell.fill")
                             .foregroundColor(navy)
-                        Text("Enable Notifications")
+                        Text("Enable_Notifications")
                         Spacer()
                         Toggle("", isOn: $settingsViewModel.notificationsEnabled)
                     }
@@ -79,11 +79,11 @@ struct SettingsView: View {
                 }
                 .transition(.move(edge: .leading))
                 
-                Section("About") {
+                Section("About_") {
                     SettingsRowView(
                         icon: "star.fill",
                         iconColor: navy,
-                        title: "Rate App",
+                        title: NSLocalizedString("Rate_App", comment: ""),
                         action: {
                             // Open App Store rating
                             openAppStoreRating()
@@ -94,7 +94,7 @@ struct SettingsView: View {
                     SettingsRowView(
                         icon: "square.and.arrow.up",
                         iconColor: navy,
-                        title: "Share App",
+                        title: NSLocalizedString("Share_App", comment: ""),
                         action: {
                             // Share app
                             shareApp()
@@ -105,7 +105,7 @@ struct SettingsView: View {
                     SettingsRowView(
                         icon: "hand.raised.fill",
                         iconColor: navy,
-                        title: "Privacy Policy",
+                        title: NSLocalizedString("Privacy_Policy", comment: ""),
                         action: {
                             // Open privacy policy
                             openURL("https://your-privacy-policy-url.com")
@@ -116,7 +116,7 @@ struct SettingsView: View {
                     SettingsRowView(
                         icon: "doc.text.fill",
                         iconColor: navy,
-                        title: "Terms of Use",
+                        title: NSLocalizedString("Terms_of_Use", comment: ""),
                         action: {
                             // Open terms of use
                             openURL("https://your-terms-url.com")
@@ -141,7 +141,7 @@ struct SettingsView: View {
             .listStyle(PlainListStyle())
             .scrollContentBackground(.hidden)
             .background(.clear)
-            .navigationTitle("Settings")
+            .navigationTitle("Settings_")
             .navigationBarTitleDisplayMode(.large)
             // Add transition to the entire List
             .transition(.move(edge: .leading))

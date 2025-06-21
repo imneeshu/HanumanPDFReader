@@ -35,7 +35,7 @@ struct SaveShareView: View {
     var body: some View {
         VStack(spacing: 30) {
             
-            Text("PDF Created Successfully!")
+            Text("PDF_Created_Successfully!")
                 .font(.title2)
                 .fontWeight(.medium)
             
@@ -44,7 +44,7 @@ struct SaveShareView: View {
                 Button(action: onViewPDF) {
                     HStack {
                         Image(systemName: "doc.text.magnifyingglass")
-                        Text("View PDF")
+                        Text("View_PDF")
                     }
                     .font(.headline)
                     .foregroundColor(.white)
@@ -72,7 +72,7 @@ struct SaveShareView: View {
                 }) {
                     HStack {
                         Image(systemName: "square.and.arrow.up")
-                        Text("Share PDF")
+                        Text("Share_PDF")
                     }
                     .font(.headline)
                     .foregroundColor(.black)

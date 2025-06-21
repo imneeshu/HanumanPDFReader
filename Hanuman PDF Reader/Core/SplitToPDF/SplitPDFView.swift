@@ -56,7 +56,7 @@ struct SplitPDFView: View {
                 }) {
                     HStack {
                         Image(systemName: "scissors")
-                        Text("Split PDF")
+                        Text("Split_PDF")
                     }
                     .font(.headline)
                     .foregroundColor(.white)
@@ -70,7 +70,7 @@ struct SplitPDFView: View {
             }
         }
         .padding()
-        .navigationTitle("Split PDF")
+        .navigationTitle("Split_PDF")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showShareView) {
             if let url = splitPDFURL {
@@ -225,7 +225,7 @@ struct PDFPreviewView: View {
                     VStack(spacing: 15) {
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Split PDF Preview")
+                                Text("Split_PDF_Preview")
                                     .font(.headline)
                                 Text("\(document.pageCount) pages selected")
                                     .font(.caption)
@@ -275,7 +275,7 @@ struct PDFPreviewView: View {
                     onSave(tempFileName)
                 }
             } message: {
-                Text("Enter a name for your PDF file")
+                Text("Enter_a_name_for_your_PDF_file")
             }
         }
     }

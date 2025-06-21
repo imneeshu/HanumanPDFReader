@@ -18,10 +18,10 @@ struct ScanToPDFView: View {
         VStack(spacing: 20) {
             if capturedImages.isEmpty {
                 VStack(spacing: 12) {
-                    Text("Scan to PDF")
+                    Text("Scan_to_PDF")
                         .font(.largeTitle)
                         .bold()
-                    Button("Start Scanning") {
+                    Button("Start_Scanning") {
                         showCamera.toggle()
                     }
                     .buttonStyle(.borderedProminent)
@@ -73,7 +73,7 @@ struct ScanToPDFView: View {
                 Button(action: {
                     showRenameSheet = true // Ask for name before creating PDF
                 }) {
-                    Text("Generate PDF")
+                    Text("Generate_PDF")
                         .foregroundColor(.white)
                         .font(.headline)
                         .frame(maxWidth: .infinity)
@@ -171,7 +171,7 @@ struct RenameSheet: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Text("Rename PDF")
+            Text("Rename_PDF")
                 .font(.title3)
                 .bold()
 
@@ -208,7 +208,7 @@ struct RenameSheet: View {
                 Button(action: {
                     onCancel() // Ask for name before creating PDF
                 }) {
-                    Text("Cancel")
+                    Text("Cancel_")
                         .foregroundColor(.black)
                         .font(.headline)
                         .frame(maxWidth: .infinity)
@@ -223,7 +223,7 @@ struct RenameSheet: View {
                 Button(action: {
                     onDone() // Ask for name before creating PDF
                 }) {
-                    Text("Done")
+                    Text("Done_")
                         .foregroundColor(.white)
                         .font(.headline)
                         .frame(maxWidth: .infinity)

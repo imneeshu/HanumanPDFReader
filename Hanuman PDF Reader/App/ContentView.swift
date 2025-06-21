@@ -21,16 +21,28 @@ import SwiftUI
 
 
 let navy = Color(red: 0.047, green: 0.235, blue: 0.471)
+let navyUIKit = UIColor(red: 0.047, green: 0.235, blue: 0.471, alpha: 1.0)
 
 // White to blue gradient (90deg horizontal)
 let backgroundGradient = LinearGradient(
-    gradient: Gradient(colors: [
-        Color(red: 0.306, green: 0.443, blue: 1.0),     // rgba(78, 113, 255, 1) at 0%
-        Color(red: 0.404, green: 0.733, blue: 0.902)    // rgba(103, 187, 230, 1) at 100%
-    ]),
-    startPoint: UnitPoint(x: 0.0, y: 0.2),
-    endPoint: UnitPoint(x: 1.0, y: 0.8)
-)//Color(red: 0.227, green: 0.349, blue: 0.820)
+    colors: [.clear, .clear],
+    startPoint: .leading,
+    endPoint: .trailing
+)
+
+let backgroundGradients = LinearGradient(
+    colors: [.white, .white],
+    startPoint: .leading,
+    endPoint: .trailing
+)
+//LinearGradient(
+//    gradient: Gradient(colors: [
+//        Color(red: 0.306, green: 0.443, blue: 1.0),     // rgba(78, 113, 255, 1) at 0%
+//        Color(red: 0.404, green: 0.733, blue: 0.902)    // rgba(103, 187, 230, 1) at 100%
+//    ]),
+//    startPoint: UnitPoint(x: 0.0, y: 0.2),
+//    endPoint: UnitPoint(x: 1.0, y: 0.8)
+//)//Color(red: 0.227, green: 0.349, blue: 0.820)
 
 //LinearGradient(
 //    gradient: Gradient(stops: [
@@ -41,7 +53,8 @@ let backgroundGradient = LinearGradient(
 //    endPoint: .top
 //)
 
-let tabGradient = LinearGradient(
+let tabGradient =
+LinearGradient(
     gradient: Gradient(colors: [
         Color(red: 0.588, green: 0.816, blue: 0.922),  // rgba(150, 208, 235, 1) at 0%
         Color(red: 0.357, green: 0.675, blue: 0.812)   // rgba(91, 172, 207, 1) at 100%
@@ -72,8 +85,9 @@ struct ContentView: View {
     @State var selectedItems : [PhotoItem] = []
     @State var showImagePreview : Bool = false
     @State private var showSplash = true
+    @State var showEditView: Bool = false
     
-    @State private var showingPremium = true
+    @State private var showingPremium = false
     
     let tabTitles = ["Home_", "Bookmarks_", "Tools_"]
     
@@ -89,6 +103,15 @@ struct ContentView: View {
                             EmptyView() // No label shown
                         }
                     )
+                    
+                    NavigationLink(
+                        destination: HomeView(showEditView : $showEditView),
+                        isActive: $showEditView,
+                        label: {
+                            EmptyView() // No label shown
+                        }
+                    )
+
                     
                     // Hidden NavigationLink triggered by state
                     NavigationLink(
@@ -137,7 +160,7 @@ struct ContentView: View {
                             }) {
                                 Image(systemName: "line.3.horizontal")
                                     .font(.system(size: 25))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(navy)
                                     .frame(width: 40, height: 40)
                                     .background(Color.clear)
                             }
@@ -151,11 +174,24 @@ struct ContentView: View {
                             }) {
                                 Image(systemName: "magnifyingglass")
                                     .font(.system(size: 20))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(navy)
                                     .frame(width: 40, height: 40)
                                     .background(Color.clear)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
+                            }
+                            
+                            // Search button (right)
+                            Button(action: {
+                                // Premium action
+                                showingPremium = true
+                            }) {
+                                Image("premiumIcon")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 25, height: 25)
+                                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
+                                    .animation(.easeInOut(duration: 0.3), value: UUID())
                             }
                         }
                         .padding(.horizontal, 20)
@@ -171,7 +207,7 @@ struct ContentView: View {
                                     ZStack {
                                         // Gradient background with subtle shadow
                                         RoundedRectangle(cornerRadius: 20)
-                                            .fill(.white)
+                                            .fill(settingsViewModel.isDarkMode ? .black : .white)
                                             .frame(maxWidth: .infinity, maxHeight: 100)
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 20)
@@ -192,9 +228,9 @@ struct ContentView: View {
                                                     .shadow(radius: 4)
                                             }
                                             
-                                            Text("Import from\niCloud")
+                                            Text("\( NSLocalizedString("Import_from", comment: ""))\n\(NSLocalizedString("iCloud_", comment: "") )")
                                                 .font(.system(size: 12, weight: .semibold))
-                                                .foregroundColor(.black)
+                                                .foregroundColor(settingsViewModel.isDarkMode ? .white : .black)
                                                 .multilineTextAlignment(.center)
                                                 .lineLimit(2)
                                         }
@@ -211,7 +247,7 @@ struct ContentView: View {
                                     ZStack {
                                         // Gradient background with subtle shadow
                                         RoundedRectangle(cornerRadius: 20)
-                                            .fill(.white)
+                                            .fill(settingsViewModel.isDarkMode ? .black : .white)
                                             .frame(maxWidth: .infinity, maxHeight: 100)
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 20)
@@ -232,9 +268,9 @@ struct ContentView: View {
                                                     .shadow(radius: 4)
                                             }
                                             
-                                            Text("Image to PDF")
+                                            Text("Image_to_PDF")
                                                 .font(.system(size: 12, weight: .semibold))
-                                                .foregroundColor(.black)
+                                                .foregroundColor(settingsViewModel.isDarkMode ? .white : .black)
                                                 .multilineTextAlignment(.center)
                                         }
                                         .padding(.horizontal, 8)
@@ -250,7 +286,7 @@ struct ContentView: View {
                                     ZStack {
                                         // Gradient background with subtle shadow
                                         RoundedRectangle(cornerRadius: 20)
-                                            .fill(.white)
+                                            .fill(settingsViewModel.isDarkMode ? .black : .white)
                                             .frame(maxWidth: .infinity, maxHeight: 100)
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 20)
@@ -271,12 +307,15 @@ struct ContentView: View {
                                                     .shadow(radius: 4)
                                             }
                                             
-                                            Text("Edit PDF")
+                                            Text("Edit_PDF")
                                                 .font(.system(size: 12, weight: .semibold))
-                                                .foregroundColor(.black)
+                                                .foregroundColor(settingsViewModel.isDarkMode ? .white : .black)
                                                 .multilineTextAlignment(.center)
                                         }
                                         .padding(.horizontal, 8)
+                                    }
+                                    .onTapGesture {
+                                        showEditView = true
                                     }
                                 }
                                 .scaleEffect(1.0)
@@ -294,13 +333,13 @@ struct ContentView: View {
                             Group {
                                 switch selectedTab {
                                 case 0:
-                                    HomeView()
+                                    HomeView(showEditView: $showEditView)
                                         .onAppear{
                                             showOCRButton = true
                                         }
                                         .padding(.bottom, 130)
                                 case 1:
-                                    BookmarkView()
+                                    BookmarkView(showEditView: $showEditView)
                                         .frame(maxWidth: .infinity, maxHeight: 1000)
                                         .onAppear{
                                             showOCRButton = false

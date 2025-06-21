@@ -33,7 +33,7 @@ struct SortOptionsSheet: View {
             // Header
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text("Sort By")
+                    Text("Sort_By")
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
@@ -63,7 +63,7 @@ struct SortOptionsSheet: View {
                 Button(action: {
                     isPresented = false
                 }) {
-                    Text("Cancel")
+                    Text("Cancel_")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity)
@@ -78,7 +78,7 @@ struct SortOptionsSheet: View {
                     isPresented = false
                     selectedSortOption  = localSelectedSortOption
                 }) {
-                    Text("Done")
+                    Text("Done_")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)

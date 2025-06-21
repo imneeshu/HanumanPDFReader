@@ -168,6 +168,7 @@ struct HomeView: View {
     @State private var showingFilterSheet = false
     @State private var showingScanView = false
     @State private var showingImportView = false
+    @Binding var showEditView: Bool
     
     var body: some View {
         VStack {
@@ -176,10 +177,11 @@ struct HomeView: View {
                 ProgressView("Loading files...")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                FileListView()
+                FileListView(showEditView: $showEditView)
                     .environmentObject(viewModel)
             }
         }
+//        .navigationTitle("Edit_PDF")
         .onAppear {
             viewModel.loadFiles()
         }

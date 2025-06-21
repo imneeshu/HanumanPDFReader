@@ -68,7 +68,7 @@ struct MergePDFView: View {
                     }) {
                         HStack {
                             Image(systemName: "eye")
-                            Text("Preview PDFs")
+                            Text("Preview_PDFs")
                         }
                         .foregroundColor(.blue)
                         .padding()
@@ -191,7 +191,7 @@ struct PDFSelectionCard: View {
                                 .foregroundColor(.secondary)
                                 .lineLimit(1)
                         } else {
-                            Text("Tap to select PDF")
+                            Text("Tap_to_select_PDF")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -346,7 +346,7 @@ struct RenameView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("File Name")
+                    Text("File_Name")
                         .font(.headline)
                     
                     TextField("Enter PDF name", text: $fileName)
@@ -429,7 +429,7 @@ struct FinalScreenView: View {
                         .font(.system(size: 80))
                         .foregroundColor(.green)
                     
-                    Text("PDF Merged Successfully!")
+                    Text("PDF_Merged_Successfully!")
                         .font(.title)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
@@ -448,7 +448,7 @@ struct FinalScreenView: View {
                     }) {
                         HStack {
                             Image(systemName: "eye")
-                            Text("View PDF")
+                            Text("View_PDF")
                         }
                         .foregroundColor(.blue)
                         .padding()
@@ -462,7 +462,7 @@ struct FinalScreenView: View {
                     }) {
                         HStack {
                             Image(systemName: "square.and.arrow.up")
-                            Text("Share PDF")
+                            Text("Share_PDF")
                         }
                         .foregroundColor(.green)
                         .padding()
@@ -474,7 +474,7 @@ struct FinalScreenView: View {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }) {
-                        Text("Done")
+                        Text("Done_")
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)

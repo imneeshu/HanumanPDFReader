@@ -54,7 +54,7 @@ struct PDFReorderView: View {
                 
                 Spacer()
                 
-                Text("Reorder PDFs")
+                Text("Reorder_PDFs")
                     .font(.headline)
                     .fontWeight(.semibold)
                 
@@ -70,7 +70,7 @@ struct PDFReorderView: View {
             // Reorderable List
             if reorderableItems.isEmpty {
                 Spacer()
-                Text("No files selected")
+                Text("No_files_selected")
                     .foregroundColor(.secondary)
                 Spacer()
             } else {
@@ -117,7 +117,7 @@ struct PDFReorderView: View {
                     VStack(spacing: 16) {
                         ProgressView()
                             .scaleEffect(1.5)
-                        Text("Merging PDFs...")
+                        Text("Merging_PDFs...")
                             .font(.headline)
                     }
                     .padding(30)
@@ -172,7 +172,7 @@ struct PDFReorderView: View {
             HStack {
                 Image(systemName: "doc.on.doc")
                     .font(.title3)
-                Text("Merge PDFs")
+                Text("Merge_PDFs")
                     .font(.headline)
             }
             .foregroundColor(.white)

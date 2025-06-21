@@ -25,11 +25,11 @@ struct EditPDFView: View {
                             .font(.system(size: 80))
                             .foregroundColor(.blue)
                         
-                        Text("PDF Editor")
+                        Text("PDF_Editor")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                         
-                        Text("Select a PDF to start editing")
+                        Text("Select_a_PDF_to_start _diting")
 //                            .font(.subtitle)
                             .foregroundColor(.secondary)
                         
@@ -38,7 +38,7 @@ struct EditPDFView: View {
                         }) {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
-                                Text("Select PDF")
+                                Text("Select_PDF")
                             }
                             .font(.headline)
                             .foregroundColor(.white)
@@ -54,7 +54,7 @@ struct EditPDFView: View {
                             .font(.system(size: 60))
                             .foregroundColor(.green)
                         
-                        Text("PDF Selected")
+                        Text("PDF_Selected")
                             .font(.title2)
                             .fontWeight(.semibold)
                         
@@ -63,12 +63,12 @@ struct EditPDFView: View {
                             .foregroundColor(.secondary)
                         
                         HStack(spacing: 20) {
-                            Button("Edit PDF") {
+                            Button("Edit_PDF") {
                                 showingPDFEditor = true
                             }
                             .buttonStyle(.borderedProminent)
                             
-                            Button("Select Different PDF") {
+                            Button("Select_Different_PDF") {
                                 showingDocumentPicker = true
                             }
                             .buttonStyle(.bordered)
@@ -79,7 +79,7 @@ struct EditPDFView: View {
                 Spacer()
             }
             .padding()
-            .navigationTitle("PDF Editor")
+            .navigationTitle("PDF_Editor")
         }
         .sheet(isPresented: $showingDocumentPicker) {
             DocumentPickerEdit(selectedURL: $selectedPDFURL)
@@ -286,6 +286,7 @@ struct FilterSelectionViewEdit: View {
                     Button("Done") {
                         dismiss()
                     }
+                    .background(navy)
                 }
             }
         }
@@ -331,7 +332,7 @@ struct DigitalSignatureView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Draw Your Signature")
+                Text("Draw_Your_Signature")
                     .font(.headline)
                     .padding()
                 

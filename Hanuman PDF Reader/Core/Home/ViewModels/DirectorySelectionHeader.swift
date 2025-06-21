@@ -15,11 +15,11 @@ struct DirectorySelectionHeader: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Current Directory")
+                Text("Current_Directory")
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
-                Text(selectedDirectory?.lastPathComponent ?? "No directory selected")
+                Text(selectedDirectory?.lastPathComponent ?? "No_directory_selected")
                     .font(.headline)
                     .lineLimit(1)
             }

@@ -1,0 +1,1672 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "(%lld)" : {
+
+    },
+    "%@\n%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@\n%2$@"
+          }
+        }
+      }
+    },
+    "%dpt" : {
+      "comment" : "Text size option subtitle format"
+    },
+    "%lld" : {
+
+    },
+    "%lld Image%@ Selected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld Image%2$@ Selected"
+          }
+        }
+      }
+    },
+    "%lld pages selected" : {
+
+    },
+    "•" : {
+
+    },
+    "🎉 You're all set!" : {
+
+    },
+    "$9.99/month" : {
+
+    },
+    "About_" : {
+
+    },
+    "Add" : {
+      "comment" : "Add button title"
+    },
+    "Add Bookmark" : {
+
+    },
+    "Add Signature" : {
+
+    },
+    "Add Text" : {
+      "comment" : "Add text alert title"
+    },
+    "Add_Page" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة صفحة"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавяне на страница"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পৃষ্ঠা যোগ করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Page"
+          }
+        }
+      }
+    },
+    "All_Files" : {
+
+    },
+    "Appearance" : {
+
+    },
+    "Appearance_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المظهر"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Външен вид"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "চেহারা"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        }
+      }
+    },
+    "Black" : {
+      "comment" : "Text color option name"
+    },
+    "Blue" : {
+      "comment" : "Text color option name"
+    },
+    "Bookmarks_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الإشارات المرجعية"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " Отметки"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "বুকমার্ক"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bookmarks"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "comment" : "Cancel button title"
+    },
+    "Cancel_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إلغاء"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отказ"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "বাতিল"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Choose_Your_Plan" : {
+
+    },
+    "Clear" : {
+
+    },
+    "Close" : {
+
+    },
+    "Color:" : {
+
+    },
+    "Continue_" : {
+
+    },
+    "Convert to PDF" : {
+
+    },
+    "Convert_to_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحويل إلى PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конвертиране в PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ছবি পিডিএফে রূপান্তর"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convert to PDF"
+          }
+        }
+      }
+    },
+    "Converting..." : {
+
+    },
+    "Copy Mode - Select text to copy" : {
+      "comment" : "Copy mode message"
+    },
+    "Could not load PDF document" : {
+      "comment" : "PDF load error message"
+    },
+    "Could not save annotated PDF" : {
+      "comment" : "PDF save error message"
+    },
+    "Create_PDF" : {
+
+    },
+    "Current_Directory" : {
+
+    },
+    "Dark_Mode" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الوضع المظلم"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тъмен режим"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " ডার্ক মোড"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Mode"
+          }
+        }
+      }
+    },
+    "Delete" : {
+
+    },
+    "Delete File" : {
+
+    },
+    "Digital Signature" : {
+
+    },
+    "Done" : {
+
+    },
+    "Done_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Готово"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সম্পন্ন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "Draw_Your_Signature" : {
+
+    },
+    "Drawing Mode - Draw on PDF" : {
+      "comment" : "Drawing mode message"
+    },
+    "Edit_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحرير PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Редактиране на PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পিডিএফ এডিট"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit PDF"
+          }
+        }
+      }
+    },
+    "Edit_Sub" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التعليق وتحرير ملفات PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Анотиране и редактиране на PDF файлове"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পিডিএফ টীকা ও সম্পাদনা"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annotate and edit PDFs"
+          }
+        }
+      }
+    },
+    "Enable_Notifications" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تفعيل الإشعارات"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включване на известия"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "নোটিফিকেশন চালু করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Notifications"
+          }
+        }
+      }
+    },
+    "Enjoy all premium features without any limitations." : {
+
+    },
+    "Enter PDF name" : {
+
+    },
+    "Enter text" : {
+      "comment" : "Add text alert placeholder"
+    },
+    "Enter_a_name_for_your_PDF_file" : {
+
+    },
+    "Enter_file_name" : {
+
+    },
+    "Error" : {
+      "comment" : "Error alert title"
+    },
+    "Exited Drawing Mode" : {
+      "comment" : "Exit drawing mode message"
+    },
+    "File name" : {
+
+    },
+    "File_Name" : {
+
+    },
+    "File_Not_Found" : {
+
+    },
+    "File_Size" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حجم الملف"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Размер на файла"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " ফাইলের আকার"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Size"
+          }
+        }
+      }
+    },
+    "Filter By Type" : {
+
+    },
+    "Filters" : {
+
+    },
+    "Generate_PDF" : {
+
+    },
+    "Green" : {
+      "comment" : "Text color option name"
+    },
+    "Highlight Mode - Select text to highlight" : {
+      "comment" : "Highlight mode message"
+    },
+    "Home_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الرئيسية"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начало"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " হোম"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        }
+      }
+    },
+    "Horizontal View" : {
+      "comment" : "Horizontal view message"
+    },
+    "iCloud_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آي كلاود"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " আইক্লাউড"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud"
+          }
+        }
+      }
+    },
+    "Image to PDF" : {
+
+    },
+    "Image_Selected" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم اختيار الصورة"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изображение избрано"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ছবি নির্বাচিত"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image Selected"
+          }
+        }
+      }
+    },
+    "Image_Sub" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحويل الصور إلى PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конвертиране на изображения в PDF"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convert Images to PDF"
+          }
+        }
+      }
+    },
+    "Image_to_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحويل الصورة إلى PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изображение към PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ছবি থেকে পিডিএফ"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image to PDF"
+          }
+        }
+      }
+    },
+    "Image_To_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحويل الصورة إلى PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изображение към PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ছবি থেকে পিডিএফ"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image to PDF"
+          }
+        }
+      }
+    },
+    "Import_from" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استيراد من"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Внасяне от"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "থেকে আমদানি"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from"
+          }
+        }
+      }
+    },
+    "Keep_Screen_On" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إبقاء الشاشة مضيئة"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Екранът да остане включен"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " স্ক্রিন চালু রাখুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep Screen On"
+          }
+        }
+      }
+    },
+    "Language" : {
+
+    },
+    "Language_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اللغة"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Език"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ভাষা"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        }
+      }
+    },
+    "Last_Modified" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آخر تعديل"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Последно модифициран"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সর্বশেষ পরিবর্তিত"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Modified"
+          }
+        }
+      }
+    },
+    "Loading files..." : {
+
+    },
+    "Loading PDF..." : {
+
+    },
+    "Loading photos..." : {
+
+    },
+    "Loading_Premium_Options..." : {
+
+    },
+    "Manage Subscription" : {
+
+    },
+    "Merge PDF" : {
+
+    },
+    "Merge PDFs" : {
+
+    },
+    "Merge_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " دمج PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обединяване на PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পিডিএফ মার্জ"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge PDF"
+          }
+        }
+      }
+    },
+    "Merge_PDFs" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "دمج ملفات PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обединяване на PDF файлове"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " পিডিএফ গুলো মার্জ করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge PDFs"
+          }
+        }
+      }
+    },
+    "Merge_Sub" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "دمج ملفات PDF متعددة"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Комбиниране на множество PDF файлове"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "একাধিক পিডিএফ একত্রিত করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combine multiple PDFs"
+          }
+        }
+      }
+    },
+    "Merging_PDFs..." : {
+
+    },
+    "Merging..." : {
+
+    },
+    "Monthly Plan" : {
+
+    },
+    "Name Your Merged PDF" : {
+
+    },
+    "Name_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الاسم"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Име"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "নাম"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "Name_your_PDF_file" : {
+
+    },
+    "New name" : {
+
+    },
+    "Newest_to_Oldest" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "من الأحدث إلى الأقدم"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "От най-новите към най-старите"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "নতুন থেকে পুরানো"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Newest to Oldest"
+          }
+        }
+      }
+    },
+    "No preview available" : {
+
+    },
+    "No_files_selected" : {
+
+    },
+    "No_plans_available" : {
+
+    },
+    "Notifications_" : {
+
+    },
+    "of %d" : {
+      "comment" : "Page count label"
+    },
+    "of 0" : {
+      "comment" : "Page count label"
+    },
+    "OK" : {
+      "comment" : "OK button title"
+    },
+    "Oldest_to_Newest" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "من الأقدم إلى الأحدث"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "От най-старите към най-новите"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পুরানো থেকে নতুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oldest to Newest"
+          }
+        }
+      }
+    },
+    "Open_Settings" : {
+
+    },
+    "Orange" : {
+      "comment" : "Text color option name"
+    },
+    "Page %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Page %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "PDF %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "PDF %1$lld: %2$@"
+          }
+        }
+      }
+    },
+    "PDF Editor" : {
+
+    },
+    "PDF Filters" : {
+
+    },
+    "PDF Merge" : {
+
+    },
+    "PDF Name" : {
+
+    },
+    "PDF Preview" : {
+
+    },
+    "PDF_Created_Successfully!" : {
+
+    },
+    "PDF_Editor" : {
+
+    },
+    "PDF_Merged_Successfully!" : {
+
+    },
+    "PDF_Selected" : {
+
+    },
+    "Photo_Access_Required" : {
+
+    },
+    "Pink" : {
+      "comment" : "Text color option name"
+    },
+    "Please_allow_access_to_your_photos_to_view_and_manage_your_photo_library." : {
+
+    },
+    "Preview_PDFs" : {
+
+    },
+    "Privacy" : {
+
+    },
+    "Privacy_Policy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سياسة الخصوصية"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Политика за поверителност"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গোপনীয়তা নীতি"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "Purple" : {
+      "comment" : "Text color option name"
+    },
+    "Rate_App" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تقييم التطبيق"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оценете приложението"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "অ্যাপ রেট করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rate App"
+          }
+        }
+      }
+    },
+    "Recent" : {
+
+    },
+    "Red" : {
+      "comment" : "Text color option name"
+    },
+    "Remove Bookmark" : {
+
+    },
+    "Rename" : {
+
+    },
+    "Rename File" : {
+
+    },
+    "Rename PDF" : {
+
+    },
+    "Rename_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة تسمية PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Преименуване на PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পিডিএফ নাম পরিবর্তন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename PDF"
+          }
+        }
+      }
+    },
+    "Reorder_PDFs" : {
+
+    },
+    "Reset" : {
+
+    },
+    "Restore Purchases" : {
+
+    },
+    "Retry" : {
+
+    },
+    "Save & Share" : {
+
+    },
+    "Save PDF" : {
+
+    },
+    "Save_PDF" : {
+
+    },
+    "Saving..." : {
+
+    },
+    "Scan To PDF" : {
+
+    },
+    "Scan_Sub" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التقاط المستندات بالكاميرا"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заснемане на документи с камера"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ক্যামেরা দিয়ে ডকুমেন্ট ক্যাপচার"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture documents with camera"
+          }
+        }
+      }
+    },
+    "Scan_to_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح إلى PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканиране към PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "স্ক্যান করে পিডিএফ"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan to PDF"
+          }
+        }
+      }
+    },
+    "Search files..." : {
+
+    },
+    "Search in PDF" : {
+      "comment" : "Search bar placeholder"
+    },
+    "Select Photos" : {
+
+    },
+    "Select text color" : {
+      "comment" : "Text color option message"
+    },
+    "Select text size" : {
+      "comment" : "Text size option message"
+    },
+    "Select_a_PDF_to_start _diting" : {
+
+    },
+    "Select_Different_PDF" : {
+
+    },
+    "Select_PDF" : {
+
+    },
+    "Select_Photos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اختيار الصور"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Избор на снимки"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ছবি নির্বাচন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Photos"
+          }
+        }
+      }
+    },
+    "Settings_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الإعدادات"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সেটিংস"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "Share" : {
+
+    },
+    "Share_App" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مشاركة التطبيق"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Споделяне на приложението"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "অ্যাপ শেয়ার করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share App"
+          }
+        }
+      }
+    },
+    "Share_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مشاركة PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Споделяне на PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পিডিএফ শেয়ার করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share PDF"
+          }
+        }
+      }
+    },
+    "Sign" : {
+
+    },
+    "Sort By" : {
+
+    },
+    "Sort_By" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترتيب حسب"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сортиране по"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সাজান"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort By"
+          }
+        }
+      }
+    },
+    "Sort_by %@" : {
+
+    },
+    "Split_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تقسيم PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разделяне на PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পিডিএফ ভাগ করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Split PDF"
+          }
+        }
+      }
+    },
+    "Split_PDF_Preview" : {
+
+    },
+    "Split_Sub" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استخراج الصفحات من PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Извличане на страници от PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পিডিএফ থেকে পৃষ্ঠা বের করুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extract pages from PDF"
+          }
+        }
+      }
+    },
+    "Start_Scanning" : {
+
+    },
+    "Strikethrough Mode - Select text to strikethrough" : {
+      "comment" : "Strikethrough mode message"
+    },
+    "Success" : {
+
+    },
+    "Tap anywhere to add text" : {
+      "comment" : "Text input mode message"
+    },
+    "Tap_to_reorder" : {
+
+    },
+    "Tap_to_select_PDF" : {
+
+    },
+    "Terms" : {
+
+    },
+    "Terms_of_Use" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شروط الاستخدام"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Условия за използване"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ব্যবহারের শর্তাবলী"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Use"
+          }
+        }
+      }
+    },
+    "Text Color" : {
+      "comment" : "Text color option title"
+    },
+    "Text color: %@" : {
+      "comment" : "Text color changed message"
+    },
+    "Text copied" : {
+      "comment" : "Copy confirmation message"
+    },
+    "Text Size" : {
+      "comment" : "Text size option title"
+    },
+    "Text size: %dpt" : {
+      "comment" : "Text size changed message"
+    },
+    "This_action_cannot_be_undone." : {
+
+    },
+    "Tools_" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأدوات"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Инструменти"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " টুলস"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tools"
+          }
+        }
+      }
+    },
+    "Unable_to_locate_the_file_for_preview" : {
+
+    },
+    "Underline Mode - Select text to underline" : {
+      "comment" : "Underline mode message"
+    },
+    "Version 1.0.0" : {
+
+    },
+    "Vertical View" : {
+      "comment" : "Vertical view message"
+    },
+    "View_PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عرض PDF"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Преглед на PDF"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পিডিএফ দেখুন"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View PDF"
+          }
+        }
+      }
+    },
+    "Yellow" : {
+      "comment" : "Text color option name"
+    },
+    "Your Ultimate PDF Companion" : {
+
+    }
+  },
+  "version" : "1.1"
+}

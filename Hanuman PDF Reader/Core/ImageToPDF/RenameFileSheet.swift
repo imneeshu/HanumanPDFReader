@@ -18,24 +18,24 @@ struct RenameFileSheet: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                Text("Name your PDF file")
+                Text("Name_your_PDF_file")
                     .font(.title2)
                     .fontWeight(.medium)
                     .padding(.top)
                 
-                TextField("Enter file name", text: $fileName)
+                TextField("Enter_file_name", text: $fileName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
                 
                 Spacer()
             }
-            .navigationTitle("Save PDF")
+            .navigationTitle("Save_PDF")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
-                leading: Button("Cancel") {
+                leading: Button("Cancel_") {
                     presentationMode.wrappedValue.dismiss()
                 },
-                trailing: Button("Create PDF") {
+                trailing: Button("Create_PDF") {
                     onSave()
                 }
                 .fontWeight(.semibold)

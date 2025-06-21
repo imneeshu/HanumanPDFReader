@@ -27,11 +27,13 @@ struct PremiumSubscriptionView: View {
         NavigationView {
             ZStack {
                 backgroundGradient
+                    .ignoresSafeArea()
                 
                 if viewModel.isLoading && viewModel.products.isEmpty {
                     LoadingView()
                 } else {
                     ContentView()
+                        .padding()
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -68,11 +70,11 @@ private extension PremiumSubscriptionView {
     var backgroundGradient: some View {
         LinearGradient(
             colors: [
-                Color(.systemBackground),
+                Color(.blue).opacity(0.6),
                 Color(.systemGray6)
             ],
-            startPoint: .top,
-            endPoint: .bottom
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
         )
         .ignoresSafeArea()
     }
@@ -82,7 +84,7 @@ private extension PremiumSubscriptionView {
         Button(action: { dismiss() }) {
             Image(systemName: "xmark.circle.fill")
                 .font(.title2)
-                .foregroundColor(.secondary)
+                .foregroundColor(.white)
         }
         .disabled(viewModel.isLoading)
     }
@@ -94,7 +96,7 @@ private extension PremiumSubscriptionView {
                 .scaleEffect(1.5)
                 .tint(.primary)
             
-            Text("Loading Premium Options...")
+            Text("Loading_Premium_Options...")
                 .font(.headline)
                 .foregroundColor(.secondary)
         }
@@ -110,7 +112,7 @@ private extension PremiumSubscriptionView {
             
             if !viewModel.hasAnyPremium {
                 VStack(spacing: 16) {
-                    FeaturesSection()
+//                    FeaturesSection()
                     SubscriptionPlansSection()
                     PurchaseButtonSection()
                 }
@@ -130,8 +132,19 @@ private extension PremiumSubscriptionView {
     func HeaderSection() -> some View {
         
         VStack{
-            Image("premium")
-                .frame(width : 100 , height: 100)
+            VStack(spacing: 0) {
+                Image("premium")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: 400, maxHeight: 300)
+                    .clipped()
+//                    .clipShape(
+//                        RoundedCorner(radius: 30, corners: [.bottomLeft, .bottomRight])
+//                    )
+                    .cornerRadius(20)
+            }
+            .edgesIgnoringSafeArea(.top)
+            .ignoresSafeArea()
         }
 //        VStack(spacing: 12) {
 //            // Icon with animation
@@ -171,26 +184,26 @@ private extension PremiumSubscriptionView {
     }
     
     // MARK: - Features Section
-    func FeaturesSection() -> some View {
-        VStack(spacing: 8) {
-            Text("Premium Features")
-                .font(.headline)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            VStack(spacing: 6) {
-                CompactFeatureRow(icon: "star.fill", title: "Premium Content", color: .yellow)
-                CompactFeatureRow(icon: "bolt.fill", title: "Lightning Fast", color: .orange)
-                CompactFeatureRow(icon: "shield.fill", title: "Advanced Security", color: .blue)
-                CompactFeatureRow(icon: "cloud.fill", title: "Cloud Sync", color: .cyan)
-            }
-        }
-    }
+//    func FeaturesSection() -> some View {
+//        VStack(spacing: 8) {
+//            Text("Premium Features")
+//                .font(.headline)
+//                .fontWeight(.semibold)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//            
+//            VStack(spacing: 6) {
+//                CompactFeatureRow(icon: "star.fill", title: "Premium Content", color: .yellow)
+//                CompactFeatureRow(icon: "bolt.fill", title: "Lightning Fast", color: .orange)
+//                CompactFeatureRow(icon: "shield.fill", title: "Advanced Security", color: .blue)
+//                CompactFeatureRow(icon: "cloud.fill", title: "Cloud Sync", color: .cyan)
+//            }
+//        }
+//    }
     
     // MARK: - Subscription Plans Section
     func SubscriptionPlansSection() -> some View {
-        VStack(spacing: 12) {
-            Text("Choose Your Plan")
+        VStack(spacing: 18) {
+            Text("Choose_Your_Plan")
                 .font(.headline)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -220,7 +233,7 @@ private extension PremiumSubscriptionView {
                 .font(.title3)
                 .foregroundColor(.orange)
             
-            Text("No plans available")
+            Text("No_plans_available")
                 .font(.subheadline)
                 .fontWeight(.medium)
             
@@ -500,3 +513,4 @@ struct FeatureRow: View {
 //    }
 //}
 //#endif
+

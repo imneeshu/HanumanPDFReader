@@ -23,6 +23,7 @@ struct FileListView: View {
     @State var filterName : FilterType = .name
     @State var showSortSheet : Bool = false
     @State var isBookmarked : Bool = false
+    @Binding var showEditView: Bool
     
     var body: some View {
         VStack{
@@ -32,9 +33,9 @@ struct FileListView: View {
                     subtitle: "Add some documents to get started"
                 )
             } else {
-                if !isBookmarked{
+                if !isBookmarked && !showEditView{
                     HStack{
-                    Text("Sort by \(filterName.rawValue)")
+                    Text("Sort_by \(filterName.rawValue)")
                         .font(.caption)
                         .bold()
                     Image(systemName: "arrowtriangle.down.fill")
@@ -100,7 +101,7 @@ struct FileListViewForSearch: View {
             } else {
                 if !isBookmarked{
                     HStack{
-                        Text("Sort by \(filterName.rawValue)")
+                        Text("Sort_by \(filterName.rawValue)")
                             .font(.caption)
                             .bold()
                         Image(systemName: "arrowtriangle.down.fill")

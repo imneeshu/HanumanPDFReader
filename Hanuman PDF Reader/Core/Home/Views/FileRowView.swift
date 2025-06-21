@@ -44,7 +44,7 @@ struct FileRowView: View {
                         viewModel.fetchFilesFromCoreData()
                     }
                 } message: {
-                    Text("This action cannot be undone.")
+                    Text("This_action_cannot_be_undone.")
                 }
                 .alert("Error", isPresented: Binding<Bool>(
                     get: { previewError != nil },
@@ -72,10 +72,10 @@ struct FileRowView: View {
                             Image(systemName: "exclamationmark.triangle")
                                 .font(.largeTitle)
                                 .foregroundColor(.orange)
-                            Text("File Not Found")
+                            Text("File_Not_Found")
                                 .font(.title2)
                                 .fontWeight(.semibold)
-                            Text("Unable to locate the file for preview")
+                            Text("Unable_to_locate_the_file_for_preview")
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal)
                             Button("Close") {

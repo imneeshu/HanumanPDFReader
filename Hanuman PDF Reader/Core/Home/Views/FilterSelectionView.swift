@@ -17,7 +17,7 @@ struct FilterSelectionView: View {
             List {
                 // All Files Option
                 HStack {
-                    Text("All Files")
+                    Text("All_Files")
                     Spacer()
                     if selectedFileType == nil {
                         Image(systemName: "checkmark")
