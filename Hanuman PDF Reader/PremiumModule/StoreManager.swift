@@ -16,10 +16,16 @@ class StoreManager: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     
+//    private let productIds: [String] = [
+//        "com.hanumanpdf.premium.monthly",
+//        "com.hanumanpdf.premium.yearly",
+//        "com.hanumanpdf.premium.lifetime"
+//    ]
+    
     private let productIds: [String] = [
-        "com.hanumanpdf.premium.monthly",
-        "com.hanumanpdf.premium.yearly",
-        "com.hanumanpdf.premium.lifetime"
+        "monthly",
+        "yearly",
+        "onetime"
     ]
     
     private var updates: Task<Void, Never>? = nil
@@ -132,6 +138,18 @@ class StoreManager: ObservableObject {
         }
         
         self.purchasedProductIDs = purchasedProducts
+        savePremiumStatusToUserDefaults()
+    }
+    
+    /// Saves the current premium subscription status to UserDefaults.
+    ///
+    /// Updates the keys "monthlySubscribed", "yearlySubscribed", and "oneTimePurchase" based on the
+    /// presence of the corresponding product IDs in `purchasedProductIDs`.
+    private func savePremiumStatusToUserDefaults() {
+        let defaults = UserDefaults.standard
+        defaults.set(purchasedProductIDs.contains("com.hanumanpdf.premium.monthly"), forKey: "monthlySubscribed")
+        defaults.set(purchasedProductIDs.contains("com.hanumanpdf.premium.yearly"), forKey: "yearlySubscribed")
+        defaults.set(purchasedProductIDs.contains("com.hanumanpdf.premium.lifetime"), forKey: "oneTimePurchase")
     }
     
     private func observeTransactionUpdates() -> Task<Void, Never> {
@@ -184,3 +202,4 @@ class StoreManager: ObservableObject {
         return !purchasedProductIDs.isEmpty
     }
 }
+

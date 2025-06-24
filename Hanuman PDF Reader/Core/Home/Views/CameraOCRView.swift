@@ -70,6 +70,7 @@ struct CameraOCRView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> ImageScannerController {
         let scannerVC = ImageScannerController()
         scannerVC.imageScannerDelegate = context.coordinator
+        scannerVC.view.backgroundColor = navyUIKit
         return scannerVC
     }
 

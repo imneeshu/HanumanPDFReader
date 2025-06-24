@@ -21,12 +21,27 @@ struct FileListViewForSelection: View {
     @State var showSplitView : Bool = false
     @State private var selectedPages: Set<Int> = []
     @State private var pdfDocument: PDFDocument?
+    @State private var refreshID = UUID() // Add this to trigger view refresh
+    let onClosePDF: () -> Void
+    @Environment(\.presentationMode) var presentationMode
+    @State var bannerIsLoaded : Bool = false
     
     var body: some View {
         ZStack {
             // MARK: PDF Reorder View after Continue Button
             NavigationLink(
-                destination: PDFReorderView(selectedFileItems: $selectedFileItems)
+                destination: PDFReorderView(selectedFileItems: $selectedFileItems,
+                                            onClosePDF: {
+                                                // Clear selections and refresh view
+                                                selectedFileItems = []
+                                                selectedFiles = []
+                                                refreshID = UUID() // Trigger view refresh
+                                                
+                                                // Refresh the view model data if needed
+                                                viewModel.refreshFileItems() // Add this method to your MainViewModel
+                                                
+                                                presentationMode.wrappedValue.dismiss()
+                                            })
                     .navigationBarTitleDisplayMode(.inline),
                 isActive: $showReorderView,
                 label: { EmptyView() }
@@ -36,19 +51,25 @@ struct FileListViewForSelection: View {
             NavigationLink(
                 destination: SplitPDFView(
                     pdfDocument: $pdfDocument,
-                    selectedPages: $selectedPages
+                    selectedPages: $selectedPages,
+                    onClosePDF: {
+                        onClosePDF()
+                        selectedPages = []
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 )
                     .navigationBarTitleDisplayMode(.inline),
                 isActive: $showSplitView,
-                label: { EmptyView()
- }
+                label: { EmptyView() }
             )
             
             
             VStack {
-                AdBanner("ca-app-pub-3940256099942544/2934735716")
-                    .frame(maxWidth: .infinity, maxHeight: 50)
-                    .background(Color.clear)
+                if !PremiumStatus.shared.isPremiumPurchased{
+                    AdBanner(adUnitID: bannerAd, bannerIsLoaded: $bannerIsLoaded)
+                        .frame(maxWidth: .infinity, maxHeight: 50)
+                        .background(Color.clear)
+                }
                 
                 if viewModel.fileItems.filter({ $0.fileTypeEnum == .pdf }).isEmpty {
                     EmptyStateView(
@@ -75,8 +96,9 @@ struct FileListViewForSelection: View {
                             .cornerRadius(10)
                         }
                     }
-                    .padding(.top, 20)
+                    .padding(.top, bannerIsLoaded ? 20 : 0)
                     .listStyle(PlainListStyle())
+                    .id(refreshID) // Add this to make the list refreshable
                 }
                 
                 // Continue Button
@@ -120,7 +142,6 @@ struct FileListViewForSelection: View {
         .onChange(of: selectedFiles, perform: { newValue in
             if listFlow == .split{
                 showSplitView = true
-                
             }
         })
         .fileImporter(
@@ -175,6 +196,12 @@ struct FileListViewForSelection: View {
         }
     }
     
+    func allFileToogleSelection(){
+        for file in selectedFileItems{
+            toggleSelection(for: file)
+        }
+    }
+    
     // MARK: - Selection
      func selectionForSplit(for file: FileItem) {
         guard file.fileTypeEnum == .pdf else { return }
@@ -183,5 +210,4 @@ struct FileListViewForSelection: View {
         selectedPages.removeAll()
         selectedFiles.append(fileURL)
     }
-    
 }

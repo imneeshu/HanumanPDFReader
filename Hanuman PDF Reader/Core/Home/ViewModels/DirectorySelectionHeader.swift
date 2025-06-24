@@ -40,7 +40,7 @@ struct DirectorySelectionHeader: View {
         .fileImporter(
             isPresented: $showingDirectoryPicker,
             allowedContentTypes: [.folder],
-            allowsMultipleSelection: false
+            allowsMultipleSelection: true
         ) { result in
             switch result {
             case .success(let urls):

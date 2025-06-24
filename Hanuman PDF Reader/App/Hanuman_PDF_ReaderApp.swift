@@ -10,6 +10,8 @@ import SwiftUI
 @main
 struct Hanuman_PDF_ReaderApp: App {
     let persistenceController = PersistenceController.shared
+    // Add interstitial ad manager
+    var interstitialAdManager = InterstitialAdManager(adUnitID: interstitialAd)
     init() {
         // Initialize AdMob
         _ = AdMobManager.shared
@@ -19,6 +21,7 @@ struct Hanuman_PDF_ReaderApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(interstitialAdManager)
                 .accentColor(navy)
         }
     }

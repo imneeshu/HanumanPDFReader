@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -9,6 +11,8 @@
 			<string>Microsoft PowerPoint Document</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>org.openxmlformats.presentationml.presentation</string>
@@ -20,6 +24,8 @@
 			<string>Microsoft Excel Document</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>org.openxmlformats.spreadsheetml.sheet</string>
@@ -31,6 +37,8 @@
 			<string>Microsoft Word Document</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>org.openxmlformats.wordprocessingml.document</string>
@@ -43,7 +51,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
-			<string>Owner</string>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.adobe.pdf</string>
@@ -51,12 +59,10 @@
 		</dict>
 	</array>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-5228443391218351~8852049270</string>
+	<string>ca-app-pub-5228443391218351~3590756990</string>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>This app sends notifications about document processing and reminders</string>
 	<key>UIBackgroundModes</key>
-	<array>
-		<string>background-processing</string>
-	</array>
+	<array/>
 </dict>
 </plist>

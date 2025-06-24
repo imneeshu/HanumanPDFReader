@@ -17,17 +17,23 @@ struct SplitPDFView: View {
     @State private var newFileName = ""
     @State private var showingShareSheet = false
     @State private var splitPDFURL: URL?
+    let onClosePDF: () -> Void
+    @Environment(\.presentationMode) var presentationMode
+    @State var bannerIsLoaded : Bool = false
     
     @State private var splitPDFPreviewDocument: PDFDocument?
     @State private var showSplitPreviewSheet = false
     @State var showShareView : Bool = false
+    @EnvironmentObject var interstitialAdManager : InterstitialAdManager
+    @State var showAd : Bool = false
 
     var body: some View {
         VStack(spacing: 10) {
-            AdBanner("ca-app-pub-3940256099942544/2934735716")
-                .frame(maxWidth: .infinity, maxHeight: 50)
-                .background(Color.clear)
-            
+            if !PremiumStatus.shared.isPremiumPurchased{
+                AdBanner(adUnitID: bannerAd, bannerIsLoaded: $bannerIsLoaded)
+                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .background(Color.clear)
+            }
             if pdfDocument?.pageCount ?? 0 > 0 {
                 ScrollView {
                     LazyVGrid(columns: [
@@ -47,12 +53,13 @@ struct SplitPDFView: View {
                         }
                     }
                 }
-                .padding(.top , 20)
+                .padding(.top , bannerIsLoaded ? 20 : 0)
                 
                 Button(action: {
                     newFileName = "Split_\(selectedPDF?.deletingPathExtension().lastPathComponent ?? "Document")"
                     saveSplitPDF(fileName: newFileName)
-                    showingRenameAlert = true
+                    //showingRenameAlert = true
+                    showAd = true
                 }) {
                     HStack {
                         Image(systemName: "scissors")
@@ -72,13 +79,32 @@ struct SplitPDFView: View {
         .padding()
         .navigationTitle("Split_PDF")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showShareView) {
+        .onChange(of: showAd, perform: { newValue in
+              if interstitialAdManager.isLoaded && !PremiumStatus.shared.isPremiumPurchased{
+                  interstitialAdManager.showAd()
+              }
+              else{
+                  showingRenameAlert = true
+              }
+          })
+      
+          .onChange(of: interstitialAdManager.isPresenting, perform: { newValue in
+              if newValue == false{
+                  showingRenameAlert = true
+              }
+          })
+
+        .fullScreenCover(isPresented: $showShareView) {
             if let url = splitPDFURL {
                 SaveShareSheetContent(
                     pdfURL: url,
                     fileName: newFileName,
                     onViewPDF: {
                         // Add any additional navigation logic here if needed
+                    },
+                    onClosePDF: {
+                        onClosePDF()
+                        presentationMode.wrappedValue.dismiss()
                     }
                 )
             }
@@ -94,7 +120,8 @@ struct SplitPDFView: View {
                             self.splitPDFURL = newURL
                             showingRenameAlert = false
                             showShareView = true
-                            
+                            selectedPages.removeAll()
+                            selectedPDF = nil
                         }
                     }
                 }
@@ -135,14 +162,14 @@ struct SplitPDFView: View {
         }
         // Save to Documents
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let pdfsDirectory = documentsPath.appendingPathComponent("PDFs")
+        if !FileManager.default.fileExists(atPath: pdfsDirectory.path) {
+            try? FileManager.default.createDirectory(at: pdfsDirectory, withIntermediateDirectories: true)
+        }
         let safeFileName = fileName.hasSuffix(".pdf") ? fileName : "\(fileName).pdf"
-        let fileURL = documentsPath.appendingPathComponent(safeFileName)
+        let fileURL = pdfsDirectory.appendingPathComponent(safeFileName)
         if splitDocument.write(to: fileURL) {
             splitPDFURL = fileURL
-            showingShareSheet = true
-            // Reset selection for next use only after successful save
-            selectedPages.removeAll()
-            selectedPDF = nil
         }
     }
 }
@@ -361,3 +388,4 @@ struct PDFPagePreviewView: UIViewRepresentable {
         }
     }
 }
+

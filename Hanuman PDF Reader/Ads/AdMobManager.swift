@@ -5,9 +5,11 @@
 //  Created by Neeshu Kumar on 10/06/25.
 //
 
-
 import SwiftUI
 import GoogleMobileAds
+
+let bannerAd : String = "ca-app-pub-5228443391218351/1240195322"
+let interstitialAd : String = "ca-app-pub-5228443391218351/3170571704"
 
 // MARK: - AdMob Manager
 class AdMobManager: NSObject, ObservableObject {
@@ -30,21 +32,49 @@ class AdMobManager: NSObject, ObservableObject {
 struct BannerAdView: UIViewRepresentable {
     let adUnitID: String
     let width: CGFloat
+    @Binding var isLoaded: Bool
 
-    func makeUIView(context: Context) -> BannerView {
+    class Coordinator: NSObject, BannerViewDelegate {
+        var parent: BannerAdView
+        init(parent: BannerAdView) { self.parent = parent }
+        func bannerViewDidReceiveAd(_ bannerView: BannerView) {
+            parent.isLoaded = true
+        }
+        func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: Error) {
+            parent.isLoaded = false
+        }
+    }
+    func makeCoordinator() -> Coordinator { Coordinator(parent: self) }
+
+    func makeUIView(context: Context) -> UIView {
+        if !isLoaded {
+            // Return an empty UIView with zero frame when ad is not loaded
+            return UIView(frame: .zero)
+        }
         let bannerView = BannerView()
         bannerView.adUnitID = adUnitID
         bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
         bannerView.adSize = currentOrientationAnchoredAdaptiveBanner(width: width)
+        bannerView.delegate = context.coordinator
         bannerView.load(Request())
         return bannerView
     }
 
-    func updateUIView(_ uiView: BannerView, context: Context) {
-        let adaptiveSize = currentOrientationAnchoredAdaptiveBanner(width: width)
-        if uiView.adSize.size.width != width {
-            uiView.adSize = adaptiveSize
-            uiView.load(Request())
+    func updateUIView(_ uiView: UIView, context: Context) {
+        if !isLoaded {
+            // Hide the banner view or set frame to zero when ad not loaded
+            uiView.isHidden = true
+            uiView.frame = .zero
+            return
+        }
+        uiView.isHidden = false
+        
+        if let bannerView = uiView as? BannerView {
+            let adaptiveSize = currentOrientationAnchoredAdaptiveBanner(width: width)
+            if bannerView.adSize.size.width != width {
+                bannerView.adSize = adaptiveSize
+                bannerView.load(Request())
+            }
         }
     }
 }
@@ -78,12 +108,28 @@ class InterstitialAdManager: NSObject, ObservableObject, FullScreenContentDelega
     }
     
     func showAd() {
-        guard let interstitialAd = interstitialAd,
-              let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let rootViewController = windowScene.windows.first?.rootViewController else {
+        guard let interstitialAd = interstitialAd else {
+            print("[AdDebug] showAd(): interstitialAd is missing, returning.")
             return
         }
         
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            print("[AdDebug] showAd(): UIWindowScene not found, cannot present ad.")
+            return
+        }
+        
+        guard let rootViewController = windowScene.windows.first?.rootViewController else {
+            print("[AdDebug] showAd(): rootViewController not found, cannot present ad.")
+            return
+        }
+        
+        // Check if already presenting to avoid multiple presentations
+        guard !isPresenting else {
+            print("[AdDebug] showAd(): Ad is already being presented.")
+            return
+        }
+        
+        print("[AdDebug] showAd(): Presenting interstitial ad now.")
         isPresenting = true
         interstitialAd.present(from: rootViewController)
     }
@@ -259,16 +305,16 @@ class NativeAdManager: NSObject, ObservableObject, NativeAdLoaderDelegate {
 // MARK: - SwiftUI AdBanner wrapper using GeometryReader for Adaptive Banner
 struct AdBanner: View {
     let adUnitID: String
-    init(_ adUnitID: String) {
-        self.adUnitID = adUnitID
-    }
+    @Binding var bannerIsLoaded : Bool
+    
     var body: some View {
         GeometryReader { geometry in
             HStack {
                 Spacer(minLength: 0)
                 BannerAdView(
                     adUnitID: adUnitID,
-                    width: UIScreen.main.bounds.width
+                    width: UIScreen.main.bounds.width,
+                    isLoaded: $bannerIsLoaded
                 )
                 Spacer(minLength: 0)
             }
@@ -285,7 +331,9 @@ struct InterstitialAdButton: View {
     init(_ title: String, adUnitID: String, action: @escaping () -> Void = {}) {
         self.title = title
         self.action = action
-        self._adManager = StateObject(wrappedValue: InterstitialAdManager(adUnitID: adUnitID))
+        self._adManager = StateObject(
+            wrappedValue: InterstitialAdManager(adUnitID: interstitialAd)
+        )
     }
     
     var body: some View {
@@ -392,4 +440,3 @@ struct RewardedAdButton: View {
 //        }
 //    }
 //}
-

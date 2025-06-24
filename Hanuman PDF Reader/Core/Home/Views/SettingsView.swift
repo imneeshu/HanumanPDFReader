@@ -18,9 +18,11 @@ struct SettingsView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     @State private var showingLanguageSelection = false
     @Environment(\.presentationMode) var presentationMode
+    @State var showPrivacyPolicyView : Bool = false
     
     var body: some View {
         NavigationView {
+            
             List {
                 Section("Appearance") {
                     HStack {
@@ -45,27 +47,27 @@ struct SettingsView: View {
                 }
                 .transition(.move(edge: .leading))
                 
-                Section("Language_") {
-                    HStack {
-                        Image(systemName: "globe")
-                            .foregroundColor(navy)
-                        Text("Language_")
-                        Spacer()
-                        Text(getLanguageDisplayName(settingsViewModel.selectedLanguage))
-                            .foregroundColor(.secondary)
-                            .transition(.slide)
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(navy)
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            showingLanguageSelection = true
-                        }
-                    }
-                    .transition(.move(edge: .leading))
-                }
-                .transition(.move(edge: .leading))
+//                Section("Language_") {
+//                    HStack {
+//                        Image(systemName: "globe")
+//                            .foregroundColor(navy)
+//                        Text("Language_")
+//                        Spacer()
+//                        Text(getLanguageDisplayName(settingsViewModel.selectedLanguage))
+//                            .foregroundColor(.secondary)
+//                            .transition(.slide)
+//                        Image(systemName: "chevron.right")
+//                            .foregroundColor(navy)
+//                    }
+//                    .contentShape(Rectangle())
+//                    .onTapGesture {
+//                        withAnimation(.easeInOut(duration: 0.3)) {
+//                            showingLanguageSelection = true
+//                        }
+//                    }
+//                    .transition(.move(edge: .leading))
+//                }
+//                .transition(.move(edge: .leading))
                 
                 Section("Notifications_") {
                     HStack {
@@ -108,21 +110,21 @@ struct SettingsView: View {
                         title: NSLocalizedString("Privacy_Policy", comment: ""),
                         action: {
                             // Open privacy policy
-                            openURL("https://your-privacy-policy-url.com")
+                            showPrivacyPolicyView = true
                         }
                     )
                     .transition(.move(edge: .leading))
                     
-                    SettingsRowView(
-                        icon: "doc.text.fill",
-                        iconColor: navy,
-                        title: NSLocalizedString("Terms_of_Use", comment: ""),
-                        action: {
-                            // Open terms of use
-                            openURL("https://your-terms-url.com")
-                        }
-                    )
-                    .transition(.slide)
+//                    SettingsRowView(
+//                        icon: "doc.text.fill",
+//                        iconColor: navy,
+//                        title: NSLocalizedString("Terms_of_Use", comment: ""),
+//                        action: {
+//                            // Open terms of use
+//                            openURL("https://your-terms-url.com")
+//                        }
+//                    )
+//                    .transition(.slide)
                 }
                 .transition(.slide)
                 
@@ -146,18 +148,22 @@ struct SettingsView: View {
             // Add transition to the entire List
             .transition(.move(edge: .leading))
         }
+        .padding()
         .navigationViewStyle(StackNavigationViewStyle())
-        .background(.clear)
+        .background(settingsViewModel.isDarkMode ? Color.black : Color.white)
         // Add transition to NavigationView for view changes
         .transition(.move(edge: .leading))
-        .sheet(isPresented: $showingLanguageSelection) {
-            LanguageSelectionView(
-                selectedLanguage: $settingsViewModel.selectedLanguage,
-                isPresented: $showingLanguageSelection
-            )
-            // Sheet should slide from right to left
-            .transition(.move(edge: .bottom))
+        .sheet(isPresented: $showPrivacyPolicyView) {
+            PrivacyPolicyView()
         }
+//        .sheet(isPresented: $showingLanguageSelection) {
+//            LanguageSelectionView(
+//                selectedLanguage: $settingsViewModel.selectedLanguage,
+//                isPresented: $showingLanguageSelection
+//            )
+//            // Sheet should slide from right to left
+//            .transition(.move(edge: .bottom))
+//        }
         .onChange(of: settingsViewModel.isDarkMode) { _ in
             withAnimation(.easeInOut(duration: 0.3)) {
                 settingsViewModel.saveSettings()

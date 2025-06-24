@@ -11,17 +11,21 @@ struct SaveShareSheetContent: View {
     let pdfURL: URL
     let fileName: String
     let onViewPDF: () -> Void
+    let onClosePDF: () -> Void
     @Environment(\.dismiss) private var dismiss
+    @State private var popToRoot = false
 
     var body: some View {
         NavigationView {
             SaveShareView(
                 pdfURL: pdfURL,
                 fileName: fileName,
-                onViewPDF: onViewPDF
+                onViewPDF: onViewPDF,
+                onClosePDF: onClosePDF,
+                popToRoot: $popToRoot
             )
         }
-        .presentationDetents([.fraction(0.35)])
+//        .presentationDetents([.fraction(0.35)])
         .presentationDragIndicator(.visible)
     }
 }
@@ -30,18 +34,51 @@ struct SaveShareView: View {
     let pdfURL: URL
     let fileName: String
     let onViewPDF: () -> Void
+    let onClosePDF: () -> Void
+    @Binding var popToRoot: Bool
     @State private var showingShareSheet = false
-    
+    @Environment(\.presentationMode) var presentationMode
+    @State private var showCheckmark = false
+    @State var showingPreview : Bool = false
+
     var body: some View {
-        VStack(spacing: 30) {
-            
+        VStack(spacing: 25) {
+            Spacer()
+
+            // ✅ Checkmark animation
+            ZStack {
+                Circle()
+                    .fill(Color.green.opacity(0.2))
+                    .frame(width: 120, height: 120)
+
+                Image(systemName: "checkmark")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50, height: 50)
+                    .foregroundColor(.green)
+                    .scaleEffect(showCheckmark ? 1 : 0)
+                    .animation(.easeOut(duration: 0.6), value: showCheckmark)
+            }
+            .onAppear {
+                showCheckmark = true
+            }
+
+            // ✅ Success message
             Text("PDF_Created_Successfully!")
                 .font(.title2)
-                .fontWeight(.medium)
-            
+                .fontWeight(.bold)
+                .foregroundColor(.green)
+                .transition(.opacity)
+                .animation(.easeInOut, value: showCheckmark)
+
+            Spacer()
+
+            // ✅ Buttons
             VStack(spacing: 15) {
                 // View PDF button
-                Button(action: onViewPDF) {
+                Button(action: {
+                    showingPreview = true
+                }) {
                     HStack {
                         Image(systemName: "doc.text.magnifyingglass")
                         Text("View_PDF")
@@ -50,23 +87,11 @@ struct SaveShareView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(
-//                        LinearGradient(
-//                           gradient: Gradient(colors: [
-//                               .black,
-//                               Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-//                               Color(red: 0.6, green: 0.4, blue: 0.9),
-//                               Color(red: 0.8, green: 0.3, blue: 0.8)
-//                           ]),
-//                           startPoint: .topLeading,
-//                           endPoint: .bottomTrailing
-//                        )
-                        navy
-                    )
-                    .cornerRadius(10)
+                    .background(Color.blue)
+                    .cornerRadius(12)
                 }
-                
-                // Share button
+
+                // Share PDF button
                 Button(action: {
                     showingShareSheet = true
                 }) {
@@ -78,15 +103,37 @@ struct SaveShareView: View {
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(.gray.opacity(0.35))
-                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.3))
+                    .cornerRadius(12)
+                }
+
+                // Close button (new)
+                Button(action: {
+                    popToRoot = true
+                    presentationMode.wrappedValue.dismiss()
+                    onClosePDF()
+                }) {
+                    Text("Close_")
+                        .font(.headline)
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(10)
                 }
             }
             .padding(.horizontal)
+
+            Spacer()
         }
+        .fullScreenCover(isPresented: $showingPreview) {
+            DirectPDFView(fileURL: pdfURL) {
+               print("URL")
+            }
+        }
+        .padding()
         .sheet(isPresented: $showingShareSheet) {
             ShareSheet(items: [pdfURL])
-//            EmptyView()
         }
     }
 }

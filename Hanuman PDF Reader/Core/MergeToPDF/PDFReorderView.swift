@@ -29,6 +29,10 @@ struct PDFReorderView: View {
     @State private var isProcessing = false
     @State private var showAlert = false
     @State private var alertMessage = ""
+    let onClosePDF : () -> Void
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var interstitialAdManager : InterstitialAdManager
+    @State var showAd : Bool = false
     
     @State private var showRenameSheet = false
     @State private var pdfName: String = {
@@ -38,12 +42,15 @@ struct PDFReorderView: View {
     }()
     @State private var showShareSheet = false
     @State private var renamedPDFURL: URL?
+    @State var bannerIsLoaded : Bool = false
     
     var body: some View {
         VStack {
-            AdBanner("ca-app-pub-3940256099942544/2934735716")
-                .frame(maxWidth: .infinity, maxHeight: 50)
-                .background(Color.clear)
+            if !PremiumStatus.shared.isPremiumPurchased{
+                AdBanner(adUnitID: bannerAd, bannerIsLoaded: $bannerIsLoaded)
+                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .background(Color.clear)
+            }
             
             // Header
             HStack {
@@ -92,6 +99,20 @@ struct PDFReorderView: View {
                     .padding(.bottom, 20)
             }
         }
+        .onChange(of: showAd, perform: { newValue in
+            if interstitialAdManager.isLoaded && !PremiumStatus.shared.isPremiumPurchased {
+                interstitialAdManager.showAd()
+            }
+              else{
+                  mergePDFs()
+              }
+          })
+      
+          .onChange(of: interstitialAdManager.isPresenting, perform: { newValue in
+              if newValue == false{
+                  mergePDFs()
+              }
+          })
         .navigationBarHidden(true)
         .navigationDestination(isPresented: $showPDFViewer) {
             if let pdfURL = mergedPDFURL {
@@ -152,13 +173,17 @@ struct PDFReorderView: View {
 //                ShareSheet(items: [url])
 //            }
 //        }
-        .sheet(isPresented: $showShareSheet) {
+        .fullScreenCover(isPresented: $showShareSheet) {
             SaveShareSheetContent(
                 pdfURL: renamedPDFURL!,
                 fileName: "",
                 onViewPDF: {
                     showShareSheet = false
 //                    showingPDFViewer = true
+                },
+                onClosePDF: {
+                    onClosePDF()
+                    presentationMode.wrappedValue.dismiss()
                 }
             )
         }
@@ -167,7 +192,8 @@ struct PDFReorderView: View {
     // MARK: - Merge PDF Button
     private var mergePDFButton: some View {
         Button(action: {
-            mergePDFs()
+            showAd = true
+           // mergePDFs()
         }) {
             HStack {
                 Image(systemName: "doc.on.doc")
@@ -241,8 +267,10 @@ struct PDFReorderView: View {
                     // Save merged document
                     let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                     let timestamp = Int(Date().timeIntervalSince1970)
-                    let mergedFileName = "Merged_Document_\(timestamp).pdf"
-                    let mergedURL = documentsPath.appendingPathComponent(mergedFileName)
+                    let mergedFileName = "PDFs/Merged_Document_\(timestamp).pdf"
+                    let mergedURL = documentsPath.appendingPathComponent(
+                        mergedFileName)
+                   // let mergedURL = documentsPath.appendingPathComponent(mergedFileName)
                     
                     if mergedDocument.write(to: mergedURL) {
                         continuation.resume(returning: mergedURL)
@@ -275,6 +303,11 @@ struct PDFReorderView: View {
             try FileManager.default.removeItem(at: destinationURL)
         }
         try FileManager.default.moveItem(at: originalURL, to: destinationURL)
+        savePDF(
+            destinationURL: destinationURL,
+            fileName: newName,
+            modificationDate: Date()
+        )
         return destinationURL
     } catch {
         print("Rename failed: \(error)")

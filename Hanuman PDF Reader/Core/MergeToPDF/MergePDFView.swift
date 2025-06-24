@@ -400,6 +400,8 @@ struct RenameView: View {
             do {
                 let finalURL = try PDFMerger.renamePDF(from: pdfURL, to: fileName)
                 
+                savePDF(destinationURL: finalURL, fileName: fileName, modificationDate: Date())
+                
                 DispatchQueue.main.async {
                     self.isRenaming = false
                     self.presentationMode.wrappedValue.dismiss()
@@ -419,7 +421,7 @@ struct FinalScreenView: View {
     let pdfURL: URL
     @Environment(\.presentationMode) var presentationMode
     @State private var showingShareSheet = false
-    @State private var showingPDFViewer = false
+    @State var showingPreview : Bool = false
     
     var body: some View {
         NavigationView {
@@ -444,7 +446,7 @@ struct FinalScreenView: View {
                 
                 VStack(spacing: 15) {
                     Button(action: {
-                        showingPDFViewer = true
+                        showingPreview = true
                     }) {
                         HStack {
                             Image(systemName: "eye")
@@ -485,14 +487,14 @@ struct FinalScreenView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 30)
             }
+            .fullScreenCover(isPresented: $showingPreview) {
+                DirectPDFView(fileURL: pdfURL) {
+                   print("URL")
+                }            }
             .navigationTitle("Success")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showingShareSheet) {
                 ShareSheet(items: [pdfURL])
-                EmptyView()
-            }
-            .sheet(isPresented: $showingPDFViewer) {
-//                PDFViewer(pdfURL: pdfURL)
                 EmptyView()
             }
         }
@@ -539,7 +541,7 @@ class PDFMerger {
         }
         
         let tempURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("merged_pdf_\(UUID().uuidString).pdf")
+            .appendingPathComponent("PDFs/merged_pdf_\(UUID().uuidString).pdf")
         
         guard mergedDocument.write(to: tempURL) else {
             throw PDFMergerError.mergeFailed
@@ -551,7 +553,8 @@ class PDFMerger {
     static func renamePDF(from sourceURL: URL, to name: String) throws -> URL {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, 
                                                           in: .userDomainMask).first!
-        let finalURL = documentsDirectory.appendingPathComponent("\(name).pdf")
+        let finalURL = documentsDirectory.appendingPathComponent("PDFs/\(name).pdf")
+        //let finalURL = documentsDirectory.appendingPathComponent("\(name).pdf")
         
         // Remove existing file if it exists
         if FileManager.default.fileExists(atPath: finalURL.path) {
@@ -563,7 +566,36 @@ class PDFMerger {
         // Clean up temporary file
         try? FileManager.default.removeItem(at: sourceURL)
         
+        savePDF(destinationURL: finalURL, fileName: name, modificationDate: Date())
+        
         return finalURL
+    }
+}
+
+func savePDF(destinationURL : URL , fileName: String, modificationDate: Date){
+    do{
+        let resourceValues = try destinationURL.resourceValues(forKeys: [
+            .isUbiquitousItemKey,
+            .ubiquitousItemDownloadingStatusKey,
+            .fileSizeKey,
+            .contentModificationDateKey
+        ])
+        
+        let context = PersistenceController.shared.container.viewContext
+        let fileItem = FileItem(context: context)
+        fileItem.name = fileName
+        fileItem.path = destinationURL.absoluteString // ✅ Store full URL as String
+        fileItem.fileType = determineFileType(from: fileName)
+        fileItem.createdDate = Date()
+        fileItem.modifiedDate = modificationDate
+        fileItem.fileSize = Int64(resourceValues.fileSize ?? 0)
+        fileItem.isBookmarked = false
+        fileItem.directoryPath = destinationURL.absoluteString
+        
+        PersistenceController.shared.save()
+    }
+    catch{
+        print("Not Saved. Error: \(error)")
     }
 }
 

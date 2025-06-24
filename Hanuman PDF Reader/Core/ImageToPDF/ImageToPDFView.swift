@@ -23,6 +23,8 @@ struct ImageToPDFView: View {
     @State private var showingRenameSheet = false
     @State private var showingSaveShareView = false
     @State private var showingPDFViewer = false
+    @Environment(\.presentationMode) var presentationMode
+    let onClosePDF: () -> Void
     @State private var pdfFileName: String = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy_MM_dd_HH_mm"
@@ -32,12 +34,17 @@ struct ImageToPDFView: View {
     @State private var isProcessing = false
     @State private var draggedItem: UIImage?
     @State private var isReorderMode = false // New state for reorder mode
+    @EnvironmentObject var interstitialAdManager : InterstitialAdManager
+    @State var showAd : Bool = false
+    @State var bannerIsLoaded : Bool = false
     
     var body: some View {
             VStack {
-                AdBanner("ca-app-pub-3940256099942544/2934735716")
-                    .frame(maxWidth: .infinity, maxHeight: 50)
-                    .background(Color.clear)
+                if !PremiumStatus.shared.isPremiumPurchased{
+                    AdBanner(adUnitID: bannerAd, bannerIsLoaded: $bannerIsLoaded)
+                        .frame(maxWidth: .infinity, maxHeight: 50)
+                        .background(Color.clear)
+                }
                 if selectedImages.isEmpty {
                     addPageCell
                         .padding()
@@ -112,7 +119,8 @@ struct ImageToPDFView: View {
                         // Convert button (hidden in reorder mode)
                         if !isReorderMode {
                             Button(action: {
-                                showingRenameSheet = true
+                                showAd = true
+                                //showingRenameSheet = true
                             }) {
                                 HStack {
                                     if isProcessing {
@@ -135,10 +143,15 @@ struct ImageToPDFView: View {
                             .padding(.horizontal)
                         }
                     }
-                    .padding(.top, 20)
+                    .padding(
+                        .top,
+                        (
+                            bannerIsLoaded
+                        ) ? 20 : 0
+                    )
                 }
             }
-            .navigationTitle("Image to PDF")
+            .navigationTitle("Image_to_PDF")
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: selectedItems) { items in
                 Task {
@@ -150,6 +163,20 @@ struct ImageToPDFView: View {
                     await loadImages(from: selectedItems)
                 }
             }
+            .onChange(of: showAd, perform: { newValue in
+                if interstitialAdManager.isLoaded && !PremiumStatus.shared.isPremiumPurchased {
+                    interstitialAdManager.showAd()
+                }
+                else{
+                    showingRenameSheet = true
+                }
+            })
+        
+            .onChange(of: interstitialAdManager.isPresenting, perform: { newValue in
+                if newValue == false{
+                    showingRenameSheet = true
+                }
+            })
         
             .sheet(isPresented: $showingRenameSheet) {
                 RenameSheet(
@@ -164,13 +191,17 @@ struct ImageToPDFView: View {
                 .presentationDetents([.fraction(0.30)])
             }
         
-            .sheet(isPresented: $showingSaveShareView) {
+            .fullScreenCover(isPresented: $showingSaveShareView) {
                 SaveShareSheetContent(
                     pdfURL: createdPDFURL!,
                     fileName: pdfFileName,
                     onViewPDF: {
                         showingSaveShareView = false
                         showingPDFViewer = true
+                    },
+                    onClosePDF:{
+                        onClosePDF()
+                        presentationMode.wrappedValue.dismiss()
                     }
                 )
             }
@@ -439,9 +470,14 @@ struct ImageToPDFView: View {
         
         // Save PDF to documents directory
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let pdfURL = documentsPath.appendingPathComponent("\(pdfFileName).pdf")
+        let pdfURL = documentsPath.appendingPathComponent("PDFs/\(pdfFileName).pdf")
         
         pdfDocument.write(to: pdfURL)
+        savePDF(
+            destinationURL: pdfURL,
+            fileName: pdfFileName,
+            modificationDate: Date()
+        )
         
         await MainActor.run {
             createdPDFURL = pdfURL

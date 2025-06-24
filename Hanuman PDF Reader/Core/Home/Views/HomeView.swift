@@ -169,6 +169,7 @@ struct HomeView: View {
     @State private var showingScanView = false
     @State private var showingImportView = false
     @Binding var showEditView: Bool
+    let onClosePDF: () -> Void
     
     var body: some View {
         VStack {

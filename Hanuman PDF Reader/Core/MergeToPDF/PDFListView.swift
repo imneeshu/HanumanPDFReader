@@ -19,6 +19,9 @@ enum ListFlow{
 struct PDFListView: View {
     @EnvironmentObject var mainViewModel: MainViewModel
     @State var listFlow : ListFlow = .merge
+    @Environment(\.presentationMode) var presentationMode
+    
+    let onClosePDF: () -> Void
     
     
     var body: some View {
@@ -28,7 +31,14 @@ struct PDFListView: View {
                 ProgressView("Loading files...")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                FileListViewForSelection(listFlow: $listFlow)
+                FileListViewForSelection(
+                    listFlow: $listFlow,
+                    onClosePDF: {
+                        onClosePDF()
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    
+                )
                     .environmentObject(mainViewModel)
             }
         }

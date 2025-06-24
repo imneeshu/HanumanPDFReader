@@ -37,6 +37,11 @@ class PremiumViewModel: ObservableObject {
     func loadProducts() async {
         await storeManager.loadProducts()
         
+        // Automatically select the monthly plan by default if available
+        if selectedProduct == nil, let monthly = storeManager.products.first(where: { $0.id.lowercased().contains("monthly") }) {
+            selectedProduct = monthly
+        }
+        
         if let error = storeManager.errorMessage {
             showError(error)
         }

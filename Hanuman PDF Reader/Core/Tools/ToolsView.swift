@@ -18,6 +18,7 @@ struct ToolsView: View {
     @State var showImageView: Bool = false
     @State var showImagePreview : Bool = false
     @State var showEditView: Bool = true
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         ScrollView {
@@ -26,7 +27,10 @@ struct ToolsView: View {
             NavigationLink(
                 destination: ScanToPDFView(
                     capturedImages: $capturedImages,
-                    isAutoCapture: $isAutoCapture
+                    isAutoCapture: $isAutoCapture,
+                    onClosePDF: {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 ),
                 isActive: $showScannedViewPage,
                 label: {
@@ -35,7 +39,12 @@ struct ToolsView: View {
             )
             
             NavigationLink(
-                destination: ImageToPDFView(selectedItems: $selectedItems),
+                destination: ImageToPDFView(
+                    selectedItems: $selectedItems,
+                    onClosePDF: {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                ),
                 isActive: $showImagePreview,
                 label: {
                     EmptyView() // No label shown
@@ -165,7 +174,10 @@ struct ToolsView: View {
                     icon: "doc.on.doc.fill",
                     color: navy,
                     destination: AnyView(
-                        PDFListView(listFlow: .merge)/*MergePDFView()*/
+                        PDFListView(listFlow: .merge,
+                                    onClosePDF: {
+                            presentationMode.wrappedValue.dismiss()
+                        })/*MergePDFView()*/
                     )
                 )
                 
@@ -174,7 +186,10 @@ struct ToolsView: View {
                     subtitle: NSLocalizedString("Split_Sub", comment: ""),
                     icon: "scissors",
                     color: navy,
-                    destination: AnyView(PDFListView(listFlow: .split))
+                    destination: AnyView(PDFListView(listFlow: .split,
+                                                     onClosePDF: {
+                                                         presentationMode.wrappedValue.dismiss()
+                                                     }))
                 )
                 
                 ToolCardView(
@@ -182,13 +197,16 @@ struct ToolsView: View {
                     subtitle: NSLocalizedString("Edit_Sub", comment: ""),
                     icon: "pencil.circle.fill",
                     color: navy,
-                    destination: AnyView(HomeView(showEditView: $showEditView))
+                    destination: AnyView(HomeView(showEditView: $showEditView,
+                                                  onClosePDF: {
+                                                      presentationMode.wrappedValue.dismiss()
+                                                  }))
                 )
                 
             }
             .padding()
         }
-        .sheet(isPresented: $showingScanView) {
+        .fullScreenCover(isPresented: $showingScanView) {
             CameraOCRView(
                 capturedImages: $capturedImages,
                 isAutoCapture: isAutoCapture

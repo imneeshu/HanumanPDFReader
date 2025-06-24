@@ -10,7 +10,7 @@ import SwiftUI
 import StoreKit
 
 // MARK: - Models
-struct SubscriptionProduct {
+struct SubscriptionProduct: Equatable {
     let id: String
     let displayName: String
     let description: String
@@ -19,6 +19,10 @@ struct SubscriptionProduct {
     let badge: String?
     let badgeColor: Color
     let isPopular: Bool
+
+    static func == (lhs: SubscriptionProduct, rhs: SubscriptionProduct) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 enum PurchaseError: Error, LocalizedError {
@@ -55,3 +59,4 @@ struct PremiumSubscriptionView_Previews: PreviewProvider {
             .preferredColorScheme(.dark)
     }
 }
+

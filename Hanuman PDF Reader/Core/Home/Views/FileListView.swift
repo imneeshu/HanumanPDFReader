@@ -35,7 +35,7 @@ struct FileListView: View {
             } else {
                 if !isBookmarked && !showEditView{
                     HStack{
-                    Text("Sort_by \(filterName.rawValue)")
+                        Text("\(NSLocalizedString("Sort_By", comment: "")) \(filterName.rawValue)")
                         .font(.caption)
                         .bold()
                     Image(systemName: "arrowtriangle.down.fill")
@@ -101,7 +101,7 @@ struct FileListViewForSearch: View {
             } else {
                 if !isBookmarked{
                     HStack{
-                        Text("Sort_by \(filterName.rawValue)")
+                        Text("\(NSLocalizedString("Sort_By", comment: "")) \(filterName.rawValue)")
                             .font(.caption)
                             .bold()
                         Image(systemName: "arrowtriangle.down.fill")

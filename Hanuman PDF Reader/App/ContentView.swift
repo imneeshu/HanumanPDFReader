@@ -86,18 +86,21 @@ struct ContentView: View {
     @State var showImagePreview : Bool = false
     @State private var showSplash = true
     @State var showEditView: Bool = false
-    
+    @State var bannerIsLoaded: Bool = false
     @State private var showingPremium = false
     
     let tabTitles = ["Home_", "Bookmarks_", "Tools_"]
     
     var body: some View {
         ZStack {
-            NavigationView{
+            NavigationStack{
                 ZStack(alignment: .topLeading) {
                     
                     NavigationLink(
-                        destination: ImageToPDFView(selectedItems: $selectedItems),
+                        destination: ImageToPDFView(selectedItems: $selectedItems, onClosePDF: {
+                            //print("Neeshu")
+                            mainViewModel.fetchFilesFromCoreData()
+                        }),
                         isActive: $showImagePreview,
                         label: {
                             EmptyView() // No label shown
@@ -105,19 +108,25 @@ struct ContentView: View {
                     )
                     
                     NavigationLink(
-                        destination: HomeView(showEditView : $showEditView),
+                        destination: HomeView(showEditView: $showEditView,
+                                              onClosePDF: {
+                                                  mainViewModel.fetchFilesFromCoreData()
+                                              }),
                         isActive: $showEditView,
                         label: {
-                            EmptyView() // No label shown
+                            EmptyView()
                         }
                     )
-
                     
                     // Hidden NavigationLink triggered by state
                     NavigationLink(
                         destination: ScanToPDFView(
                             capturedImages: $capturedImages,
-                            isAutoCapture: $isAutoCapture
+                            isAutoCapture: $isAutoCapture,
+                            onClosePDF:{
+                                mainViewModel.fetchFilesFromCoreData()
+                                capturedImages.removeAll()
+                            }
                         ),
                         isActive: $showScannedViewPage,
                         label: {
@@ -160,7 +169,9 @@ struct ContentView: View {
                             }) {
                                 Image(systemName: "line.3.horizontal")
                                     .font(.system(size: 25))
-                                    .foregroundColor(navy)
+                                    .foregroundColor(
+                                        settingsViewModel.isDarkMode ? .white : navy
+                                    )
                                     .frame(width: 40, height: 40)
                                     .background(Color.clear)
                             }
@@ -174,7 +185,9 @@ struct ContentView: View {
                             }) {
                                 Image(systemName: "magnifyingglass")
                                     .font(.system(size: 20))
-                                    .foregroundColor(navy)
+                                    .foregroundColor(
+                                        settingsViewModel.isDarkMode ? .white : navy
+                                    )
                                     .frame(width: 40, height: 40)
                                     .background(Color.clear)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -262,7 +275,7 @@ struct ContentView: View {
                                                     .fill(navy)
                                                     .frame(width: 40, height: 40)
                                                                 
-                                                Image(systemName: "video.fill")
+                                                Image(systemName: "photo.on.rectangle.angled")
                                                     .font(.system(size: 16))
                                                     .foregroundColor(.white)
                                                     .shadow(radius: 4)
@@ -301,7 +314,7 @@ struct ContentView: View {
                                                     .fill(navy)
                                                     .frame(width: 40, height: 40)
                                                                 
-                                                Image(systemName: "camera.fill")
+                                                Image(systemName: "pencil.circle.fill")
                                                     .font(.system(size: 16))
                                                     .foregroundColor(.white)
                                                     .shadow(radius: 4)
@@ -333,24 +346,36 @@ struct ContentView: View {
                             Group {
                                 switch selectedTab {
                                 case 0:
-                                    HomeView(showEditView: $showEditView)
+                                    HomeView(showEditView: $showEditView,
+                                             onClosePDF: {
+                                        mainViewModel.fetchFilesFromCoreData()
+                                    })
+                                    
                                         .onAppear{
                                             showOCRButton = true
                                         }
-                                        .padding(.bottom, 130)
+                                        .padding(
+                                            .bottom,
+                                            (PremiumStatus.shared.isPremiumPurchased || !bannerIsLoaded) ? 70 : 130
+                                        )
                                 case 1:
                                     BookmarkView(showEditView: $showEditView)
                                         .frame(maxWidth: .infinity, maxHeight: 1000)
                                         .onAppear{
                                             showOCRButton = false
                                         }
-                                        .padding(.bottom, 130)
-                                case 2:
+                                        .padding(
+                                            .bottom,
+                                            (PremiumStatus.shared.isPremiumPurchased || !bannerIsLoaded) ? 70 : 130
+                                        )                                case 2:
                                     ToolsView()
                                         .onAppear{
                                             showOCRButton = false
                                         }
-                                        .padding(.bottom, 130)
+                                        .padding(
+                                            .bottom,
+                                            (PremiumStatus.shared.isPremiumPurchased || !bannerIsLoaded) ? 70 : 130
+                                        )
                                 default: EmptyView()
                                 }
                             }
@@ -436,7 +461,10 @@ struct ContentView: View {
                                         }
                                     }
                                     .padding(.trailing, 20)
-                                    .padding(.bottom, 130)
+                                    .padding(
+                                        .bottom,
+                                        (PremiumStatus.shared.isPremiumPurchased || !bannerIsLoaded) ? 70 : 130
+                                    )
                                 }
                             }
                         } else {
@@ -448,9 +476,11 @@ struct ContentView: View {
                 .overlay(alignment: .bottom) {
                     Group{
                         if !showingSettings{
-                            AdBanner("ca-app-pub-3940256099942544/2934735716")
-                                .frame(maxWidth: .infinity, maxHeight: 50)
-                                .background(Color.clear)
+                            if !PremiumStatus.shared.isPremiumPurchased{
+                                AdBanner(adUnitID: bannerAd, bannerIsLoaded: $bannerIsLoaded)
+                                    .frame(maxWidth: .infinity, maxHeight: 50)
+                                    .background(Color.clear)
+                            }
                         }
                     }
                 }
@@ -534,7 +564,8 @@ struct ContentView: View {
                                 .padding(.horizontal, 16)
                                 .offset(y: tabBarOffset)
                                 .animation(.spring(response: 0.5, dampingFraction: 0.8), value: tabBarOffset)
-                                .padding(.bottom, 60) // 50(ad)+10(space)
+                                .padding(.bottom, (PremiumStatus.shared.isPremiumPurchased || !bannerIsLoaded) ? 0 : 60) // 50(ad)+10(space)
+                                
                             }
                             .ignoresSafeArea(.all, edges: .horizontal)
                         }
@@ -550,7 +581,7 @@ struct ContentView: View {
             .fileImporter(
                 isPresented: $showingImportView,
                 allowedContentTypes: [.folder],
-                allowsMultipleSelection: false
+                allowsMultipleSelection: true
             ) { result in
                 switch result {
                 case .success(let urls):
@@ -560,7 +591,7 @@ struct ContentView: View {
                 }
             }
             
-            .sheet(isPresented: $showingScanView) {
+            .fullScreenCover(isPresented: $showingScanView) {
                 CameraOCRView(
                     capturedImages: $capturedImages,
                     isAutoCapture: isAutoCapture

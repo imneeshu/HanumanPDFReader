@@ -34,6 +34,8 @@ class MainViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     init() {
+        recoverMissingFiles()
+        
         setupSearchAndSortObservers()
         setupFileManagerObservers()
         fetchFilesFromCoreData()
@@ -540,6 +542,7 @@ extension MainViewModel {
             fileItem.modifiedDate = modificationDate
             fileItem.fileSize = Int64(fileSize)
             fileItem.isBookmarked = false
+            fileItem.directoryPath = sourceURL.absoluteString
 
             print("Successfully copied and saved: \(fileName)")
 
@@ -547,22 +550,23 @@ extension MainViewModel {
             print("Failed to copy file \(fileName): \(error)")
         }
     }
+}
 
-    private func determineFileType(from fileName: String) -> String {
-        let fileExtension = (fileName as NSString).pathExtension.lowercased()
 
-        switch fileExtension {
-        case "pdf":
-            return "pdf"
-        case "doc", "docx":
-            return "word"
-        case "xls", "xlsx":
-            return "excel"
-        case "ppt", "pptx":
-            return "powerpoint"
-        default:
-            return "pdf" // Default fallback
-        }
+func determineFileType(from fileName: String) -> String {
+    let fileExtension = (fileName as NSString).pathExtension.lowercased()
+
+    switch fileExtension {
+    case "pdf":
+        return "pdf"
+    case "doc", "docx":
+        return "word"
+    case "xls", "xlsx":
+        return "excel"
+    case "ppt", "pptx":
+        return "powerpoint"
+    default:
+        return "pdf" // Default fallback
     }
 }
 
@@ -580,4 +584,170 @@ extension FileRowView {
 //        fallbackFileLookup()
     }
 
+}
+
+
+extension MainViewModel{
+    
+    /// Recovers missing files by checking if files at the stored path exist,
+    /// if not but the original file exists, copies it back to the expected location.
+    func recoverMissingFiles() {
+        var context = persistenceController.context
+        let fileManager = FileManager.default
+        let fetchRequest: NSFetchRequest<FileItem> = FileItem.fetchRequest()
+        
+        do {
+            let fileItems = try context.fetch(fetchRequest)
+            var changesMade = false
+            
+            for fileItem in fileItems {
+                guard let storedPath = fileItem.path,
+                      let originalPath = fileItem.directoryPath else {
+                    continue
+                }
+                
+                let checkedStoredPath: String
+                if storedPath.starts(with: "file://") {
+                    checkedStoredPath = URL(string: storedPath)?.path ?? storedPath
+                } else {
+                    checkedStoredPath = storedPath
+                }
+                
+                let checkedOriginalPath: String
+                if originalPath.starts(with: "file://") {
+                    checkedOriginalPath = URL(string: originalPath)?.path ?? originalPath
+                } else {
+                    checkedOriginalPath = originalPath
+                }
+                
+                // Check if file exists at stored (local) path
+                if !fileManager.fileExists(atPath: checkedStoredPath) {
+                    print("File missing at expected path: \(checkedStoredPath)")
+                    // If original file exists, attempt to copy it back to stored path
+                    if fileManager.fileExists(atPath: checkedOriginalPath) {
+                        let originalURL = URL(fileURLWithPath: checkedOriginalPath)
+                        let storedURL = URL(fileURLWithPath: checkedStoredPath)
+                        
+                        // If the target path is occupied (rare since missing check), find a unique filename
+                        var finalDestinationURL = storedURL
+                        var counter = 1
+                        while fileManager.fileExists(atPath: finalDestinationURL.path) {
+                            let newName = "\(storedURL.deletingPathExtension().lastPathComponent)_\(counter).\(storedURL.pathExtension)"
+                            finalDestinationURL = storedURL.deletingLastPathComponent().appendingPathComponent(newName)
+                            counter += 1
+                        }
+                        
+                        do {
+                            try fileManager.copyItem(at: originalURL, to: finalDestinationURL)
+                            print("Recovered file by copying from original path to \(finalDestinationURL.path)")
+                            
+                            // Update fileItem.path if the copied location is different from the stored path
+                            if finalDestinationURL.path != checkedStoredPath {
+                                fileItem.path = finalDestinationURL.path
+                                changesMade = true
+                                print("Updated FileItem.path to new recovered location: \(finalDestinationURL.path)")
+                            }
+                        } catch {
+                            print("Failed to recover missing file from original path: \(error)")
+                        }
+                    } else {
+                        // Original file does not exist locally, check if it's an iCloud file and attempt to download
+                        let originalURL = URL(fileURLWithPath: checkedOriginalPath)
+                        do {
+                            let resourceValues = try originalURL.resourceValues(forKeys: [.isUbiquitousItemKey, .ubiquitousItemDownloadingStatusKey])
+                            let isUbiquitous = resourceValues.isUbiquitousItem ?? false
+                            let downloadStatus = resourceValues.ubiquitousItemDownloadingStatus
+                            let isDownloaded = (downloadStatus == .current)
+                            
+                            if isUbiquitous && !isDownloaded {
+                                print("Original file at path \(checkedOriginalPath) is an iCloud file and not downloaded. Starting download...")
+                                try fileManager.startDownloadingUbiquitousItem(at: originalURL)
+                                
+                                var attempts = 0
+                                let maxAttempts = 20 // 5 seconds timeout (0.25s * 20)
+                                var fileNowExists = false
+                                while attempts < maxAttempts {
+                                    if fileManager.fileExists(atPath: checkedOriginalPath) {
+                                        fileNowExists = true
+                                        break
+                                    }
+                                    Thread.sleep(forTimeInterval: 0.25)
+                                    attempts += 1
+                                }
+                                
+                                if fileNowExists {
+                                    print("Successfully downloaded iCloud file at original path: \(checkedOriginalPath)")
+                                    // After download, try copying again
+                                    let storedURL = URL(fileURLWithPath: checkedStoredPath)
+                                    var finalDestinationURL = storedURL
+                                    var counter = 1
+                                    while fileManager.fileExists(atPath: finalDestinationURL.path) {
+                                        let newName = "\(storedURL.deletingPathExtension().lastPathComponent)_\(counter).\(storedURL.pathExtension)"
+                                        finalDestinationURL = storedURL.deletingLastPathComponent().appendingPathComponent(newName)
+                                        counter += 1
+                                    }
+
+                                    do {
+                                        try fileManager.copyItem(at: originalURL, to: finalDestinationURL)
+                                        print("Recovered file by copying from original path to \(finalDestinationURL.path) after iCloud download")
+
+                                        if finalDestinationURL.path != checkedStoredPath {
+                                            fileItem.path = finalDestinationURL.path
+                                            changesMade = true
+                                            print("Updated FileItem.path to new recovered location: \(finalDestinationURL.path)")
+                                        }
+                                    } catch {
+                                        print("Failed to recover missing file from original path after iCloud download: \(error)")
+                                    }
+                                } else {
+                                    print("Failed to download iCloud file within timeout for path: \(checkedOriginalPath)")
+                                }
+                            } else {
+                                print("Original file also missing at path: \(checkedOriginalPath), cannot recover.")
+                                persistenceController.context.delete(fileItem)
+                                changesMade = true
+                                print("Deleted FileItem from Core Data because file could not be recovered: \(checkedOriginalPath)")
+                            }
+                        } catch {
+                            print("Error checking iCloud status of original file at \(checkedOriginalPath): \(error)")
+                            print("Original file also missing at path: \(checkedOriginalPath), cannot recover.")
+                            persistenceController.context.delete(fileItem)
+                            changesMade = true
+                            print("Deleted FileItem from Core Data because file could not be recovered: \(checkedOriginalPath)")
+                        }
+                    }
+                }
+            }
+            
+            // Save context if any changes were made
+            if changesMade {
+                do {
+                    try context.save()
+                    print("Core Data context saved after recovering missing files.")
+                } catch {
+                    print("Failed to save Core Data context after recovery: \(error)")
+                }
+            } else {
+                print("No missing files needed recovery.")
+            }
+            
+        } catch {
+            print("Failed to fetch FileItems for recovery: \(error)")
+        }
+    }
+}
+
+
+extension MainViewModel {
+    func refreshFileItems() {
+        // Trigger a refresh of the fileItems array
+        // This will cause the view to update
+        objectWillChange.send()
+        
+        // If you need to reload from Core Data, you can do:
+        // fetchFileItems() // or whatever method you use to load data
+        
+        // Or if you're using @FetchRequest, you might need to trigger a manual refresh
+        // by updating the fetch request predicate or sort descriptors
+    }
 }
