@@ -91,6 +91,7 @@ struct SplitPDFView: View {
           .onChange(of: interstitialAdManager.isPresenting, perform: { newValue in
               if newValue == false{
                   showingRenameAlert = true
+                  interstitialAdManager.refreshAd()
               }
           })
 

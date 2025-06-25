@@ -14,6 +14,7 @@ struct SaveShareSheetContent: View {
     let onClosePDF: () -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var popToRoot = false
+    @EnvironmentObject var settingsViewModel : SettingsViewModel
 
     var body: some View {
         NavigationView {
@@ -40,6 +41,8 @@ struct SaveShareView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var showCheckmark = false
     @State var showingPreview : Bool = false
+    @State var showingSaveShareView : Bool = false
+    @EnvironmentObject var settingsViewModel : SettingsViewModel
 
     var body: some View {
         VStack(spacing: 25) {
@@ -64,7 +67,7 @@ struct SaveShareView: View {
             }
 
             // ✅ Success message
-            Text("PDF_Created_Successfully!")
+            Text("PDF Created Successfully!")
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.green)
@@ -103,6 +106,29 @@ struct SaveShareView: View {
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity)
                     .padding()
+                    .background(
+                        settingsViewModel.isDarkMode ? Color.white : Color.gray
+                            .opacity(0.3)
+                    )
+                    .cornerRadius(12)
+                }
+                
+                
+                Button(action: {
+                    showingSaveShareView = true
+                }) {
+                    HStack {
+                        Image(systemName: "square.and.arrow.down")
+                        Text("Save PDF to Files")
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        settingsViewModel.isDarkMode ? Color.green : Color.green
+                            .opacity(0.3)
+                    )
                     .background(Color.gray.opacity(0.3))
                     .cornerRadius(12)
                 }
@@ -115,16 +141,21 @@ struct SaveShareView: View {
                 }) {
                     Text("Close_")
                         .font(.headline)
-                        .foregroundColor(.red)
+                        .foregroundColor(
+                            settingsViewModel.isDarkMode ? .white : .red
+                        )
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.red.opacity(0.1))
+                        .background(settingsViewModel.isDarkMode ? Color.red : Color.red.opacity(0.1))
                         .cornerRadius(10)
                 }
             }
             .padding(.horizontal)
 
             Spacer()
+        }
+        .sheet(isPresented: $showingSaveShareView) {
+                DocumentExportView(pdfURL: pdfURL)
         }
         .fullScreenCover(isPresented: $showingPreview) {
             DirectPDFView(fileURL: pdfURL) {

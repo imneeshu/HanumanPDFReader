@@ -18,6 +18,7 @@ struct SortOptionsSheet: View {
     @Binding var isPresented: Bool
     @Binding var selectedSortOption: FilterType
     @State var localSelectedSortOption: FilterType
+    @EnvironmentObject var settingsViewModel : SettingsViewModel
     
     let sortOptions = [
         SortOption(title: .lastModified, icon: "clock"),
@@ -65,7 +66,7 @@ struct SortOptionsSheet: View {
                 }) {
                     Text("Cancel_")
                         .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.black)
+                        .foregroundColor(settingsViewModel.isDarkMode ? .white : .black)
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
                         .background(Color.gray.opacity(0.1))
@@ -112,6 +113,7 @@ struct SortOptionRow: View {
     let option: SortOption
     let isSelected: Bool
     let onTap: () -> Void
+    @EnvironmentObject var settingsViewModel : SettingsViewModel
     
     var body: some View {
         Button(action: onTap) {
@@ -151,7 +153,7 @@ struct SortOptionRow: View {
                 if isSelected {
                     Image(systemName: "checkmark")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.black)
+                        .foregroundColor(settingsViewModel.isDarkMode ? .white : .black)
                 }
             }
             .padding(.vertical, 10)

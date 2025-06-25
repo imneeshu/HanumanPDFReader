@@ -16,17 +16,12 @@ class StoreManager: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-//    private let productIds: [String] = [
-//        "com.hanumanpdf.premium.monthly",
-//        "com.hanumanpdf.premium.yearly",
-//        "com.hanumanpdf.premium.lifetime"
-//    ]
-    
     private let productIds: [String] = [
-        "monthly",
-        "yearly",
-        "onetime"
+        "com.hanumanpdf.premium.monthly",
+        "com.hanumanpdf.premium.yearly",
+        "com.hanumanpdf.premium.lifetime"
     ]
+
     
     private var updates: Task<Void, Never>? = nil
     

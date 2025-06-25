@@ -86,7 +86,7 @@ struct ImageToPDFView: View {
                             Spacer()
                             
                             if isReorderMode {
-                                Text("Tap_to_reorder")
+                                Text("Tap to reorder")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                     .padding(.horizontal, 12)
@@ -97,21 +97,24 @@ struct ImageToPDFView: View {
                         }
                         .padding(.horizontal)
                         
-                        // Images grid with Add Page cell
+                        let gridColumns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 16), count: 2)
+
                         ScrollView {
-                            LazyVGrid(columns: gridColumns, spacing: 0) {
+                            LazyVGrid(columns: gridColumns, spacing: 16) {
                                 
                                 ForEach(Array(selectedImages.enumerated()), id: \.offset) { index, image in
                                     imageCell(image: image, index: index)
-                                        .padding()
                                 }
-                                
+
                                 if !isReorderMode {
                                     addPageCell
-                                        .padding()
+                                        .frame(width :  UIScreen.main.bounds.width / 2 - 32,height: 170)
+                                        .background(Color.gray.opacity(0.2))
+                                        .cornerRadius(8)
                                 }
                             }
                             .padding(.horizontal)
+                            .padding(.top)
                         }
                         
                         Spacer()
@@ -153,6 +156,13 @@ struct ImageToPDFView: View {
             }
             .navigationTitle("Image_to_PDF")
             .navigationBarTitleDisplayMode(.inline)
+            .fullScreenCover(isPresented: $showingImagePicker) {
+                PhotoGalleryView { selectedItems in
+                    for item in selectedItems{
+                        self.selectedItems.append(item)
+                    }
+                }
+            }
             .onChange(of: selectedItems) { items in
                 Task {
                     await loadImages(from: items)
@@ -175,6 +185,7 @@ struct ImageToPDFView: View {
             .onChange(of: interstitialAdManager.isPresenting, perform: { newValue in
                 if newValue == false{
                     showingRenameSheet = true
+                    interstitialAdManager.refreshAd()
                 }
             })
         
@@ -246,7 +257,7 @@ struct ImageToPDFView: View {
                         )
                     )
             }
-            .frame(height: 200)
+            .frame(height: 170)
             .frame(maxWidth: .infinity)
             .background(addPageBackground)
             .cornerRadius(10)
@@ -265,35 +276,40 @@ struct ImageToPDFView: View {
         }
     }
     
-    // Image Cell
     private func imageCell(image: UIImage, index: Int) -> some View {
         ZStack(alignment: .topTrailing) {
-            imageView(image: image)
-            
-            // Show remove button only when not in reorder mode
+            // Main image view
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: UIScreen.main.bounds.width / 2 - 32, height: 170)
+                .clipped()
+                .cornerRadius(16)
+
+            // Show remove (❌) button only when not in reorder mode
             if !isReorderMode {
-                removeButton(index: index)
+                Button(action: {
+                    selectedImages.remove(at: index)
+                }) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(6)
+                        .background(Color.red)
+                        .clipShape(Circle())
+                        .shadow(radius: 2)
+                }
+                .padding(6)
             }
-            
-            // Show reorder indicator when in reorder mode
+
+            // Reorder mode indicator (3-line icon)
             if isReorderMode {
                 VStack {
                     HStack {
                         Image(systemName: "line.3.horizontal")
                             .font(.system(size: 22, weight: .medium))
                             .overlay(
-//                                LinearGradient(
-//                                    gradient: Gradient(colors: [
-//                                        .black,
-//                                        Color(red: 0.18, green: 0.0, blue: 0.21), // dark purple
-//                                        Color(red: 0.6, green: 0.4, blue: 0.9),
-//                                        Color(red: 0.8, green: 0.3, blue: 0.8)
-//                                    ]),
-//                                    startPoint: .topLeading,
-//                                    endPoint: .bottomTrailing
-//                                )
-                                navy
-                                .mask(
+                                navy.mask(
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 22, weight: .medium))
                                 )
@@ -319,14 +335,6 @@ struct ImageToPDFView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(
-//                    LinearGradient(
-//                        gradient: Gradient(colors: isReorderMode ? [
-//                            Color(red: 0.6, green: 0.4, blue: 0.9),
-//                            Color(red: 0.8, green: 0.3, blue: 0.8)
-//                        ] : [Color.gray, Color.clear]),
-//                        startPoint: .topLeading,
-//                        endPoint: .bottomTrailing
-//                    )
                     navy,
                     lineWidth: isReorderMode ? 3 : 0
                 )
@@ -342,7 +350,6 @@ struct ImageToPDFView: View {
             draggedItem: $draggedItem
         ))
         .onTapGesture {
-            // Handle tap for reordering in reorder mode
             if isReorderMode {
                 handleImageTapForReorder(image: image, index: index)
             }
@@ -350,6 +357,7 @@ struct ImageToPDFView: View {
         .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isReorderMode)
         .animation(.spring(response: 0.2, dampingFraction: 0.7), value: selectedImageForReorder)
     }
+
     
     // Image View
     private func imageView(image: UIImage) -> some View {
@@ -506,4 +514,89 @@ struct DateFormatStyle {
     func minute() -> DateFormatStyle { return self }
     
     static let dateTime = DateFormatStyle()
+}
+
+
+
+
+
+struct DocumentExportView: UIViewControllerRepresentable {
+    let pdfURL: URL
+    @Environment(\.dismiss) private var dismiss
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        let controller = PDFExportViewController(pdfURL: pdfURL) {
+            // Convert DismissAction to closure
+            dismiss()
+        }
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
+
+class PDFExportViewController: UIViewController, UIDocumentPickerDelegate {
+    
+    private var pdfURL: URL?
+    private var dismissAction: (() -> Void)?
+
+    init(pdfURL: URL, dismiss: @escaping () -> Void) {
+        self.pdfURL = pdfURL
+        self.dismissAction = dismiss
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Make the view transparent so it doesn't show
+        view.backgroundColor = UIColor.clear
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Small delay to ensure the view controller is fully presented
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.exportPDFIfAvailable()
+        }
+    }
+
+    private func exportPDFIfAvailable() {
+        guard let pdfURL = pdfURL else {
+            print("❌ No PDF URL provided.")
+            dismissAction?()
+            return
+        }
+
+        guard FileManager.default.fileExists(atPath: pdfURL.path) else {
+            print("❌ File does not exist at path: \(pdfURL.path)")
+            dismissAction?()
+            return
+        }
+
+        let documentPicker = UIDocumentPickerViewController(forExporting: [pdfURL], asCopy: true)
+        documentPicker.delegate = self
+        documentPicker.shouldShowFileExtensions = true
+        documentPicker.modalPresentationStyle = .fullScreen
+        
+        present(documentPicker, animated: true)
+    }
+
+    // MARK: - UIDocumentPickerDelegate
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        print("✅ PDF copied/exported to: \(urls.first?.absoluteString ?? "Unknown")")
+        controller.dismiss(animated: true) {
+            self.dismissAction?()
+        }
+    }
+
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("❌ Export cancelled by user.")
+        controller.dismiss(animated: true) {
+            self.dismissAction?()
+        }
+    }
 }

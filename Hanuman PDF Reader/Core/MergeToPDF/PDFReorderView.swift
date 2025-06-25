@@ -111,6 +111,7 @@ struct PDFReorderView: View {
           .onChange(of: interstitialAdManager.isPresenting, perform: { newValue in
               if newValue == false{
                   mergePDFs()
+                  interstitialAdManager.refreshAd()
               }
           })
         .navigationBarHidden(true)

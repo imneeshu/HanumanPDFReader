@@ -65,7 +65,7 @@ LinearGradient(
 
 struct ContentView: View {
     @StateObject private var mainViewModel = MainViewModel()
-    @StateObject private var settingsViewModel = SettingsViewModel()
+    @EnvironmentObject var settingsViewModel : SettingsViewModel
     
     @State private var selectedTab = 0
     @State private var animateHello = false

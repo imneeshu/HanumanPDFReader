@@ -88,6 +88,7 @@ struct ScanToPDFView: View {
                     showAd = false
                     pendingPDFGeneration = false
                     showRenameSheet = true
+                    interstitialAdManager.refreshAd()
                 }
             }
         }
@@ -188,6 +189,7 @@ struct RenameSheet: View {
     @Binding var pdfName: String
     var onCancel: () -> Void
     var onDone: () -> Void
+    @EnvironmentObject var settingsViewModel : SettingsViewModel
 
     var body: some View {
         VStack(spacing: 20) {
@@ -206,6 +208,7 @@ struct RenameSheet: View {
                     .padding(.horizontal, 12)
                     .frame(height: 40)
                     .background(Color.clear)
+                    .foregroundColor(.black)
             }
             .padding(.horizontal)
 
@@ -214,7 +217,7 @@ struct RenameSheet: View {
                     onCancel()
                 }) {
                     Text("Cancel_")
-                        .foregroundColor(.black)
+                        .foregroundColor(settingsViewModel.isDarkMode ? .white : .black)
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()

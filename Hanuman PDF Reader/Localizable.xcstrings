@@ -3699,9 +3699,6 @@
     "Enjoy all premium features without any limitations." : {
 
     },
-    "Enter PDF name" : {
-
-    },
     "Enter text" : {
       "comment" : "Add text alert placeholder"
     },
@@ -3721,9 +3718,6 @@
 
     },
     "File name" : {
-
-    },
-    "File_Name" : {
 
     },
     "File_Not_Found" : {
@@ -6756,6 +6750,7 @@
 
     },
     "Merge PDF" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ca" : {
           "stringUnit" : {
@@ -6952,6 +6947,7 @@
       }
     },
     "Merge PDFs" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ca" : {
           "stringUnit" : {
@@ -7807,12 +7803,6 @@
     "Merging_PDFs..." : {
 
     },
-    "Merging..." : {
-
-    },
-    "Name Your Merged PDF" : {
-
-    },
     "Name_" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8035,9 +8025,6 @@
       }
     },
     "Name_your_PDF_file" : {
-
-    },
-    "New name" : {
 
     },
     "Newest_to_Oldest" : {
@@ -8728,6 +8715,9 @@
         }
       }
     },
+    "PDF Created Successfully!" : {
+
+    },
     "PDF Editor" : {
 
     },
@@ -8741,9 +8731,6 @@
 
     },
     "PDF Preview" : {
-
-    },
-    "PDF_Created_Successfully!" : {
 
     },
     "PDF_Editor" : {
@@ -8762,9 +8749,6 @@
       "comment" : "Text color option name"
     },
     "Please allow access to your photos to view and manage your photo library." : {
-
-    },
-    "Preview_PDFs" : {
 
     },
     "Privacy" : {
@@ -9230,10 +9214,8 @@
     "Rename" : {
 
     },
-    "Rename File" : {
-
-    },
     "Rename PDF" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ca" : {
           "stringUnit" : {
@@ -9668,10 +9650,13 @@
     "Save PDF" : {
 
     },
-    "Save_PDF" : {
+    "Save PDF to Files" : {
 
     },
-    "Saving..." : {
+    "Save to Files" : {
+
+    },
+    "Save_PDF" : {
 
     },
     "Scan To PDF" : {
@@ -12263,7 +12248,7 @@
     "Tap anywhere to add text" : {
       "comment" : "Text input mode message"
     },
-    "Tap_to_reorder" : {
+    "Tap to reorder" : {
 
     },
     "Tap_to_select_PDF" : {
@@ -12733,6 +12718,9 @@
       }
     },
     "Unable_to_locate_the_file_for_preview" : {
+
+    },
+    "Unable_to_locate_the_file_for_renaming" : {
 
     },
     "Underline Mode - Select text to underline" : {

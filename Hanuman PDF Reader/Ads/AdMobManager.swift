@@ -17,6 +17,23 @@ class AdMobManager: NSObject, ObservableObject {
     
     override init() {
         super.init()
+        // Ensure the PDFs directory exists at app startup
+        let fileManager = FileManager.default
+        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let pdfsDirectory = documentsURL.appendingPathComponent("PDFs")
+        if !fileManager.fileExists(atPath: pdfsDirectory.path) {
+            do {
+                try fileManager.createDirectory(at: pdfsDirectory, withIntermediateDirectories: true)
+                print("PDFs directory created at app launch.")
+            } catch {
+                print("Failed to create PDFs directory: \(error)")
+            }
+        }
+        // Optional: Create a test file to confirm write access
+        let testFileURL = pdfsDirectory.appendingPathComponent("init_test.txt")
+        let data = "App initialized at \(Date())".data(using: .utf8)
+        fileManager.createFile(atPath: testFileURL.path, contents: data)
+        
         MobileAds.shared.start(completionHandler: nil)
     }
     
@@ -90,6 +107,10 @@ class InterstitialAdManager: NSObject, ObservableObject, FullScreenContentDelega
     init(adUnitID: String) {
         self.adUnitID = adUnitID
         super.init()
+        loadAd()
+    }
+    
+    func refreshAd(){
         loadAd()
     }
     

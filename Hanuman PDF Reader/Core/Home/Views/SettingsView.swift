@@ -197,7 +197,7 @@ struct SettingsView: View {
     }
     
     private func openAppStoreRating() {
-        if let url = URL(string: "https://apps.apple.com/app/idYOUR_APP_ID?action=write-review") {
+        if let url = URL(string: "https://apps.apple.com/in/app/hanuman-pdf-reader/id6747693832?action=write-review") {
             UIApplication.shared.open(url)
         }
     }

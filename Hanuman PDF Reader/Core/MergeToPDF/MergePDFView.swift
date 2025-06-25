@@ -8,6 +8,7 @@
 import SwiftUI
 import PDFKit
 import UniformTypeIdentifiers
+import CoreData
 
 // MARK: - PDF Merge Error
 enum PDFMergeError: LocalizedError {
@@ -27,145 +28,145 @@ enum PDFMergeError: LocalizedError {
     }
 }
 
-struct MergePDFView: View {
-    @State private var selectedPDFs: [URL] = []
-    @State private var showingDocumentPicker = false
-    @State private var showingPreview = false
-    @State private var showingRename = false
-    @State private var showingFinalScreen = false
-    @State private var mergedPDFURL: URL?
-    @State private var finalPDFName = "Merged_PDF"
-    @State private var isLoading = false
-    @State private var errorMessage: String?
-    @State private var showingError = false
-    @Binding var selectedFileItems: [FileItem]
-    @Binding var  listFlow : ListFlow
-    
-    var body: some View {
-                // PDF Selection Cards
-                VStack(spacing: 15) {
-                    List {
-                        ForEach(selectedFileItems, id: \.objectID) { file in
-                            FileRowViewForSelection(
-                                file: file,
-                                isSelected: false,
-                                onSelectionToggle: {
-                                    //                                    toggleSelection(for: file)
-                                    //                                    viewModel.markAsRecentlyAccessed(file)
-                                }, listFlow: $listFlow
-                            )
-                            .cornerRadius(10)
-                        }
-                    }
-                
-                Spacer()
-                
-                // Action Buttons
-                VStack(spacing: 15) {
-                    // Preview Button
-                    Button(action: {
-                        showingPreview = true
-                    }) {
-                        HStack {
-                            Image(systemName: "eye")
-                            Text("Preview_PDFs")
-                        }
-                        .foregroundColor(.blue)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(10)
-                    }
-                    .disabled(selectedPDFs.count < 2)
-                    
-                    // Merge Button
-                    Button(action: {
-                        mergePDFs()
-                    }) {
-                        HStack {
-                            if isLoading {
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            } else {
-                                Image(systemName: "doc.on.doc")
-                            }
-                            Text(isLoading ? "Merging..." : "Merge PDFs")
-                        }
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(selectedPDFs.count == 2 ? Color.green : Color.gray)
-                        .cornerRadius(10)
-                    }
-                    .disabled(selectedPDFs.count < 2 || isLoading)
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 30)
-            }
-            .navigationTitle("Merge PDF")
-            .sheet(isPresented: $showingDocumentPicker) {
-                DocumentPickerMe(selectedPDFs: $selectedPDFs)
-            }
-            .sheet(isPresented: $showingPreview) {
-                PDFPreviewViewMe(
-                    pdfURLs: selectedPDFs,
-                    onReplace: { index in
-                        selectPDF(index: index)
-                    }
-                )
-            }
-            .sheet(isPresented: $showingRename) {
-                if let mergedURL = mergedPDFURL {
-                    RenameView(
-                        pdfURL: mergedURL,
-                        initialName: finalPDFName,
-                        onComplete: { finalURL in
-                            mergedPDFURL = finalURL
-                            showingFinalScreen = true
-                        }
-                    )
-                }
-            }
-            .sheet(isPresented: $showingFinalScreen) {
-                if let finalURL = mergedPDFURL {
-                    FinalScreenView(pdfURL: finalURL)
-                }
-            }
-            .alert("Error", isPresented: $showingError) {
-                Button("OK") { }
-            } message: {
-                Text(errorMessage ?? "An error occurred")
-            }
-    }
-    
-    private func selectPDF(index: Int) {
-        showingDocumentPicker = true
-    }
-    
-    private func mergePDFs() {
-        guard selectedPDFs.count == 2 else { return }
-        
-        isLoading = true
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                let mergedURL = try PDFMerger.mergePDFs(selectedPDFs)
-                
-                DispatchQueue.main.async {
-                    self.mergedPDFURL = mergedURL
-                    self.isLoading = false
-                    self.showingRename = true
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    self.errorMessage = error.localizedDescription
-                    self.showingError = true
-                    self.isLoading = false
-                }
-            }
-        }
-    }
-}
+//struct MergePDFView: View {
+//    @State private var selectedPDFs: [URL] = []
+//    @State private var showingDocumentPicker = false
+//    @State private var showingPreview = false
+//    @State private var showingRename = false
+//    @State private var showingFinalScreen = false
+//    @State private var mergedPDFURL: URL?
+//    @State private var finalPDFName = "Merged_PDF"
+//    @State private var isLoading = false
+//    @State private var errorMessage: String?
+//    @State private var showingError = false
+//    @Binding var selectedFileItems: [FileItem]
+//    @Binding var  listFlow : ListFlow
+//    
+//    var body: some View {
+//                // PDF Selection Cards
+//                VStack(spacing: 15) {
+//                    List {
+//                        ForEach(selectedFileItems, id: \.objectID) { file in
+//                            FileRowViewForSelection(
+//                                file: file,
+//                                isSelected: false,
+//                                onSelectionToggle: {
+//                                    //                                    toggleSelection(for: file)
+//                                    //                                    viewModel.markAsRecentlyAccessed(file)
+//                                }, listFlow: $listFlow
+//                            )
+//                            .cornerRadius(10)
+//                        }
+//                    }
+//                
+//                Spacer()
+//                
+//                // Action Buttons
+//                VStack(spacing: 15) {
+//                    // Preview Button
+//                    Button(action: {
+//                        showingPreview = true
+//                    }) {
+//                        HStack {
+//                            Image(systemName: "eye")
+//                            Text("Preview_PDFs")
+//                        }
+//                        .foregroundColor(.blue)
+//                        .padding()
+//                        .frame(maxWidth: .infinity)
+//                        .background(Color.blue.opacity(0.1))
+//                        .cornerRadius(10)
+//                    }
+//                    .disabled(selectedPDFs.count < 2)
+//                    
+//                    // Merge Button
+//                    Button(action: {
+//                        mergePDFs()
+//                    }) {
+//                        HStack {
+//                            if isLoading {
+//                                ProgressView()
+//                                    .scaleEffect(0.8)
+//                            } else {
+//                                Image(systemName: "doc.on.doc")
+//                            }
+//                            Text(isLoading ? "Merging..." : "Merge PDFs")
+//                        }
+//                        .foregroundColor(.white)
+//                        .padding()
+//                        .frame(maxWidth: .infinity)
+//                        .background(selectedPDFs.count == 2 ? Color.green : Color.gray)
+//                        .cornerRadius(10)
+//                    }
+//                    .disabled(selectedPDFs.count < 2 || isLoading)
+//                }
+//                .padding(.horizontal)
+//                .padding(.bottom, 30)
+//            }
+//            .navigationTitle("Merge PDF")
+//            .sheet(isPresented: $showingDocumentPicker) {
+//                DocumentPickerMe(selectedPDFs: $selectedPDFs)
+//            }
+//            .sheet(isPresented: $showingPreview) {
+//                PDFPreviewViewMe(
+//                    pdfURLs: selectedPDFs,
+//                    onReplace: { index in
+//                        selectPDF(index: index)
+//                    }
+//                )
+//            }
+//            .sheet(isPresented: $showingRename) {
+//                if let mergedURL = mergedPDFURL {
+//                    RenameView(
+//                        pdfURL: mergedURL,
+//                        initialName: finalPDFName,
+//                        onComplete: { finalURL in
+//                            mergedPDFURL = finalURL
+//                            showingFinalScreen = true
+//                        }
+//                    )
+//                }
+//            }
+//            .sheet(isPresented: $showingFinalScreen) {
+//                if let finalURL = mergedPDFURL {
+//                    FinalScreenView(pdfURL: finalURL)
+//                }
+//            }
+//            .alert("Error", isPresented: $showingError) {
+//                Button("OK") { }
+//            } message: {
+//                Text(errorMessage ?? "An error occurred")
+//            }
+//    }
+//    
+//    private func selectPDF(index: Int) {
+//        showingDocumentPicker = true
+//    }
+//    
+//    private func mergePDFs() {
+//        guard selectedPDFs.count == 2 else { return }
+//        
+//        isLoading = true
+//        
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            do {
+//                let mergedURL = try PDFMerger.mergePDFs(selectedPDFs)
+//                
+//                DispatchQueue.main.async {
+//                    self.mergedPDFURL = mergedURL
+//                    self.isLoading = false
+//                    self.showingRename = true
+//                }
+//            } catch {
+//                DispatchQueue.main.async {
+//                    self.errorMessage = error.localizedDescription
+//                    self.showingError = true
+//                    self.isLoading = false
+//                }
+//            }
+//        }
+//    }
+//}
 
 struct PDFSelectionCard: View {
     let title: String
@@ -321,101 +322,100 @@ struct PDFPreviewThumbnail: UIViewRepresentable {
 
 struct RenameView: View {
     let pdfURL: URL
-    @State var fileName: String
-    let onComplete: (URL) -> Void
+    @State var pdfName: String
+    let onComplete: () -> Void
     @Environment(\.presentationMode) var presentationMode
     @State private var isRenaming = false
+    @EnvironmentObject var settingsViewModel : SettingsViewModel
     
-    init(pdfURL: URL, initialName: String, onComplete: @escaping (URL) -> Void) {
+    init(pdfURL: URL, initialName: String, onComplete: @escaping () -> Void) {
         self.pdfURL = pdfURL
-        self._fileName = State(initialValue: initialName)
+        self._pdfName = State(initialValue: initialName)
         self.onComplete = onComplete
     }
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 30) {
-                VStack(spacing: 15) {
-                    Image(systemName: "doc.text")
-                        .font(.system(size: 60))
-                        .foregroundColor(.blue)
-                    
-                    Text("Name Your Merged PDF")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                }
+        VStack(spacing: 30) {
+            Text("Rename_PDF")
+                .font(.title3)
+                .bold()
+            
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(navy, lineWidth: 2)
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .frame(height: 40)
                 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("File_Name")
-                        .font(.headline)
-                    
-                    TextField("Enter PDF name", text: $fileName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .onSubmit {
-                            renamePDF()
-                        }
-                }
-                .padding(.horizontal)
-                
-                Spacer()
-                
-                Button(action: renamePDF) {
-                    HStack {
-                        if isRenaming {
-                            ProgressView()
-                                .scaleEffect(0.8)
-                        } else {
-                            Image(systemName: "checkmark")
-                        }
-                        Text(isRenaming ? "Saving..." : "Save PDF")
-                    }
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(fileName.isEmpty ? Color.gray : Color.blue)
-                    .cornerRadius(10)
-                }
-                .disabled(fileName.isEmpty || isRenaming)
-                .padding(.horizontal)
-                .padding(.bottom, 30)
+                TextField("PDF Name", text: $pdfName)
+                    .padding(.horizontal, 12)
+                    .frame(height: 40)
+                    .background(Color.clear)
+                    .foregroundColor(.black)
             }
-            .navigationTitle("Rename PDF")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
-                    }
+            .padding(.horizontal)
+
+            HStack {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("Cancel_")
+                        .foregroundColor(settingsViewModel.isDarkMode ? .white : .black)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(.gray.opacity(0.2))
+                        .cornerRadius(12)
                 }
+                .frame(width: UIScreen.main.bounds.width * 0.4)
+                .padding(.top)
+                
+                
+                Button(action: {
+                    renamePDF()
+                }) {
+                    Text("Done_")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(navy)
+                        .cornerRadius(12)
+                }
+                .disabled(pdfName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .frame(width: UIScreen.main.bounds.width * 0.4)
+                .padding(.top)
             }
         }
+        .padding()
     }
     
     private func renamePDF() {
-        guard !fileName.isEmpty else { return }
-        
+        guard !pdfName.isEmpty else { return }
         isRenaming = true
-        
+
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                let finalURL = try PDFMerger.renamePDF(from: pdfURL, to: fileName)
-                
-                savePDF(destinationURL: finalURL, fileName: fileName, modificationDate: Date())
-                
+                let finalURL = try PDFMerger.renamePDF(from: pdfURL, to: pdfName)
+
                 DispatchQueue.main.async {
                     self.isRenaming = false
                     self.presentationMode.wrappedValue.dismiss()
-                    self.onComplete(finalURL)
+                    self.onComplete()
                 }
             } catch {
                 DispatchQueue.main.async {
                     self.isRenaming = false
-                    // Handle error
+                    // Show error alert if needed
                 }
             }
         }
     }
 }
+
+
+
+
 
 struct FinalScreenView: View {
     let pdfURL: URL
@@ -551,25 +551,44 @@ class PDFMerger {
     }
     
     static func renamePDF(from sourceURL: URL, to name: String) throws -> URL {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, 
-                                                          in: .userDomainMask).first!
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let finalURL = documentsDirectory.appendingPathComponent("PDFs/\(name).pdf")
-        //let finalURL = documentsDirectory.appendingPathComponent("\(name).pdf")
-        
+
         // Remove existing file if it exists
         if FileManager.default.fileExists(atPath: finalURL.path) {
             try FileManager.default.removeItem(at: finalURL)
         }
-        
+
         try FileManager.default.copyItem(at: sourceURL, to: finalURL)
-        
-        // Clean up temporary file
+
+        // Remove temp/original file
         try? FileManager.default.removeItem(at: sourceURL)
-        
+
+        // 🧹 Delete old Core Data entry
+        deletePDFRecord(at: sourceURL)
+
+        // ✅ Save new Core Data entry
         savePDF(destinationURL: finalURL, fileName: name, modificationDate: Date())
-        
+
         return finalURL
     }
+
+    static func deletePDFRecord(at url: URL) {
+        let context = PersistenceController.shared.container.viewContext
+        let fetchRequest: NSFetchRequest<FileItem> = FileItem.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "path == %@", url.absoluteString)
+
+        do {
+            let results = try context.fetch(fetchRequest)
+            for item in results {
+                context.delete(item)
+            }
+            try context.save()
+        } catch {
+            print("❌ Failed to delete old PDF record: \(error)")
+        }
+    }
+
 }
 
 func savePDF(destinationURL : URL , fileName: String, modificationDate: Date){
