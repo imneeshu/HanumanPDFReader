@@ -199,6 +199,7 @@ struct ImageToPDFView: View {
                         }
                     }
                 )
+                .interactiveDismissDisabled(true)
                 .presentationDetents([.fraction(0.30)])
             }
         

@@ -36,8 +36,9 @@ struct FileListView: View {
                 if !isBookmarked && !showEditView{
                     HStack{
                         Text("\(NSLocalizedString("Sort_By", comment: "")) \(filterName.rawValue)")
-                        .font(.caption)
-                        .bold()
+                            .font(.subheadline.weight(.semibold))
+                            .kerning(0.5)
+                            .foregroundColor(.primary)
                     Image(systemName: "arrowtriangle.down.fill")
                         .resizable()
                         .frame(width: 8,height: 8)

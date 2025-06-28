@@ -204,7 +204,7 @@ struct SettingsView: View {
     
     private func shareApp() {
         let text = "Check out this amazing PDF Reader Pro app!"
-        let url = URL(string: "https://apps.apple.com/app/idYOUR_APP_ID")!
+        let url = URL(string: "https://apps.apple.com/app/hanuman-pdf-reader/id6747693832")!
         let activityVC = UIActivityViewController(
             activityItems: [text, url],
             applicationActivities: nil

@@ -127,6 +127,7 @@ struct SplitPDFView: View {
                     }
                 }
             )
+            .interactiveDismissDisabled(true)
             .presentationDetents([.fraction(0.30)])
         }
     }

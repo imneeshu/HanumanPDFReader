@@ -8,58 +8,13 @@
 import SwiftUI
 import VisionKit
 
-//struct CameraOCRView: UIViewControllerRepresentable {
-//    @Environment(\.presentationMode) var presentationMode
-//    @Binding var capturedImages: [UIImage]
-//    var isAutoCapture: Bool
-//
-//    func makeCoordinator() -> Coordinator {
-//        Coordinator(self)
-//    }
-//
-//    func makeUIViewController(context: Context) -> VNDocumentCameraViewController {
-//        let scannerVC = VNDocumentCameraViewController()
-//        scannerVC.delegate = context.coordinator
-//        return scannerVC
-//    }
-//
-//    func updateUIViewController(_ uiViewController: VNDocumentCameraViewController, context: Context) {
-//        // No-op
-//    }
-//
-//    class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
-//        let parent: CameraOCRView
-//
-//        init(_ parent: CameraOCRView) {
-//            self.parent = parent
-//        }
-//
-//        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
-//            for i in 0..<scan.pageCount {
-//                let image = scan.imageOfPage(at: i)
-//                parent.capturedImages.append(image)
-//            }
-//            parent.presentationMode.wrappedValue.dismiss()
-//        }
-//
-//        func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
-//            parent.presentationMode.wrappedValue.dismiss()
-//        }
-//
-//        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
-//            print("Scanner error: \(error.localizedDescription)")
-//            parent.presentationMode.wrappedValue.dismiss()
-//        }
-//    }
-//}
-
-
 import SwiftUI
 import WeScan
 import UIKit
 
 struct CameraOCRView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var settingViewModel : SettingsViewModel
     @Binding var capturedImages: [UIImage]
     var isAutoCapture: Bool
 
@@ -70,7 +25,13 @@ struct CameraOCRView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> ImageScannerController {
         let scannerVC = ImageScannerController()
         scannerVC.imageScannerDelegate = context.coordinator
-        scannerVC.view.backgroundColor = navyUIKit
+        if settingViewModel.isDarkMode{
+            scannerVC.view.backgroundColor = navyUIKit
+        }
+        else{
+            scannerVC.view.backgroundColor = UIColor(red: 0.3, green: 0.5, blue: 0.9, alpha: 1.0) // Light-medium blue
+
+        }
         return scannerVC
     }
 

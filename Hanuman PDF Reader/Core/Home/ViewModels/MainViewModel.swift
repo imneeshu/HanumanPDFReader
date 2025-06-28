@@ -41,6 +41,21 @@ class MainViewModel: ObservableObject {
         fetchFilesFromCoreData()
     }
 
+    
+    func isFileAlreadySaved(named name: String) -> Bool {
+        // Check Core Data if any file entity exists with this name
+        let fetchRequest: NSFetchRequest<FileItem> = FileItem.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+
+        do {
+            let count = try persistenceController.context.count(for: fetchRequest)
+            return count > 0
+        } catch {
+            print("Error checking if file exists: \(error)")
+            return false
+        }
+    }
+
     private func setupSearchAndSortObservers() {
         Publishers.CombineLatest3($searchText, $selectedSortType, $selectedFileType)
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)

@@ -167,6 +167,7 @@ struct PDFReorderView: View {
                     }
                 }
             )
+            .interactiveDismissDisabled(true)
             .presentationDetents([.fraction(0.30)])
         }
 //        .sheet(isPresented: $showShareSheet) {

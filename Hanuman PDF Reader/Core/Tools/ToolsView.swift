@@ -105,6 +105,7 @@ struct ToolsView: View {
                 }
                 .onTapGesture {
                     print("Neeshu is listening")
+                    capturedImages = []
                     showingScanView = true
                 }
                 .padding()

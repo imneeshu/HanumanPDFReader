@@ -224,7 +224,7 @@ struct EnhancedSplashScreenView: View {
                 // Main title with stroke animation
                 if showTitle {
                     AdvancedStrokeText(
-                        text: "Hanuman PDF Reader",
+                        text: "Smart PDF Toolkit",
                         font: .system(size: 30, weight: .bold, design: .rounded),
                         gradient: LinearGradient(
                             colors: [navy, navy],

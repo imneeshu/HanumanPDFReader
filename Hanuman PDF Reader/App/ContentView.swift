@@ -64,7 +64,7 @@ LinearGradient(
 )
 
 struct ContentView: View {
-    @StateObject private var mainViewModel = MainViewModel()
+    @ObservedObject var mainViewModel : MainViewModel
     @EnvironmentObject var settingsViewModel : SettingsViewModel
     
     @State private var selectedTab = 0
@@ -596,6 +596,9 @@ struct ContentView: View {
                     capturedImages: $capturedImages,
                     isAutoCapture: isAutoCapture
                 )
+                .onAppear{
+                    capturedImages =  []
+                }
             }
             .environmentObject(mainViewModel)
             .environmentObject(settingsViewModel)
