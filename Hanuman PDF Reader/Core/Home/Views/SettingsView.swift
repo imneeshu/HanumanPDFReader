@@ -131,7 +131,7 @@ struct SettingsView: View {
                 Section {
                     HStack {
                         Spacer()
-                        Text("Version 1.0.0")
+                        Text("Version 1.1.1")
                             .font(.caption)
                             .foregroundColor(.secondary)
                         Spacer()
