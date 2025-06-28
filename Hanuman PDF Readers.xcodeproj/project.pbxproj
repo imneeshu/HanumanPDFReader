@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A63C2CE62E104D060020293A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63C2CE52E104D050020293A /* StoreKit.framework */; };
 		A6CA39372DF75CDA004A61AD /* WeScan in Frameworks */ = {isa = PBXBuildFile; productRef = A6CA39362DF75CDA004A61AD /* WeScan */; };
 		A6CA393D2DF8A71D004A61AD /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = A6CA393C2DF8A71D004A61AD /* GoogleMobileAds */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A63C2CE52E104D050020293A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A6AFEFBB2DF15F7A0017343E /* Hanuman PDF Readers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hanuman PDF Readers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -41,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A63C2CE62E104D060020293A /* StoreKit.framework in Frameworks */,
 				A6CA393D2DF8A71D004A61AD /* GoogleMobileAds in Frameworks */,
 				A6CA39372DF75CDA004A61AD /* WeScan in Frameworks */,
 			);
@@ -49,10 +52,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A63C2CE42E104D050020293A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A63C2CE52E104D050020293A /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A6AFEFB22DF15F7A0017343E = {
 			isa = PBXGroup;
 			children = (
 				A6AFEFBD2DF15F7A0017343E /* Hanuman PDF Reader */,
+				A63C2CE42E104D050020293A /* Frameworks */,
 				A6AFEFBC2DF15F7A0017343E /* Products */,
 			);
 			sourceTree = "<group>";
