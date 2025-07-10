@@ -17,9 +17,9 @@ class StoreManager: ObservableObject {
     @Published var errorMessage: String?
     
     private let productIds: [String] = [
-        "com.hanumanpdf.premium.monthly",
-        "com.hanumanpdf.premium.yearly",
-        "com.hanumanpdf.premium.lifetime"
+        "com.hanumanpdf.premiums.monthly",
+        "com.hanumanpdf.premiums.yearly",
+        "com.hanumanpdf.premium.onetime"
     ]
 
     

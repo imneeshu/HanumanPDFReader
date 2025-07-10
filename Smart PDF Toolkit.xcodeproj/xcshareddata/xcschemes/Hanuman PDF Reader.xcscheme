@@ -51,7 +51,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../Hanuman PDF Reader/PremiumModule/Product.storekit">
+         identifier = "../../Smart PDF Toolkit/PremiumModule/Product.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
