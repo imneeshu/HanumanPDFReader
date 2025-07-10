@@ -14,26 +14,26 @@
 
 /* Begin PBXFileReference section */
 		A63C2CE52E104D050020293A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		A6AFEFBB2DF15F7A0017343E /* Hanuman PDF Readers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hanuman PDF Readers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6AFEFBB2DF15F7A0017343E /* Smart PDF Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Smart PDF Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A69B27F42DFF2901000793AB /* Exceptions for "Hanuman PDF Reader" folder in "Hanuman PDF Readers" target */ = {
+		A69B27F42DFF2901000793AB /* Exceptions for "Smart PDF Toolkit" folder in "Smart PDF Toolkit" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Core/MergeToPDF/ShareSheet.swift,
 			);
-			target = A6AFEFBA2DF15F7A0017343E /* Hanuman PDF Readers */;
+			target = A6AFEFBA2DF15F7A0017343E /* Smart PDF Toolkit */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A6AFEFBD2DF15F7A0017343E /* Hanuman PDF Reader */ = {
+		A6AFEFBD2DF15F7A0017343E /* Smart PDF Toolkit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A69B27F42DFF2901000793AB /* Exceptions for "Hanuman PDF Reader" folder in "Hanuman PDF Readers" target */,
+				A69B27F42DFF2901000793AB /* Exceptions for "Smart PDF Toolkit" folder in "Smart PDF Toolkit" target */,
 			);
-			path = "Hanuman PDF Reader";
+			path = "Smart PDF Toolkit";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -63,7 +63,7 @@
 		A6AFEFB22DF15F7A0017343E = {
 			isa = PBXGroup;
 			children = (
-				A6AFEFBD2DF15F7A0017343E /* Hanuman PDF Reader */,
+				A6AFEFBD2DF15F7A0017343E /* Smart PDF Toolkit */,
 				A63C2CE42E104D050020293A /* Frameworks */,
 				A6AFEFBC2DF15F7A0017343E /* Products */,
 			);
@@ -72,7 +72,7 @@
 		A6AFEFBC2DF15F7A0017343E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A6AFEFBB2DF15F7A0017343E /* Hanuman PDF Readers.app */,
+				A6AFEFBB2DF15F7A0017343E /* Smart PDF Toolkit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,9 +80,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A6AFEFBA2DF15F7A0017343E /* Hanuman PDF Readers */ = {
+		A6AFEFBA2DF15F7A0017343E /* Smart PDF Toolkit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A6AFEFCC2DF15F7C0017343E /* Build configuration list for PBXNativeTarget "Hanuman PDF Readers" */;
+			buildConfigurationList = A6AFEFCC2DF15F7C0017343E /* Build configuration list for PBXNativeTarget "Smart PDF Toolkit" */;
 			buildPhases = (
 				A6AFEFB72DF15F7A0017343E /* Sources */,
 				A6AFEFB82DF15F7A0017343E /* Frameworks */,
@@ -93,15 +93,15 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A6AFEFBD2DF15F7A0017343E /* Hanuman PDF Reader */,
+				A6AFEFBD2DF15F7A0017343E /* Smart PDF Toolkit */,
 			);
-			name = "Hanuman PDF Readers";
+			name = "Smart PDF Toolkit";
 			packageProductDependencies = (
 				A6CA39362DF75CDA004A61AD /* WeScan */,
 				A6CA393C2DF8A71D004A61AD /* GoogleMobileAds */,
 			);
 			productName = "Hanuman PDF Reader";
-			productReference = A6AFEFBB2DF15F7A0017343E /* Hanuman PDF Readers.app */;
+			productReference = A6AFEFBB2DF15F7A0017343E /* Smart PDF Toolkit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -119,7 +119,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A6AFEFB62DF15F7A0017343E /* Build configuration list for PBXProject "Hanuman PDF Readers" */;
+			buildConfigurationList = A6AFEFB62DF15F7A0017343E /* Build configuration list for PBXProject "Smart PDF Toolkit" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -190,7 +190,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A6AFEFBA2DF15F7A0017343E /* Hanuman PDF Readers */,
+				A6AFEFBA2DF15F7A0017343E /* Smart PDF Toolkit */,
 			);
 		};
 /* End PBXProject section */
@@ -337,9 +337,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Hanuman PDF Reader/Hanuman_PDF_Reader.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Smart PDF Toolkit/Hanuman_PDF_Reader.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.1;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2V8634ZXMN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -362,9 +364,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Anjaneya.HanumanPDFReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -380,9 +383,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Hanuman PDF Reader/Hanuman_PDF_Reader.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Smart PDF Toolkit/Hanuman_PDF_Reader.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.1;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2V8634ZXMN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -405,9 +410,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Anjaneya.HanumanPDFReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -421,7 +427,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A6AFEFB62DF15F7A0017343E /* Build configuration list for PBXProject "Hanuman PDF Readers" */ = {
+		A6AFEFB62DF15F7A0017343E /* Build configuration list for PBXProject "Smart PDF Toolkit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A6AFEFCA2DF15F7C0017343E /* Debug */,
@@ -430,7 +436,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A6AFEFCC2DF15F7C0017343E /* Build configuration list for PBXNativeTarget "Hanuman PDF Readers" */ = {
+		A6AFEFCC2DF15F7C0017343E /* Build configuration list for PBXNativeTarget "Smart PDF Toolkit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A6AFEFCD2DF15F7C0017343E /* Debug */,

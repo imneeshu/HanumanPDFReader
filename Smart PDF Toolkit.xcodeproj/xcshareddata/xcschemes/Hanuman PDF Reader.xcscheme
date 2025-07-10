@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A6AFEFBA2DF15F7A0017343E"
-               BuildableName = "Hanuman PDF Readers.app"
-               BlueprintName = "Hanuman PDF Readers"
-               ReferencedContainer = "container:Hanuman PDF Readers.xcodeproj">
+               BuildableName = "Smart PDF Toolkit.app"
+               BlueprintName = "Smart PDF Toolkit"
+               ReferencedContainer = "container:Smart PDF Toolkit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A6AFEFBA2DF15F7A0017343E"
-            BuildableName = "Hanuman PDF Readers.app"
-            BlueprintName = "Hanuman PDF Readers"
-            ReferencedContainer = "container:Hanuman PDF Readers.xcodeproj">
+            BuildableName = "Smart PDF Toolkit.app"
+            BlueprintName = "Smart PDF Toolkit"
+            ReferencedContainer = "container:Smart PDF Toolkit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
@@ -65,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A6AFEFBA2DF15F7A0017343E"
-            BuildableName = "Hanuman PDF Readers.app"
-            BlueprintName = "Hanuman PDF Readers"
-            ReferencedContainer = "container:Hanuman PDF Readers.xcodeproj">
+            BuildableName = "Smart PDF Toolkit.app"
+            BlueprintName = "Smart PDF Toolkit"
+            ReferencedContainer = "container:Smart PDF Toolkit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
