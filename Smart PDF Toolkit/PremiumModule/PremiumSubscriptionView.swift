@@ -461,7 +461,7 @@ private extension PremiumSubscriptionView {
             .disabled(viewModel.isLoading)
             
             HStack(spacing: 14) {
-                Button("Terms") {
+                Button("Terms of Use") {
                     openTermsOfService()
                 }
                 .font(.caption2)
@@ -472,7 +472,7 @@ private extension PremiumSubscriptionView {
                     .foregroundColor(.white.opacity(0.7))
                 
                 Button("Privacy") {
-                   // openPrivacyPolicy()
+                    openPrivacyPolicy()
                 }
                 .font(.caption2)
                 .foregroundColor(.white.opacity(0.7))
@@ -509,14 +509,14 @@ private extension PremiumSubscriptionView {
     
     func openTermsOfService() {
         // Implement terms of service URL opening
-        if let url = URL(string: "https://yourapp.com/terms") {
+        if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
             UIApplication.shared.open(url)
         }
     }
     
     func openPrivacyPolicy() {
         // Implement privacy policy URL opening
-        if let url = URL(string: "https://yourapp.com/privacy") {
+        if let url = URL(string: "https://sites.google.com/view/smartpdftoolkit/home") {
             UIApplication.shared.open(url)
         }
     }
